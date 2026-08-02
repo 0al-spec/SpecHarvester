@@ -31,6 +31,7 @@ def fixture() -> tuple[dict, list[dict], str]:
         },
         "documents": [
             {
+                "role": "repository_root",
                 "evidencePath": "README.md",
                 "sourcePath": "README.md",
                 "sha256": "c" * 64,
@@ -82,9 +83,14 @@ def test_builds_deterministic_source_bound_outcome_anchors() -> None:
             .encode()
         ).hexdigest()
     )
-    assert {"reduce", "token", "usage"} <= set(first["anchors"][0]["outcomeTerms"])
-    assert "rtk" not in first["anchors"][0]["outcomeTerms"]
-    assert first["anchors"][1]["sourcePath"] == "README.md"
+    profile_anchor = next(
+        anchor
+        for anchor in first["anchors"]
+        if anchor["sourcePath"] == "semantic-product-profile.json"
+    )
+    assert {"reduce", "token", "usage"} <= set(profile_anchor["outcomeTerms"])
+    assert "rtk" not in profile_anchor["outcomeTerms"]
+    assert any(anchor["sourcePath"] == "README.md" for anchor in first["anchors"])
     assert all(anchor["untrusted"] for anchor in first["anchors"])
 
 
@@ -187,6 +193,10 @@ def test_builder_ignores_malformed_unbound_and_mechanics_only_candidates() -> No
     )
 
     assert record["anchors"] == []
+    assert record["sourceAuthorityState"] == "no_outcome_source"
+    assert assess_purpose_specificity(record, "Reduce token usage for coding agents") == (
+        "no_outcome_source"
+    )
 
 
 def test_builder_deduplicates_identical_profile_and_document_phrases() -> None:
@@ -202,3 +212,176 @@ def test_builder_deduplicates_identical_profile_and_document_phrases() -> None:
     )
 
     assert len(record["anchors"]) == 1
+
+
+def test_source_authority_ranks_strong_documentation_over_weak_preview() -> None:
+    profile, evidence, source_bundle = fixture()
+    profile["package"]["description"] = "Generated preview for member package boundary context"
+    profile["documents"] = [
+        {
+            "role": "repository_root",
+            "evidencePath": "README.md",
+            "sourcePath": "README.md",
+            "sha256": "c" * 64,
+        },
+        {
+            "role": "package_local",
+            "evidencePath": "PACKAGE_README.md",
+            "sourcePath": "packages/rtk/README.md",
+            "sha256": "e" * 64,
+        },
+    ]
+    evidence.append(
+        {
+            "sourcePath": "PACKAGE_README.md",
+            "sha256": "e" * 64,
+            "content": (
+                "RTK helps coding agents preserve useful command output while reducing tokens."
+            ),
+        }
+    )
+    evidence[0]["content"] = json.dumps(profile, sort_keys=True, separators=(",", ":"))
+
+    record = build_outcome_purpose_anchors(
+        profile,
+        evidence,
+        candidate_id="rtk_ai_rtk.package",
+        source_bundle_sha256=source_bundle,
+    )
+
+    authorities = {anchor["sourceAuthority"] for anchor in record["anchors"]}
+    assert record["schemaVersion"] == 2
+    assert record["sourceAuthorityState"] == "strong_anchor_available"
+    assert "generated_preview_mechanics" in authorities
+    assert "package_local_documentation" in authorities
+    assert assess_purpose_specificity(record, "Reduce token use for coding agents") == "specific"
+    assert (
+        assess_purpose_specificity(record, "Generated preview context for a member package")
+        == "weak_source_only"
+    )
+
+
+def test_strong_package_documentation_outranks_saturated_weak_root_preview() -> None:
+    profile, evidence, source_bundle = fixture()
+    profile["package"]["description"] = ""
+    profile["documents"].append(
+        {
+            "role": "package_local",
+            "evidencePath": "PACKAGE_README.md",
+            "sourcePath": "packages/rtk/README.md",
+            "sha256": "e" * 64,
+        }
+    )
+    evidence[1]["content"] = " ".join(
+        f"Generated preview context {index} describes a member package boundary."
+        for index in range(25)
+    )
+    evidence.append(
+        {
+            "sourcePath": "PACKAGE_README.md",
+            "sha256": "e" * 64,
+            "content": "RTK reduces token usage while preserving useful command output for agents.",
+        }
+    )
+    evidence[0]["content"] = json.dumps(profile, sort_keys=True, separators=(",", ":"))
+
+    record = build_outcome_purpose_anchors(
+        profile,
+        evidence,
+        candidate_id="rtk_ai_rtk.package",
+        source_bundle_sha256=source_bundle,
+    )
+
+    assert record["anchors"][0]["sourcePath"] == "PACKAGE_README.md"
+    assert record["anchors"][0]["sourceAuthority"] == "package_local_documentation"
+    assert record["sourceAuthorityState"] == "strong_anchor_available"
+
+
+@pytest.mark.parametrize(
+    ("phrase", "authority"),
+    [
+        ("Generated preview context for consumers", "generated_preview_mechanics"),
+        ("Member package boundary context for consumers", "member_package_boundary_mechanics"),
+        ("Import context for consumers and tools", "import_mechanics"),
+        ("Discovery context for consumers and tools", "discovery_mechanics"),
+        ("Module context for consumers and tools", "module_mechanics"),
+    ],
+)
+def test_mechanics_phrases_never_make_a_purpose_specific(phrase: str, authority: str) -> None:
+    profile, evidence, source_bundle = fixture()
+    profile["package"]["description"] = ""
+    profile["documents"] = [
+        {
+            "role": "repository_root",
+            "evidencePath": "README.md",
+            "sourcePath": "README.md",
+            "sha256": "c" * 64,
+        }
+    ]
+    evidence[1]["content"] = phrase
+    evidence[0]["content"] = json.dumps(profile, sort_keys=True, separators=(",", ":"))
+
+    record = build_outcome_purpose_anchors(
+        profile,
+        evidence,
+        candidate_id="rtk_ai_rtk.package",
+        source_bundle_sha256=source_bundle,
+    )
+
+    assert record["sourceAuthorityState"] == "weak_only"
+    assert record["anchors"][0]["sourceAuthority"] == authority
+    assert assess_purpose_specificity(record, phrase) != "specific"
+
+
+def test_authority_classification_rejects_a_recomputed_outer_digest_tamper() -> None:
+    profile, evidence, source_bundle = fixture()
+    record = build_outcome_purpose_anchors(
+        profile,
+        evidence,
+        candidate_id="rtk_ai_rtk.package",
+        source_bundle_sha256=source_bundle,
+    )
+    tampered = copy.deepcopy(record)
+    strong_anchor = next(
+        anchor for anchor in tampered["anchors"] if anchor["sourcePath"] == "README.md"
+    )
+    strong_anchor["sourceAuthority"] = "generated_candidate_preview"
+    tampered["sourceAuthorityState"] = "weak_only"
+    tampered["anchorsSha256"] = hashlib.sha256(
+        json.dumps(
+            {key: value for key, value in tampered.items() if key != "anchorsSha256"},
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode()
+    ).hexdigest()
+
+    with pytest.raises(ValueError, match="source authority is stale"):
+        validate_outcome_purpose_anchors(tampered, profile=profile, evidence=evidence)
+
+
+def test_legacy_anchor_records_remain_readable_but_are_not_specific() -> None:
+    profile, evidence, source_bundle = fixture()
+    record = build_outcome_purpose_anchors(
+        profile,
+        evidence,
+        candidate_id="rtk_ai_rtk.package",
+        source_bundle_sha256=source_bundle,
+    )
+    legacy = copy.deepcopy(record)
+    legacy["schemaVersion"] = 1
+    legacy.pop("sourceAuthorityPolicy")
+    legacy.pop("sourceAuthorityState")
+    for anchor in legacy["anchors"]:
+        anchor.pop("sourceAuthority")
+    legacy["anchorsSha256"] = hashlib.sha256(
+        json.dumps(
+            {key: value for key, value in legacy.items() if key != "anchorsSha256"},
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode()
+    ).hexdigest()
+
+    validate_outcome_purpose_anchors(legacy, profile=profile, evidence=evidence)
+    assert assess_purpose_specificity(legacy, "Reduce token usage for coding agents") == (
+        "legacy_unclassified"
+    )

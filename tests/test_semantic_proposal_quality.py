@@ -7,6 +7,7 @@ from pathlib import Path
 
 import pytest
 
+from spec_harvester.outcome_purpose_anchors import build_outcome_purpose_anchors
 from spec_harvester.relevant_intent_routing import build_relevant_intent_catalog
 from spec_harvester.semantic_author_input_pack import (
     SemanticAuthorInputPackOptions,
@@ -22,6 +23,8 @@ from spec_harvester.semantic_product_profile import (
     write_semantic_product_profile,
 )
 from spec_harvester.semantic_proposal_quality import (
+    _report,
+    _validate_purpose_specificity,
     evaluate_semantic_proposal_quality,
     load_semantic_author_quality_policy,
     validate_semantic_author_quality_policy,
@@ -231,6 +234,27 @@ def refresh_proposal_digest(pass_report: dict) -> None:
     )
 
 
+def refresh_input_pack_bindings(pack: dict) -> None:
+    bundle = hashlib.sha256(
+        json.dumps(
+            [
+                {key: item[key] for key in ("id", "class", "sourcePath", "sha256", "byteCount")}
+                for item in pack["evidence"]
+            ],
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode()
+    ).hexdigest()
+    pack["sourceBundleSha256"] = bundle
+    for item in pack["evidence"]:
+        item["sourceBundleSha256"] = bundle
+    pack["request"]["sourceBundleSha256"] = bundle
+    pack["request"]["evidence"] = [
+        {key: item[key] for key in ("id", "class", "sourcePath", "sha256", "sourceBundleSha256")}
+        for item in pack["evidence"]
+    ]
+
+
 def diagnostic_codes(report: dict) -> set[str]:
     return {item["code"] for item in report["diagnostics"]}
 
@@ -432,6 +456,7 @@ def test_supported_quantitative_claim_is_allowed(tmp_path: Path) -> None:
         item for item in pack["request"]["evidence"] if item["sourcePath"] == "README.md"
     )
     binding["sha256"] = readme["sha256"]
+    refresh_input_pack_bindings(pack)
     passed = semantic_pass(pack)
     passed["proposal"]["claims"][0]["text"] = "Measured reduction is 50%."
     refresh_proposal_digest(passed)
@@ -451,6 +476,7 @@ def test_quantitative_claim_requires_exact_evidence_token(tmp_path: Path) -> Non
         item for item in pack["request"]["evidence"] if item["sourcePath"] == "README.md"
     )
     binding["sha256"] = readme["sha256"]
+    refresh_input_pack_bindings(pack)
     passed = semantic_pass(pack)
     passed["proposal"]["claims"][0]["text"] = "Measured reduction is 5%."
     refresh_proposal_digest(passed)
@@ -597,6 +623,74 @@ def test_outcome_anchor_diagnostic_rejects_stale_pack_binding(tmp_path: Path) ->
 
     assert report["status"] == "rejected"
     assert "outcome_purpose_anchors_invalid" in diagnostic_codes(report)
+
+
+def test_quality_rejects_profile_pack_without_outcome_anchors(tmp_path: Path) -> None:
+    source = workspace(tmp_path)
+    write_semantic_product_profile(
+        source / "semantic-product-profile.json", routed_generic_profile()
+    )
+    pack = build_semantic_author_input_pack(source, catalog("intent.ai.context_selection"))
+    passed = semantic_pass(pack)
+    pack.pop("outcomePurposeAnchors")
+
+    report = evaluate_semantic_proposal_quality(pack, passed)
+
+    assert report["status"] == "rejected"
+    assert "input_pack_integrity_invalid" in diagnostic_codes(report)
+
+
+def test_weak_outcome_anchor_requires_review_without_calibration_eligibility(
+    tmp_path: Path,
+) -> None:
+    del tmp_path
+    source_bundle = "b" * 64
+    profile = {
+        "profileSha256": "a" * 64,
+        "repository": {"owner": "demo", "name": "preview"},
+        "package": {
+            "candidateId": "demo.preview",
+            "name": "preview",
+            "description": "Generated preview context for consumers",
+            "targetLabel": "Preview package",
+        },
+        "technology": {"languages": [], "ecosystems": [], "analyzerSignals": []},
+        "documents": [],
+    }
+    evidence = [
+        {
+            "sourcePath": "semantic-product-profile.json",
+            "sha256": "c" * 64,
+            "content": json.dumps(profile, sort_keys=True, separators=(",", ":")),
+        }
+    ]
+    anchors = build_outcome_purpose_anchors(
+        profile,
+        evidence,
+        candidate_id="demo.preview",
+        source_bundle_sha256=source_bundle,
+    )
+    pack = {
+        "candidateId": "demo.preview",
+        "sourceBundleSha256": source_bundle,
+        "outcomePurposeAnchors": anchors,
+        "evidence": evidence,
+    }
+    diagnostics: list[dict] = []
+    proposal = {"claims": [{"kind": "purpose", "text": "Preview context for consumers."}]}
+
+    _validate_purpose_specificity(pack, proposal, diagnostics)
+    report = _report(
+        pack,
+        {"proposal": {"proposalSha256": "a" * 64}},
+        load_semantic_author_quality_policy(),
+        diagnostics,
+        {},
+    )
+
+    assert report["status"] == "review_required"
+    assert report["eligibleForCalibration"] is False
+    assert "purpose_outcome_anchor_weak_source" in diagnostic_codes(report)
 
 
 def test_experimental_intent_overlap_is_false_novelty_failure(tmp_path: Path) -> None:

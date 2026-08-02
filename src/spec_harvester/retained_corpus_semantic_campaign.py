@@ -752,6 +752,15 @@ def prepare_workspace(
     candidate_id = candidate_manifest.get("metadata", {}).get("id")
     if not isinstance(candidate_id, str) or not candidate_id:
         raise ValueError("Candidate specpm.yaml metadata.id must be non-empty")
+    manifest_metadata = read_pinned_manifest_metadata(source, revision, harvest)
+    if manifest_metadata is not None:
+        manifest_path = PurePosixPath(manifest_metadata["sourcePath"])
+        manifest_raw = _git_show_bounded(source, revision, manifest_path.as_posix(), 64 * 1024)
+        if manifest_raw is None:
+            raise ValueError(f"Pinned package manifest is unavailable: {manifest_path}")
+        destination = workspace / manifest_path
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_bytes(manifest_raw)
     profile = build_semantic_product_profile(
         repository_id=repository_id,
         candidate_id=candidate_id,
@@ -761,7 +770,7 @@ def prepare_workspace(
             "harvestSha256": sha256_file(harvest_path),
         },
         package_document=package_document,
-        manifest_metadata=read_pinned_manifest_metadata(source, revision, harvest),
+        manifest_metadata=manifest_metadata,
     )
     write_semantic_product_profile(workspace / PROFILE_FILENAME, profile)
     return workspace
@@ -874,12 +883,18 @@ def read_pinned_manifest_metadata(
         harvest.get("projectProfile") if isinstance(harvest.get("projectProfile"), dict) else {}
     )
     manifests = project.get("manifests") if isinstance(project.get("manifests"), list) else []
+    source_record = harvest.get("source") if isinstance(harvest.get("source"), dict) else {}
+    target = source_record.get("target") if isinstance(source_record.get("target"), dict) else {}
+    target_path = PurePosixPath(str(target.get("path") or "."))
+    if target_path.is_absolute() or ".." in target_path.parts:
+        raise ValueError("Package target path is unsafe")
+    paths = [
+        PurePosixPath(item["path"])
+        for item in manifests
+        if isinstance(item, dict) and isinstance(item.get("path"), str)
+    ]
     path = next(
-        (
-            str(item["path"])
-            for item in manifests
-            if isinstance(item, dict) and isinstance(item.get("path"), str)
-        ),
+        (candidate.as_posix() for candidate in paths if candidate.parent == target_path),
         "",
     )
     if not path:

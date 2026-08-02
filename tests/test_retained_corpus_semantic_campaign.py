@@ -364,6 +364,14 @@ def test_prepares_nested_package_semantic_profile_from_pinned_objects(tmp_path: 
     assert profile["package"]["keywords"] == ["agents", "workflow"]
     assert read_pinned_package_readme(repository, revision, harvest) is not None
     assert read_pinned_manifest_metadata(repository, revision, harvest)["name"] == "@demo/agents"
+    root_first_harvest = copy.deepcopy(harvest)
+    root_first_harvest["projectProfile"]["manifests"] = [
+        {"path": "package.json"},
+        {"path": "packages/other/package.json"},
+        {"path": "packages/agents/package.json"},
+    ]
+    root_first_manifest = read_pinned_manifest_metadata(repository, revision, root_first_harvest)
+    assert root_first_manifest["sourcePath"] == "packages/agents/package.json"
     python_harvest = copy.deepcopy(harvest)
     python_harvest["projectProfile"]["manifests"][0]["path"] = "packages/agents/pyproject.toml"
     assert read_pinned_manifest_metadata(repository, revision, python_harvest) == {

@@ -32,6 +32,12 @@ def build_semantic_product_profile(
     )
     package = _package_metadata(harvest)
     manifest = dict(manifest_metadata or {})
+    manifest_description = manifest.get("description")
+    description = (
+        str(manifest_description)
+        if isinstance(manifest_description, str) and manifest_description.strip()
+        else str(package.get("description") or "")
+    )
     repository_url = str(source.get("repository") or "")
     owner, name = _repository_coordinates(repository_url)
     target_path = _safe_relative(str(target.get("path") or "."))
@@ -65,7 +71,7 @@ def build_semantic_product_profile(
             "targetPath": target_path,
             "targetLabel": str(target.get("label") or ""),
             "name": str(manifest.get("name") or package.get("name") or ""),
-            "description": str(manifest.get("description") or package.get("description") or ""),
+            "description": description,
             "manifestPath": _optional_safe_relative(
                 str(manifest.get("sourcePath") or _manifest_path(project) or "")
             ),
@@ -107,6 +113,14 @@ def build_semantic_product_profile(
         profile["sourceBindings"].append(
             {"sourcePath": profile["package"]["manifestPath"], "sha256": manifest_sha256}
         )
+        if isinstance(manifest_description, str) and manifest_description.strip():
+            profile["package"]["descriptionProvenance"] = {
+                "sourcePath": profile["package"]["manifestPath"],
+                "sha256": manifest_sha256,
+                "field": "description",
+                "normalizedValueSha256": hashlib.sha256(description.strip().encode()).hexdigest(),
+                "extractor": "pinned_manifest_metadata/v1",
+            }
     profile["profileSha256"] = _digest_without(profile, "profileSha256")
     validate_semantic_product_profile(profile)
     return profile
@@ -165,6 +179,13 @@ def validate_semantic_product_profile(profile: dict[str, Any]) -> None:
             or (source_path, item["sha256"]) not in bindings
         ):
             raise ValueError("semantic product profile document digest is invalid")
+    expected_roles = ["repository_root"] + (["package_local"] if len(documents) == 2 else [])
+    if (
+        len(documents) not in {1, 2}
+        or [item.get("role") for item in documents] != expected_roles
+        or len({item.get("evidencePath") for item in documents}) != len(documents)
+    ):
+        raise ValueError("semantic product profile document topology is invalid")
     manifest_sha256 = package.get("manifestSha256")
     if manifest_sha256 is not None and (
         not package.get("manifestPath")
@@ -172,6 +193,18 @@ def validate_semantic_product_profile(profile: dict[str, Any]) -> None:
         or (package["manifestPath"], manifest_sha256) not in bindings
     ):
         raise ValueError("semantic product profile manifest binding is invalid")
+    provenance = package.get("descriptionProvenance")
+    if provenance is not None:
+        if (
+            not isinstance(provenance, dict)
+            or provenance.get("sourcePath") != package.get("manifestPath")
+            or provenance.get("sha256") != manifest_sha256
+            or provenance.get("field") != "description"
+            or provenance.get("extractor") != "pinned_manifest_metadata/v1"
+            or provenance.get("normalizedValueSha256")
+            != hashlib.sha256(str(package.get("description") or "").strip().encode()).hexdigest()
+        ):
+            raise ValueError("semantic product profile description provenance is invalid")
 
 
 def write_semantic_product_profile(path: Path, profile: dict[str, Any]) -> None:

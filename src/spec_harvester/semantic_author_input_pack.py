@@ -6,12 +6,19 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+try:
+    import tomllib
+except ModuleNotFoundError:  # pragma: no cover - exercised on Python < 3.11
+    import tomli as tomllib
 import yaml
 from jsonschema import Draft202012Validator
 
 from spec_harvester.ai_semantic_author_schema import load_ai_semantic_author_schema
 from spec_harvester.interface_index import validate_public_interface_index
-from spec_harvester.outcome_purpose_anchors import build_outcome_purpose_anchors
+from spec_harvester.outcome_purpose_anchors import (
+    build_outcome_purpose_anchors,
+    validate_outcome_purpose_anchors,
+)
 from spec_harvester.relevant_intent_routing import validate_relevant_intent_catalog
 from spec_harvester.semantic_product_profile import (
     PROFILE_FILENAME,
@@ -88,8 +95,34 @@ def build_semantic_author_input_pack(
             options,
         )
 
-    for path in options.document_paths:
-        _append_file(evidence, workspace, path, "allowlisted_source_documentation", options)
+    if profile is not None and profile["package"].get("manifestSha256"):
+        _append_file(
+            evidence,
+            workspace,
+            profile["package"]["manifestPath"],
+            "pinned_package_manifest",
+            options,
+        )
+    document_paths = tuple(
+        dict.fromkeys(
+            (
+                *options.document_paths,
+                *(document["evidencePath"] for document in (profile or {}).get("documents", [])),
+            )
+        )
+    )
+    profile_document_paths = {
+        document["evidencePath"] for document in (profile or {}).get("documents", [])
+    }
+    for path in document_paths:
+        _append_file(
+            evidence,
+            workspace,
+            path,
+            "allowlisted_source_documentation",
+            options,
+            allow_oversized_document=path in profile_document_paths,
+        )
 
     observed_intents, catalog_binding = _validate_catalog(observed_intent_catalog, options)
     intent_routing = observed_intent_catalog.get("routing")
@@ -157,8 +190,7 @@ def build_semantic_author_input_pack(
             candidate_id=candidate_id,
             source_bundle_sha256=source_bundle_sha256,
         )
-        if purpose_anchors["anchors"]:
-            result["outcomePurposeAnchors"] = purpose_anchors
+        result["outcomePurposeAnchors"] = purpose_anchors
     return result
 
 
@@ -173,6 +205,128 @@ def _validate_options(options: SemanticAuthorInputPackOptions) -> None:
         <= 0
     ):
         raise ValueError("semantic author input pack budgets must be positive")
+
+
+def validate_semantic_author_input_pack_integrity(pack: dict[str, Any]) -> None:
+    """Fail closed when a persisted input pack no longer matches its evidence."""
+    evidence = pack.get("evidence")
+    source_bundle_sha256 = pack.get("sourceBundleSha256")
+    request = pack.get("request")
+    if (
+        not isinstance(evidence, list)
+        or not evidence
+        or not isinstance(source_bundle_sha256, str)
+        or not isinstance(request, dict)
+    ):
+        raise ValueError("semantic author input pack integrity is malformed")
+    identifiers: set[str] = set()
+    bindings: list[dict[str, str]] = []
+    for item in evidence:
+        if (
+            not isinstance(item, dict)
+            or not isinstance(item.get("id"), str)
+            or item["id"] in identifiers
+            or not isinstance(item.get("content"), str)
+            or not isinstance(item.get("byteCount"), int)
+            or item["byteCount"] < 0
+            or not isinstance(item.get("sha256"), str)
+            or item.get("sourceBundleSha256") != source_bundle_sha256
+            or hashlib.sha256(item["content"].encode()).hexdigest() != item["sha256"]
+            or len(item["content"].encode()) != item["byteCount"]
+        ):
+            raise ValueError("semantic author input pack evidence binding is stale")
+        identifiers.add(item["id"])
+        try:
+            bindings.append(_binding(item))
+        except KeyError as exc:
+            raise ValueError("semantic author input pack evidence binding is malformed") from exc
+    if _source_bundle_digest(evidence) != source_bundle_sha256:
+        raise ValueError("semantic author input pack source bundle is stale")
+    if (
+        request.get("candidateId") != pack.get("candidateId")
+        or request.get("sourceBundleSha256") != source_bundle_sha256
+    ):
+        raise ValueError("semantic author input pack request is malformed")
+    if request.get("evidence") != bindings:
+        raise ValueError("semantic author input pack request evidence is stale")
+    profile = _validate_profile_document_authority(pack, evidence)
+    if profile is None:
+        return
+    anchors = pack.get("outcomePurposeAnchors")
+    if not isinstance(anchors, dict):
+        raise ValueError("semantic author input pack outcome anchors are required")
+    validate_outcome_purpose_anchors(anchors, profile=profile, evidence=evidence)
+    if (
+        anchors.get("candidateId") != pack.get("candidateId")
+        or anchors.get("sourceBundleSha256") != source_bundle_sha256
+    ):
+        raise ValueError("semantic author input pack outcome anchor binding is stale")
+
+
+def _validate_profile_document_authority(
+    pack: dict[str, Any], evidence: list[dict[str, Any]]
+) -> dict[str, Any] | None:
+    profile_records = [
+        item for item in evidence if item.get("class") == "deterministic_semantic_product_profile"
+    ]
+    if not profile_records:
+        return None
+    if len(profile_records) != 1:
+        raise ValueError("semantic author input pack product profile is malformed")
+    try:
+        profile = json.loads(profile_records[0]["content"])
+    except (KeyError, TypeError, json.JSONDecodeError) as exc:
+        raise ValueError("semantic author input pack product profile is malformed") from exc
+    validate_semantic_product_profile(profile)
+    if profile.get("package", {}).get("candidateId") != pack.get("candidateId"):
+        raise ValueError("semantic author input pack product profile is stale")
+    documentation = {
+        (item.get("sourcePath"), item.get("sha256"), item.get("byteCount"))
+        for item in evidence
+        if item.get("class") == "allowlisted_source_documentation"
+    }
+    for document in profile["documents"]:
+        binding = (
+            document.get("evidencePath"),
+            document.get("sha256"),
+            document.get("byteCount"),
+        )
+        if binding not in documentation:
+            raise ValueError("semantic author input pack product profile document is stale")
+    provenance = profile["package"].get("descriptionProvenance")
+    if provenance is not None:
+        manifest = next(
+            (
+                item
+                for item in evidence
+                if item.get("class") == "pinned_package_manifest"
+                and item.get("sourcePath") == provenance.get("sourcePath")
+                and item.get("sha256") == provenance.get("sha256")
+            ),
+            None,
+        )
+        description = profile["package"]["description"].strip()
+        if not isinstance(manifest, dict) or _manifest_description(manifest) != description:
+            raise ValueError("semantic author input pack product profile manifest is stale")
+    return profile
+
+
+def _manifest_description(manifest: dict[str, Any]) -> str:
+    try:
+        path = Path(manifest["sourcePath"])
+        content = manifest["content"]
+        value = json.loads(content) if path.suffix == ".json" else tomllib.loads(content)
+    except (KeyError, TypeError, json.JSONDecodeError, tomllib.TOMLDecodeError):
+        return ""
+    if not isinstance(value, dict):
+        return ""
+    package = value.get("package") if isinstance(value.get("package"), dict) else {}
+    project = value.get("project") if isinstance(value.get("project"), dict) else {}
+    tool = value.get("tool") if isinstance(value.get("tool"), dict) else {}
+    poetry = tool.get("poetry") if isinstance(tool.get("poetry"), dict) else {}
+    metadata = next((item for item in (project, package, poetry, value) if item), {})
+    description = metadata.get("description")
+    return description.strip() if isinstance(description, str) else ""
 
 
 def _safe_path(path: str) -> str:
@@ -216,6 +370,8 @@ def _append_file(
     relative: str,
     evidence_class: str,
     options: SemanticAuthorInputPackOptions,
+    *,
+    allow_oversized_document: bool = False,
 ) -> None:
     path = _workspace_file(workspace, relative)
     file_size = path.stat().st_size
@@ -225,6 +381,7 @@ def _append_file(
     if (
         evidence_class == "allowlisted_source_documentation"
         and file_size > options.max_document_bytes
+        and not allow_oversized_document
     ):
         raise ValueError(f"documentation evidence exceeds byte budget: {relative}")
     raw = path.read_bytes()
@@ -263,6 +420,13 @@ def _validate_profile_workspace_bindings(workspace: Path, profile: dict[str, Any
             document["evidencePath"],
             document["sha256"],
             expected_byte_count=document["byteCount"],
+        )
+    manifest_sha256 = profile["package"].get("manifestSha256")
+    if manifest_sha256 is not None:
+        _verify_profile_workspace_file(
+            workspace,
+            profile["package"]["manifestPath"],
+            manifest_sha256,
         )
 
 
