@@ -28,6 +28,9 @@ from spec_harvester.semantic_product_profile import build_semantic_product_profi
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURE = ROOT / "tests/fixtures/ai_semantic_author_schemas/p55-t2-valid.example.json"
+MANIFEST_CONTENT = (
+    b'{"name":"demo-package","description":"Reduce AI context consumption by selecting content"}'
+)
 
 
 class FakeProvider:
@@ -94,7 +97,7 @@ def routed_profile() -> dict:
         },
         manifest_metadata={
             "sourcePath": "package.json",
-            "sha256": "b" * 64,
+            "sha256": hashlib.sha256(MANIFEST_CONTENT).hexdigest(),
             "description": "Reduce AI context consumption by selecting content",
             "keywords": ["context", "content", "selection"],
         },
@@ -125,6 +128,7 @@ def pack(
         (tmp_path / "README.md").write_bytes(
             b"Reduce AI context consumption by selecting relevant repository content."
         )
+        (tmp_path / "package.json").write_bytes(MANIFEST_CONTENT)
         (tmp_path / "semantic-product-profile.json").write_text(
             json.dumps(routed_profile(), sort_keys=True)
         )
@@ -353,6 +357,41 @@ def test_duplicate_embedded_profile_fails_before_provider_invocation(tmp_path: P
     provider = FakeProvider(proposal(input_pack))
 
     with pytest.raises(ValueError, match="product profile is malformed"):
+        run_semantic_author_pass(input_pack, provider)
+
+    assert provider.requests == []
+
+
+def test_rehashed_profile_cannot_escalate_description_without_manifest_content(
+    tmp_path: Path,
+) -> None:
+    input_pack = pack(tmp_path, catalog_override=routed_catalog())
+    profile_evidence = next(
+        item
+        for item in input_pack["evidence"]
+        if item["class"] == "deterministic_semantic_product_profile"
+    )
+    profile = json.loads(profile_evidence["content"])
+    forged_description = "Invent an unrelated product outcome"
+    profile["package"]["description"] = forged_description
+    profile["package"]["descriptionProvenance"]["normalizedValueSha256"] = hashlib.sha256(
+        forged_description.encode()
+    ).hexdigest()
+    profile["profileSha256"] = hashlib.sha256(
+        json.dumps(
+            {key: value for key, value in profile.items() if key != "profileSha256"},
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode()
+    ).hexdigest()
+    profile_evidence["content"] = json.dumps(profile, sort_keys=True, separators=(",", ":"))
+    profile_evidence["sha256"] = hashlib.sha256(profile_evidence["content"].encode()).hexdigest()
+    profile_evidence["byteCount"] = len(profile_evidence["content"].encode())
+    input_pack.pop("outcomePurposeAnchors")
+    _refresh_input_pack_bindings(input_pack)
+    provider = FakeProvider(proposal(input_pack))
+
+    with pytest.raises(ValueError, match="product profile manifest is stale"):
         run_semantic_author_pass(input_pack, provider)
 
     assert provider.requests == []

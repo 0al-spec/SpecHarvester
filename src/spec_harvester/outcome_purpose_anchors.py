@@ -302,7 +302,7 @@ def validate_outcome_purpose_anchors(
 
 
 def assess_purpose_specificity(record: dict[str, Any], purpose_text: str) -> str:
-    """Return specific, weak_source_only, missing_anchor, or mechanics_only."""
+    """Classify purpose as specific, weak, missing, mechanics-only, no-source, or legacy."""
     validate_outcome_purpose_anchors(record)
     purpose_terms = {term for term in _tokens(purpose_text) if term not in STOP_TERMS}
     mechanics = set(record["mechanicsTerms"])

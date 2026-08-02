@@ -100,11 +100,7 @@ def test_input_pack_includes_validated_semantic_product_profile(tmp_path: Path) 
     )
     write_semantic_product_profile(source / PROFILE_FILENAME, profile)
 
-    result = build_semantic_author_input_pack(
-        source,
-        catalog(),
-        options=SemanticAuthorInputPackOptions(document_paths=("README.md",)),
-    )
+    result = build_semantic_author_input_pack(source, catalog())
 
     evidence = next(
         item
@@ -119,6 +115,10 @@ def test_input_pack_includes_validated_semantic_product_profile(tmp_path: Path) 
     assert anchors["sourceBundleSha256"] == result["sourceBundleSha256"]
     assert anchors["profileSha256"] == profile["profileSha256"]
     assert anchors["anchors"][0]["sourcePath"] == "README.md"
+    assert any(
+        item["class"] == "allowlisted_source_documentation" and item["sourcePath"] == "README.md"
+        for item in result["evidence"]
+    )
 
 
 def test_input_pack_retains_empty_outcome_anchor_assessment(

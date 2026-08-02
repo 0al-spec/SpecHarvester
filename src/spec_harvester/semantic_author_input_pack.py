@@ -88,7 +88,23 @@ def build_semantic_author_input_pack(
             options,
         )
 
-    for path in options.document_paths:
+    if profile is not None and profile["package"].get("manifestSha256"):
+        _append_file(
+            evidence,
+            workspace,
+            profile["package"]["manifestPath"],
+            "pinned_package_manifest",
+            options,
+        )
+    document_paths = tuple(
+        dict.fromkeys(
+            (
+                *options.document_paths,
+                *(document["evidencePath"] for document in (profile or {}).get("documents", [])),
+            )
+        )
+    )
+    for path in document_paths:
         _append_file(evidence, workspace, path, "allowlisted_source_documentation", options)
 
     observed_intents, catalog_binding = _validate_catalog(observed_intent_catalog, options)
@@ -249,6 +265,21 @@ def _validate_profile_document_authority(
         )
         if binding not in documentation:
             raise ValueError("semantic author input pack product profile document is stale")
+    provenance = profile["package"].get("descriptionProvenance")
+    if provenance is not None:
+        manifest = next(
+            (
+                item
+                for item in evidence
+                if item.get("class") == "pinned_package_manifest"
+                and item.get("sourcePath") == provenance.get("sourcePath")
+                and item.get("sha256") == provenance.get("sha256")
+            ),
+            None,
+        )
+        description = profile["package"]["description"].strip()
+        if not isinstance(manifest, dict) or description not in manifest["content"]:
+            raise ValueError("semantic author input pack product profile manifest is stale")
 
 
 def _safe_path(path: str) -> str:
@@ -339,6 +370,13 @@ def _validate_profile_workspace_bindings(workspace: Path, profile: dict[str, Any
             document["evidencePath"],
             document["sha256"],
             expected_byte_count=document["byteCount"],
+        )
+    manifest_sha256 = profile["package"].get("manifestSha256")
+    if manifest_sha256 is not None:
+        _verify_profile_workspace_file(
+            workspace,
+            profile["package"]["manifestPath"],
+            manifest_sha256,
         )
 
 
