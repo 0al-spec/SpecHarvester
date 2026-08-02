@@ -10,8 +10,10 @@ same deterministic failure without broader authoring changes.
 
 ## Deliverables
 
-- A stable `ModelJsonSemanticViolation` for capability namespace failures in
-  semantic proposal transport validation.
+- A proposal-only `capabilityNamespaceRepairs` record carrying each rejected
+  static capability ID and its candidate-scoped proposed replacement.
+- A stable `ModelJsonSemanticViolation` for missing or invalid capability
+  namespace repairs in semantic proposal transport validation.
 - Repair guidance containing the candidate namespace, exact prohibited
   capability ID, and a replacement-ID shape that remains scoped to the
   candidate.
@@ -24,9 +26,9 @@ same deterministic failure without broader authoring changes.
 
 - A malformed capability ID outside `<candidateId>.` creates repair guidance
   with code, prohibited value, required namespace, and replacement shape.
-- A repaired valid capability ID under the exact candidate namespace succeeds
-  without changing source evidence, original system prompt, initial provider
-  request, or proposal-only authority.
+- A repaired replacement capability ID under the exact candidate namespace
+  succeeds without changing source evidence, static candidate YAML, original
+  system prompt, initial provider request, or proposal-only authority.
 - Repeating the same invalid capability ID returns the existing
   unchanged-semantic-violation failure after one repair attempt; no third
   provider request is made.
@@ -43,8 +45,9 @@ same deterministic failure without broader authoring changes.
    semantic violation guidance.
 2. Add repeated-violation coverage that counts provider calls and asserts the
    current single-repair budget terminates deterministically.
-3. Implement the smallest semantic-violation adapter at the candidate YAML
-   namespace check, leaving generic JSON repair provider-neutral.
+3. Implement one shared validator for candidate-YAML namespace evidence,
+   proposed repair records, transport enforcement, and review-required quality
+   diagnostics; leave generic JSON repair provider-neutral.
 4. Run focused semantic repair and quality suites, then all configured gates;
    record only aggregate validation outcomes.
 

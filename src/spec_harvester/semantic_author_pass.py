@@ -16,6 +16,12 @@ from typing import Any, Protocol
 from jsonschema import Draft202012Validator, FormatChecker
 
 from spec_harvester.ai_semantic_author_schema import load_ai_semantic_author_schema
+from spec_harvester.capability_namespace_repair import (
+    REPAIR_FIELD,
+    capability_namespace_repair_constraints,
+    capability_namespace_violations,
+    validate_capability_namespace_repairs,
+)
 from spec_harvester.experimental_intent_policy import (
     EXPERIMENTAL_INTENT_ID_PATTERN,
     GENERIC_OBSERVED_INTENT_IDS,
@@ -528,26 +534,37 @@ def _structured_output_schema(provider_payload: dict[str, Any]) -> dict[str, Any
             "nonGoalClaimIds": {"type": "array", "items": {"type": "string"}},
         }
     )
-    return _strict_object_schema(
+    capability_namespace_repair = _strict_object_schema(
         {
-            "apiVersion": fixed_string("spec-harvester.ai-semantic-proposal/v0"),
-            "kind": fixed_string("SpecHarvesterAISemanticProposal"),
-            "schemaVersion": {"type": "integer", "const": 1},
-            "authority": fixed_string("semantic_author_proposal_only"),
-            "proposalId": {"type": "string"},
-            "candidateId": fixed_string(request.get("candidateId")),
-            "sourceBundleSha256": fixed_string(request.get("sourceBundleSha256")),
-            "claims": {"type": "array", "items": claim},
-            "intentDecisions": {"type": "array", "items": intent},
+            "prohibitedCapabilityId": {"type": "string"},
+            "replacementCapabilityId": {"type": "string"},
         }
+    )
+    properties = {
+        "apiVersion": fixed_string("spec-harvester.ai-semantic-proposal/v0"),
+        "kind": fixed_string("SpecHarvesterAISemanticProposal"),
+        "schemaVersion": {"type": "integer", "const": 1},
+        "authority": fixed_string("semantic_author_proposal_only"),
+        "proposalId": {"type": "string"},
+        "candidateId": fixed_string(request.get("candidateId")),
+        "sourceBundleSha256": fixed_string(request.get("sourceBundleSha256")),
+        "claims": {"type": "array", "items": claim},
+        "intentDecisions": {"type": "array", "items": intent},
+        REPAIR_FIELD: {"type": "array", "items": capability_namespace_repair},
+    }
+    return _strict_object_schema(
+        properties,
+        required=[key for key in properties if key != REPAIR_FIELD],
     )
 
 
-def _strict_object_schema(properties: dict[str, Any]) -> dict[str, Any]:
+def _strict_object_schema(
+    properties: dict[str, Any], *, required: list[str] | None = None
+) -> dict[str, Any]:
     return {
         "type": "object",
         "additionalProperties": False,
-        "required": list(properties),
+        "required": list(properties) if required is None else required,
         "properties": properties,
     }
 
@@ -663,6 +680,24 @@ def _validate_transport_proposal(payload: dict[str, Any], provider_payload: dict
             )
             if binding not in allowed_evidence:
                 raise ValueError("semantic proposal evidence is not in provider allowlist")
+    candidate_id = str(request.get("candidateId", ""))
+    violations = capability_namespace_violations(
+        provider_payload.get("evidence", []), candidate_id
+    )
+    if violations:
+        try:
+            validate_capability_namespace_repairs(
+                payload.get(REPAIR_FIELD),
+                candidate_id=candidate_id,
+                violations=violations,
+            )
+        except ValueError as exc:
+            raise ModelJsonSemanticViolation(
+                "capability_namespace_violation",
+                f"capability namespace repair is invalid: {exc}",
+                prohibited_values=violations,
+                replacement_constraints=capability_namespace_repair_constraints(candidate_id),
+            ) from exc
     semantic_focus = provider_payload.get("semanticFocus")
     if isinstance(semantic_focus, dict):
         purpose = " ".join(
@@ -840,6 +875,14 @@ def _provider_payload(
             "experimentalIntentIdentifierSuffix": pack["sourceBundleSha256"][:8],
         },
     }
+    capability_violations = capability_namespace_violations(pack["evidence"], pack["candidateId"])
+    if capability_violations:
+        constraints = capability_namespace_repair_constraints(pack["candidateId"])
+        payload["capabilityNamespaceRepairRequirements"] = [
+            {"prohibitedCapabilityId": capability_id, **constraints}
+            for capability_id in capability_violations
+        ]
+        payload["authoringConstraints"]["capabilityNamespaceRepairsRequired"] = True
     intent_routing = pack.get("intentRouting")
     if isinstance(intent_routing, dict):
         payload["intentRouting"] = intent_routing
@@ -898,6 +941,9 @@ def _system_prompt() -> str:
         "$defs, JSON Pointer, or schema objects in proposal value fields. Describe the concrete "
         "user outcome before implementation shape, follow semanticFocus only when supported by "
         "the supplied evidence, and keep capability identifiers under the candidate namespace. "
+        "When capabilityNamespaceRepairRequirements is present, return one proposal-only "
+        "capabilityNamespaceRepairs entry for every prohibited capability ID, with its "
+        "replacementCapabilityId matching the supplied replacementIdPattern. "
         "The purpose claim must include at least one exact complete term, with the same spelling, "
         "from every semanticFocus purposeConceptGroup when that term is supported by the evidence. "
         "The capability claim must likewise include at least one exact complete evidence-supported "
