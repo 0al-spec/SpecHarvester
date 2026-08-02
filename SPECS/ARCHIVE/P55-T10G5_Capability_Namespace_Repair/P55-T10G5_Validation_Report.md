@@ -28,7 +28,7 @@ PASS
 | Gate | Result |
 | --- | --- |
 | Focused semantic repair, provider, schema, portable-record, and quality suites | PASS: 135 passed |
-| `PYTHONPATH=src .venv/bin/python -m pytest` | PASS: 1437 passed |
+| `PYTHONPATH=src .venv/bin/python -m pytest` | PASS: 1439 passed |
 | `.venv/bin/ruff check src tests` | PASS |
 | `.venv/bin/ruff format --check src tests` | PASS |
 | `PYTHONPATH=src .venv/bin/python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90` | PASS: threshold met |
@@ -43,3 +43,10 @@ PASS
   was persisted.
 - No proposal was accepted, materialized, canonicalized, published, or used to
   mutate SpecPM or registry truth.
+
+## Review Follow-Up
+
+- A nonempty repair record for a clean candidate is now rejected by both
+  transport and quality evaluation; it cannot become calibration eligible.
+- The LM Studio response test double now preserves the file-like `read(-1)`
+  contract.

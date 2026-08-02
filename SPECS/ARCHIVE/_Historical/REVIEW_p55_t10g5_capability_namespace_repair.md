@@ -13,11 +13,15 @@ provider/quality/docs-contract tests, task documentation, archive bookkeeping.
 
 ### Critical Issues
 
-None found.
+- [P1] A clean candidate could carry an unexpected nonempty repair array and
+  remain calibration eligible. Fixed by validating repair records even when the
+  evidence-derived violation set is empty, with transport and quality
+  regressions.
 
 ### Secondary Issues
 
-None found.
+- [P2] The new LM Studio response double did not preserve `read(-1)` semantics.
+  Fixed by returning the full payload for negative sizes.
 
 ### Architectural Notes
 
@@ -35,13 +39,13 @@ None found.
 ### Tests
 
 - Focused semantic provider, schema, portable-record, quality, and docs-contract
-  suites passed: 333 tests.
-- Full Python suite passed: 1437 tests.
+  suites passed after the review follow-up.
+- Full Python suite passed: 1439 tests.
 - Ruff lint and formatting, coverage threshold, Swift manifest, Swift DocC
   build, and whitespace checks passed.
 
 ### Next Steps
 
-FOLLOW-UP is skipped: no actionable review finding was identified. P55-T10G6 is
-the next frozen calibration task; it must not be started by this implementation
-task.
+The review findings were fixed in this branch; no further follow-up task is
+required. P55-T10G6 is the next frozen calibration task and must not be started
+by this implementation task.

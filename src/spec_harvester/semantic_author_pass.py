@@ -682,20 +682,19 @@ def _validate_transport_proposal(payload: dict[str, Any], provider_payload: dict
                 raise ValueError("semantic proposal evidence is not in provider allowlist")
     candidate_id = str(request.get("candidateId", ""))
     violations = capability_namespace_violations(provider_payload.get("evidence", []), candidate_id)
-    if violations:
-        try:
-            validate_capability_namespace_repairs(
-                payload.get(REPAIR_FIELD),
-                candidate_id=candidate_id,
-                violations=violations,
-            )
-        except ValueError as exc:
-            raise ModelJsonSemanticViolation(
-                "capability_namespace_violation",
-                f"capability namespace repair is invalid: {exc}",
-                prohibited_values=violations,
-                replacement_constraints=capability_namespace_repair_constraints(candidate_id),
-            ) from exc
+    try:
+        validate_capability_namespace_repairs(
+            payload.get(REPAIR_FIELD),
+            candidate_id=candidate_id,
+            violations=violations,
+        )
+    except ValueError as exc:
+        raise ModelJsonSemanticViolation(
+            "capability_namespace_violation",
+            f"capability namespace repair is invalid: {exc}",
+            prohibited_values=violations,
+            replacement_constraints=capability_namespace_repair_constraints(candidate_id),
+        ) from exc
     semantic_focus = provider_payload.get("semanticFocus")
     if isinstance(semantic_focus, dict):
         purpose = " ".join(

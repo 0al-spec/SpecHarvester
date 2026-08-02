@@ -20,6 +20,8 @@ The semantic proposal may respond with a matching
 `capabilityNamespaceRepairs` record. Each record has the prohibited static ID
 and exactly one replacement ID matching that candidate-scoped pattern. The
 proposal must cover every violation once, and replacement IDs must be unique.
+On a clean candidate, any repair record is unexpected and is rejected rather
+than being ignored.
 
 Transport validation uses the same candidate-YAML evidence as the independent
 quality report. A missing, malformed, incomplete, duplicated, or out-of-scope

@@ -342,6 +342,23 @@ def test_capability_namespace_repair_remains_review_required(tmp_path: Path) -> 
     assert "capability_namespace_repair_proposed" in diagnostic_codes(report)
 
 
+def test_unexpected_capability_namespace_repair_rejects_clean_candidate(tmp_path: Path) -> None:
+    pack = input_pack(tmp_path)
+    passed = semantic_pass(pack)
+    passed["proposal"]["capabilityNamespaceRepairs"] = [
+        {
+            "prohibitedCapabilityId": "other.context",
+            "replacementCapabilityId": "demo.package.context_selection",
+        }
+    ]
+    refresh_proposal_digest(passed)
+
+    report = evaluate_semantic_proposal_quality(pack, passed)
+
+    assert report["status"] == "rejected"
+    assert "capability_namespace_repair_invalid" in diagnostic_codes(report)
+
+
 def test_stale_evidence_and_envelope_bindings_reject(tmp_path: Path) -> None:
     pack = input_pack(tmp_path)
     passed = semantic_pass(pack)

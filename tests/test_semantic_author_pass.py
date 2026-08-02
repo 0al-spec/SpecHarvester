@@ -1101,6 +1101,44 @@ def test_codex_stops_after_repeated_capability_namespace_violation(
     assert repair["semanticViolation"]["code"] == "capability_namespace_violation"
 
 
+def test_codex_repairs_unexpected_capability_namespace_repair(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    input_pack = pack(tmp_path)
+    malformed = transport_proposal(input_pack)
+    malformed["capabilityNamespaceRepairs"] = [
+        {
+            "prohibitedCapabilityId": "other.context",
+            "replacementCapabilityId": "demo.package.context_selection",
+        }
+    ]
+    outputs = iter((json.dumps(malformed), json.dumps(transport_proposal(input_pack))))
+    prompts: list[str] = []
+
+    def fake_run(args: list[str], **kwargs: object) -> object:
+        prompts.append(str(kwargs["input"]))
+        Path(args[args.index("--output-last-message") + 1]).write_text(next(outputs))
+        return type("Completed", (), {"returncode": 0})()
+
+    monkeypatch.setattr("spec_harvester.semantic_author_pass.subprocess.run", fake_run)
+    completion = CodexSparkSemanticAuthorProvider().complete(
+        provider_request(input_pack),
+        SemanticAuthorPassOptions(json_repair_max_attempts=1),
+    )
+
+    assert completion.receipt["jsonRepairNeeded"] is True
+    repair = json.loads(json.loads(prompts[1])[3]["content"])
+    assert repair["semanticViolation"] == {
+        "code": "capability_namespace_violation",
+        "prohibitedValues": [],
+        "replacementConstraints": {
+            "candidateNamespace": "demo.package",
+            "replacementIdPattern": "^demo\\.package\\.[a-z][a-z0-9_]{0,79}$",
+            "requiredPrefix": "demo.package.",
+        },
+    }
+
+
 def test_lm_studio_repairs_capability_namespace_violation(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
@@ -1124,12 +1162,13 @@ def test_lm_studio_repairs_capability_namespace_violation(
             pass
 
         def read(self, size: int = -1) -> bytes:
-            return json.dumps(
+            body = json.dumps(
                 {
                     "model": "local",
                     "choices": [{"message": {"content": next(contents)}}],
                 }
-            ).encode()[:size]
+            ).encode()
+            return body if size < 0 else body[:size]
 
     def fake_urlopen(request: object, **_kwargs: object) -> Response:
         requests.append(request)

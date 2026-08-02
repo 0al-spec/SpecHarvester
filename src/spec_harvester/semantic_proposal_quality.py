@@ -306,13 +306,21 @@ def _validate_candidate_yaml(
                 candidate_id=candidate_id,
                 violations=namespace_violations,
             )
-        except ValueError:
+        except ValueError as exc:
             repairs = []
             namespace_violations = sorted(
                 capability_id
                 for capability_id in manifest_capabilities | boundary_capabilities
                 if not capability_id.startswith(f"{candidate_id}.")
             )
+            if not namespace_violations:
+                diagnostics.append(
+                    _diagnostic(
+                        "capability_namespace_repair_invalid",
+                        "error",
+                        detail=str(exc),
+                    )
+                )
         if repairs:
             for repair in repairs:
                 diagnostics.append(
