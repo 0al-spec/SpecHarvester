@@ -11,6 +11,11 @@ import yaml
 from jsonschema import Draft202012Validator, FormatChecker
 
 from spec_harvester.ai_semantic_author_schema import load_ai_semantic_author_schema
+from spec_harvester.capability_namespace_repair import (
+    REPAIR_FIELD,
+    capability_namespace_violations,
+    validate_capability_namespace_repairs,
+)
 from spec_harvester.experimental_intent_policy import (
     EXPERIMENTAL_INTENT_ID_PATTERN,
     GENERIC_OBSERVED_INTENT_IDS,
@@ -125,7 +130,7 @@ def evaluate_semantic_proposal_quality(
         diagnostics.append(_diagnostic("input_pack_integrity_invalid", "error", detail=str(exc)))
     _validate_envelope_bindings(input_pack, semantic_pass, proposal, decision_policy, diagnostics)
     evidence_by_binding = _validate_evidence(input_pack, proposal, diagnostics)
-    _validate_candidate_yaml(input_pack, diagnostics)
+    _validate_candidate_yaml(input_pack, proposal, diagnostics)
     if schema_valid:
         _validate_claims(proposal, evidence_by_binding, diagnostics)
         _validate_purpose_specificity(input_pack, proposal, diagnostics)
@@ -252,7 +257,9 @@ def _validate_evidence(
     return content_by_binding
 
 
-def _validate_candidate_yaml(pack: dict[str, Any], diagnostics: list[dict[str, Any]]) -> None:
+def _validate_candidate_yaml(
+    pack: dict[str, Any], proposal: dict[str, Any], diagnostics: list[dict[str, Any]]
+) -> None:
     documents: dict[str, dict[str, Any]] = {}
     for item in pack.get("evidence", []):
         if not isinstance(item, dict) or item.get("class") != "validated_candidate_yaml":
@@ -289,16 +296,50 @@ def _validate_candidate_yaml(pack: dict[str, Any], diagnostics: list[dict[str, A
             if isinstance(capability, dict) and isinstance(capability.get("id"), str):
                 boundary_capabilities.add(capability["id"])
                 boundary_intents.update(_string_list(capability.get("intentIds")))
-    expected_prefix = f"{candidate_id}."
-    for capability_id in sorted(manifest_capabilities | boundary_capabilities):
-        if not capability_id.startswith(expected_prefix):
-            diagnostics.append(
-                _diagnostic(
-                    "capability_namespace_violation",
-                    "error",
-                    subject=capability_id,
-                )
+    if isinstance(candidate_id, str):
+        try:
+            namespace_violations = capability_namespace_violations(
+                pack.get("evidence", []), candidate_id
             )
+            repairs = validate_capability_namespace_repairs(
+                proposal.get(REPAIR_FIELD),
+                candidate_id=candidate_id,
+                violations=namespace_violations,
+            )
+        except ValueError as exc:
+            repairs = []
+            namespace_violations = sorted(
+                capability_id
+                for capability_id in manifest_capabilities | boundary_capabilities
+                if not capability_id.startswith(f"{candidate_id}.")
+            )
+            if not namespace_violations:
+                diagnostics.append(
+                    _diagnostic(
+                        "capability_namespace_repair_invalid",
+                        "error",
+                        detail=str(exc),
+                    )
+                )
+        if repairs:
+            for repair in repairs:
+                diagnostics.append(
+                    _diagnostic(
+                        "capability_namespace_repair_proposed",
+                        "warning",
+                        subject=repair["prohibitedCapabilityId"],
+                        detail=repair["replacementCapabilityId"],
+                    )
+                )
+        else:
+            for capability_id in namespace_violations:
+                diagnostics.append(
+                    _diagnostic(
+                        "capability_namespace_violation",
+                        "error",
+                        subject=capability_id,
+                    )
+                )
     if manifest_capabilities != boundary_capabilities:
         diagnostics.append(_diagnostic("manifest_boundary_capability_mismatch", "error"))
     manifest_intents = set(
@@ -662,6 +703,7 @@ def _report(
         "purpose_outcome_anchor_weak_source",
         "purpose_outcome_anchor_no_outcome_source",
         "purpose_outcome_anchor_legacy_unclassified",
+        "capability_namespace_repair_proposed",
     }
     proposal = semantic_pass.get("proposal", {})
     return {

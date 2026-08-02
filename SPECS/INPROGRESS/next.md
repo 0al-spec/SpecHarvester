@@ -1,25 +1,32 @@
-# Next Task: P55-T10G5 Capability Namespace Repair
+# Next Task: P55-T10G6 Repeat Ten-Repository Semantic Calibration
 
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
-**Dependencies:** `P55-T10G3` Repeat Ten-Repository Semantic Calibration and
-`P55-T10G4` Outcome Anchor Source-Authority Ranking
+**Dependencies:** `P55-T10G4` Outcome Anchor Source-Authority Ranking and
+`P55-T10G5` Capability Namespace Repair
 **Status:** Ready
 
 ## Objective
 
-Give validation-aware semantic repair the exact capability namespace violation,
-prohibited identifier, and bounded replacement shape so the provider can repair
-the deterministic rejection without increasing its existing attempt budget.
+Repeat the exact P55-T10G calibration after P55-T10G4 and P55-T10G5 using the
+same frozen targets, Codex 5.3 Spark model, baseline, thresholds, denominators,
+purpose rubric, and attempt budgets.
 
 ## Required Scope
 
-Preserve the original system prompt, provider request, source evidence, and
-proposal-only boundary. Reject a repaired output that repeats the same capability
-namespace violation, and do not run the later P55-T10G6 calibration as part of
-this task.
+Reuse only the frozen P55-T10G plan and durable baseline. Account for every
+terminal record, preserve proposal-only authority, and do not materialize,
+canonicalize, publish, or mutate SpecPM or registry truth. P55-T10H remains
+blocked unless every frozen gate passes.
 
 ## Recently Archived
+
+- `P55-T10G5` Capability Namespace Repair: PASS. Candidate-YAML capability IDs
+  outside the candidate namespace now create exact, proposal-only replacement
+  requirements for Codex and LM Studio transport repair. A valid repair remains
+  reviewer-visible and calibration-ineligible; it never changes static YAML,
+  SpecPM, registry, or publication truth. Repeated invalid repairs still stop
+  after the existing one-repair budget. No live provider ran.
 
 - `P55-T10G4` Outcome Anchor Source-Authority Ranking: PASS. Outcome anchors now
   classify pinned descriptive manifest and source documentation separately from

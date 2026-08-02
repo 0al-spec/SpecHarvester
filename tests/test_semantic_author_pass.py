@@ -117,12 +117,27 @@ def pack(
     intent_id: str = "intent.ai.context_selection",
     *,
     catalog_override: dict | None = None,
+    capability_id: str | None = None,
 ) -> dict:
     (tmp_path / "specs").mkdir()
+    capability_manifest = (
+        f"index:\n  provides:\n    capabilities:\n      - {capability_id}\n"
+        if capability_id
+        else ""
+    )
+    capability_boundary = (
+        "provides:\n  capabilities:\n"
+        f"    - id: {capability_id}\n"
+        "      role: primary\n"
+        "      summary: Select relevant repository context.\n"
+        if capability_id
+        else ""
+    )
     (tmp_path / "specpm.yaml").write_text(
         "kind: SpecPackage\nmetadata:\n  id: demo.package\npreview_only: true\n"
+        + capability_manifest
     )
-    (tmp_path / "specs/core.spec.yaml").write_text("kind: BoundarySpec\n")
+    (tmp_path / "specs/core.spec.yaml").write_text("kind: BoundarySpec\n" + capability_boundary)
     (tmp_path / "harvest.json").write_text("{}")
     if catalog_override is not None and "routing" in catalog_override:
         (tmp_path / "README.md").write_bytes(
@@ -1008,6 +1023,176 @@ def test_codex_repairs_experimental_intent_namespace_violation(
             "semanticWordCountMinimum": 2,
         },
     }
+
+
+def test_codex_repairs_capability_namespace_violation(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    input_pack = pack(tmp_path, capability_id="other.context")
+    malformed = transport_proposal(input_pack)
+    repaired = transport_proposal(input_pack)
+    repaired["capabilityNamespaceRepairs"] = [
+        {
+            "prohibitedCapabilityId": "other.context",
+            "replacementCapabilityId": "demo.package.context_selection",
+        }
+    ]
+    outputs = iter((json.dumps(malformed), json.dumps(repaired)))
+    prompts: list[str] = []
+
+    def fake_run(args: list[str], **kwargs: object) -> object:
+        prompts.append(str(kwargs["input"]))
+        Path(args[args.index("--output-last-message") + 1]).write_text(next(outputs))
+        return type("Completed", (), {"returncode": 0})()
+
+    monkeypatch.setattr("spec_harvester.semantic_author_pass.subprocess.run", fake_run)
+    completion = CodexSparkSemanticAuthorProvider().complete(
+        provider_request(input_pack),
+        SemanticAuthorPassOptions(json_repair_max_attempts=1),
+    )
+
+    assert completion.receipt["jsonRepairNeeded"] is True
+    assert (
+        completion.payload["capabilityNamespaceRepairs"] == repaired["capabilityNamespaceRepairs"]
+    )
+    repair_messages = json.loads(prompts[1])
+    assert [message["role"] for message in repair_messages] == [
+        "system",
+        "user",
+        "assistant",
+        "user",
+    ]
+    assert json.loads(repair_messages[1]["content"])["evidence"] == input_pack["evidence"]
+    repair = json.loads(repair_messages[3]["content"])
+    assert repair["semanticViolation"] == {
+        "code": "capability_namespace_violation",
+        "prohibitedValues": ["other.context"],
+        "replacementConstraints": {
+            "candidateNamespace": "demo.package",
+            "replacementIdPattern": "^demo\\.package\\.[a-z][a-z0-9_]{0,79}$",
+            "requiredPrefix": "demo.package.",
+        },
+    }
+
+
+def test_codex_stops_after_repeated_capability_namespace_violation(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    input_pack = pack(tmp_path, capability_id="other.context")
+    malformed = transport_proposal(input_pack)
+    outputs = iter((json.dumps(malformed), json.dumps(malformed)))
+    prompts: list[str] = []
+
+    def fake_run(args: list[str], **kwargs: object) -> object:
+        prompts.append(str(kwargs["input"]))
+        Path(args[args.index("--output-last-message") + 1]).write_text(next(outputs))
+        return type("Completed", (), {"returncode": 0})()
+
+    monkeypatch.setattr("spec_harvester.semantic_author_pass.subprocess.run", fake_run)
+    with pytest.raises(SemanticAuthorPassError, match="provider JSON repair exhausted"):
+        CodexSparkSemanticAuthorProvider().complete(
+            provider_request(input_pack),
+            SemanticAuthorPassOptions(json_repair_max_attempts=1),
+        )
+
+    assert len(prompts) == 2
+    repair = json.loads(json.loads(prompts[1])[3]["content"])
+    assert repair["attempt"] == 1
+    assert repair["semanticViolation"]["code"] == "capability_namespace_violation"
+
+
+def test_codex_repairs_unexpected_capability_namespace_repair(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    input_pack = pack(tmp_path)
+    malformed = transport_proposal(input_pack)
+    malformed["capabilityNamespaceRepairs"] = [
+        {
+            "prohibitedCapabilityId": "other.context",
+            "replacementCapabilityId": "demo.package.context_selection",
+        }
+    ]
+    outputs = iter((json.dumps(malformed), json.dumps(transport_proposal(input_pack))))
+    prompts: list[str] = []
+
+    def fake_run(args: list[str], **kwargs: object) -> object:
+        prompts.append(str(kwargs["input"]))
+        Path(args[args.index("--output-last-message") + 1]).write_text(next(outputs))
+        return type("Completed", (), {"returncode": 0})()
+
+    monkeypatch.setattr("spec_harvester.semantic_author_pass.subprocess.run", fake_run)
+    completion = CodexSparkSemanticAuthorProvider().complete(
+        provider_request(input_pack),
+        SemanticAuthorPassOptions(json_repair_max_attempts=1),
+    )
+
+    assert completion.receipt["jsonRepairNeeded"] is True
+    repair = json.loads(json.loads(prompts[1])[3]["content"])
+    assert repair["semanticViolation"] == {
+        "code": "capability_namespace_violation",
+        "prohibitedValues": [],
+        "replacementConstraints": {
+            "candidateNamespace": "demo.package",
+            "replacementIdPattern": "^demo\\.package\\.[a-z][a-z0-9_]{0,79}$",
+            "requiredPrefix": "demo.package.",
+        },
+    }
+
+
+def test_lm_studio_repairs_capability_namespace_violation(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    input_pack = pack(tmp_path, capability_id="other.context")
+    malformed = transport_proposal(input_pack)
+    repaired = transport_proposal(input_pack)
+    repaired["capabilityNamespaceRepairs"] = [
+        {
+            "prohibitedCapabilityId": "other.context",
+            "replacementCapabilityId": "demo.package.context_selection",
+        }
+    ]
+    contents = iter((json.dumps(malformed), json.dumps(repaired)))
+    requests: list[object] = []
+
+    class Response:
+        def __enter__(self) -> Response:
+            return self
+
+        def __exit__(self, *_: object) -> None:
+            pass
+
+        def read(self, size: int = -1) -> bytes:
+            body = json.dumps(
+                {
+                    "model": "local",
+                    "choices": [{"message": {"content": next(contents)}}],
+                }
+            ).encode()
+            return body if size < 0 else body[:size]
+
+    def fake_urlopen(request: object, **_kwargs: object) -> Response:
+        requests.append(request)
+        return Response()
+
+    monkeypatch.setattr("urllib.request.urlopen", fake_urlopen)
+    completion = LMStudioSemanticAuthorProvider(
+        base_url="http://127.0.0.1:1234", model="local"
+    ).complete(
+        provider_request(input_pack),
+        SemanticAuthorPassOptions(json_repair_max_attempts=1),
+    )
+
+    assert completion.receipt["jsonRepairNeeded"] is True
+    repair_body = json.loads(requests[1].data.decode())
+    assert [message["role"] for message in repair_body["messages"]] == [
+        "system",
+        "user",
+        "assistant",
+        "user",
+    ]
+    repair = json.loads(repair_body["messages"][3]["content"])
+    assert repair["semanticViolation"]["code"] == "capability_namespace_violation"
+    assert repair["semanticViolation"]["prohibitedValues"] == ["other.context"]
 
 
 def test_codex_repairs_frozen_semantic_focus_failure(

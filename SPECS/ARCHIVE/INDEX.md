@@ -268,6 +268,7 @@
 | P55-T10E | [P55-T10E_Repository_and_Package_Semantic_Product_Profile/](P55-T10E_Repository_and_Package_Semantic_Product_Profile/) | 2026-08-01 | PASS |
 | P55-T10F | [P55-T10F_Relevant_Intent_Routing_and_Generic_Contradiction_Gate/](P55-T10F_Relevant_Intent_Routing_and_Generic_Contradiction_Gate/) | 2026-08-01 | PASS |
 | P55-T10G | [P55-T10G_Ten-Repository_Semantic_Root-Cause_Calibration/](P55-T10G_Ten-Repository_Semantic_Root-Cause_Calibration/) | 2026-08-01 | PARTIAL |
+| P55-T10G5 | [P55-T10G5_Capability_Namespace_Repair/](P55-T10G5_Capability_Namespace_Repair/) | 2026-08-02 | PASS |
 
 ## Historical Artifacts
 
@@ -397,6 +398,7 @@
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p11_t6_lm_studio_json_schema_compatibility.md` |
 | [_Historical/](_Historical/) | Non-task artifacts, including `REVIEW_p11_t5_specnode_provider_smoke_coverage.md`, `REVIEW_p11_t4_patch_proposal_output_schema.md`, `REVIEW_p11_t3_provider_adapter_boundary.md`, `REVIEW_p11_t2_refine_preview_planning_contract.md`, `REVIEW_p11_t1_specnode_integration_contract.md`, `REVIEW_p12_t6_popular_smoke_scenario.md`, `REVIEW_p12_t5_evidence_support_target_contract.md`, `REVIEW_p12_t4_public_interface_evidence_contract.md`, `REVIEW_p12_t3_domain_intent_inference.md`, `REVIEW_p12_t2_go_public_interface_evidence.md`, `REVIEW_p12_t1_strict_license_filename_compatibility.md`, `REVIEW_p10_t6_multi_language_smoke_matrix.md`, `REVIEW_p10_t5_language_neutral_semantic_extraction.md`, `REVIEW_p10_t4_projectprofile_analyzer_orchestration.md`, `REVIEW_p10_t3_trusted_classifier_evaluation.md`, `REVIEW_p10_t2_manifest_first_ecosystem_detectors.md`, `REVIEW_p10_t1_project_profile_schema.md`, `REVIEW_p9_t2_semantic_evidence_index.md`, `REVIEW_p9_t1_semantic_intent_drafting.md`, `REVIEW_p8_t3_update_impact_classification.md`, `REVIEW_p8_t2_accepted_candidate_diff_report.md`, `REVIEW_p8_t1_accepted_update_lifecycle_docs.md`, `REVIEW_p5_t1_duplicate_intent_capability_claim_report.md`, `REVIEW_p5_t2_namespace_upstream_review_report.md` |
 | [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p53_t8_codex_spark_wave_2.md` |
+| [_Historical/](_Historical/) | Non-task artifact: `REVIEW_p55_t10g5_capability_namespace_repair.md` |
 
 ## Archive Log
 
@@ -1005,3 +1007,5 @@
 | 2026-08-01 | P55-T10G3 | Archived REVIEW_p55_t10g3_repeat_ten_repository_semantic_calibration report |
 | 2026-08-02 | P55-T10G4 | Archived Outcome Anchor Source-Authority Ranking (PASS) |
 | 2026-08-02 | P55-T10G4 | Archived REVIEW_p55_t10g4_outcome_anchor_source_authority_ranking report |
+| 2026-08-02 | P55-T10G5 | Archived Capability Namespace Repair (PASS) |
+| 2026-08-02 | P55-T10G5 | Archived REVIEW_p55_t10g5_capability_namespace_repair report |
