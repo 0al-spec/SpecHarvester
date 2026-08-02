@@ -52,6 +52,11 @@ topology, and every declared document must match an
 the expected authority from that pinned profile and source role, so recomputing
 only an outer digest cannot upgrade weak text to strong authority.
 
+A descriptive manifest purpose is strong only when the input pack also carries
+the corresponding `pinned_package_manifest` bytes. The profile's normalized
+description must occur in that bound manifest evidence before the provider can
+be called.
+
 This work is proposal-only. It does not run a provider, change provider or
 repair budgets, materialize a proposal, or mutate SpecPM, registry, or
 publication truth.

@@ -23,8 +23,10 @@ were fixed and covered by regression tests before this report was recorded.
   as documentation after digest rebinding. Profile validation now requires the
   fixed repository-root/package-local topology, and pre-provider pack integrity
   requires each profile document to match an
-  `allowlisted_source_documentation` evidence binding. A fully rehashed
-  candidate-YAML escalation stops before the fake provider receives a request.
+  `allowlisted_source_documentation` evidence binding. A strong manifest
+  description also requires the matching `pinned_package_manifest` bytes. Fully
+  rehashed candidate-YAML and manifest-description escalations stop before the
+  fake provider receives a request.
 
 ### Secondary Issues
 
@@ -41,9 +43,9 @@ completed by the following ARCHIVE-REVIEW step.
 
 ### Tests
 
-- Focused semantic and docs suites: `118 passed`.
-- Full suite: `1427 passed, 1 skipped`.
-- Coverage: `90.00%`, threshold reached.
+- Focused semantic, campaign, and schema suites: `89 passed`.
+- Full suite: `1428 passed, 1 skipped`.
+- Coverage: `90.01%`, threshold reached.
 - Ruff check/format and `git diff --check`: PASS.
 - Swift manifest and `SpecHarvesterDocs` target: PASS; existing unhandled DocC
   resource warning remains non-fatal.

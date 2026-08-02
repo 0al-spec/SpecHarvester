@@ -16,16 +16,17 @@ PASS
   but are not calibration eligible.
 - Candidate, source bundle, evidence-content, request, and anchor integrity
   checks before provider invocation, including fixed document topology and
-  allowlisted-document evidence bindings.
+  allowlisted-document evidence bindings, plus pinned manifest bytes for a
+  strong manifest description.
 - Proposal-only authority and existing provider/repair budget preservation.
 
 ## Quality Gates
 
 | Gate | Result |
 | --- | --- |
-| Focused authority, semantic, and docs suites | PASS: 118 passed |
-| `PYTHONPATH=src python -m pytest` | PASS: 1427 passed, 1 skipped |
-| `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90` | PASS: 90.00% exact coverage |
+| Focused authority, semantic, campaign, and schema suites | PASS: 89 passed |
+| `PYTHONPATH=src python -m pytest` | PASS: 1428 passed, 1 skipped |
+| `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90` | PASS: 90.01% exact coverage |
 | `ruff check src tests` | PASS |
 | `ruff format --check src tests` | PASS: 201 files already formatted |
 | `swift package dump-package` | PASS |
