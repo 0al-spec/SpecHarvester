@@ -216,6 +216,39 @@ def validate_semantic_author_input_pack_integrity(pack: dict[str, Any]) -> None:
         raise ValueError("semantic author input pack request is malformed")
     if request.get("evidence") != bindings:
         raise ValueError("semantic author input pack request evidence is stale")
+    _validate_profile_document_authority(pack, evidence)
+
+
+def _validate_profile_document_authority(
+    pack: dict[str, Any], evidence: list[dict[str, Any]]
+) -> None:
+    profile_records = [
+        item for item in evidence if item.get("class") == "deterministic_semantic_product_profile"
+    ]
+    if not profile_records:
+        return
+    if len(profile_records) != 1:
+        raise ValueError("semantic author input pack product profile is malformed")
+    try:
+        profile = json.loads(profile_records[0]["content"])
+    except (KeyError, TypeError, json.JSONDecodeError) as exc:
+        raise ValueError("semantic author input pack product profile is malformed") from exc
+    validate_semantic_product_profile(profile)
+    if profile.get("package", {}).get("candidateId") != pack.get("candidateId"):
+        raise ValueError("semantic author input pack product profile is stale")
+    documentation = {
+        (item.get("sourcePath"), item.get("sha256"), item.get("byteCount"))
+        for item in evidence
+        if item.get("class") == "allowlisted_source_documentation"
+    }
+    for document in profile["documents"]:
+        binding = (
+            document.get("evidencePath"),
+            document.get("sha256"),
+            document.get("byteCount"),
+        )
+        if binding not in documentation:
+            raise ValueError("semantic author input pack product profile document is stale")
 
 
 def _safe_path(path: str) -> str:

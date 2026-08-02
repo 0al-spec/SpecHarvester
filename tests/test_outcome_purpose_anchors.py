@@ -83,9 +83,14 @@ def test_builds_deterministic_source_bound_outcome_anchors() -> None:
             .encode()
         ).hexdigest()
     )
-    assert {"reduce", "token", "usage"} <= set(first["anchors"][0]["outcomeTerms"])
-    assert "rtk" not in first["anchors"][0]["outcomeTerms"]
-    assert first["anchors"][1]["sourcePath"] == "README.md"
+    profile_anchor = next(
+        anchor
+        for anchor in first["anchors"]
+        if anchor["sourcePath"] == "semantic-product-profile.json"
+    )
+    assert {"reduce", "token", "usage"} <= set(profile_anchor["outcomeTerms"])
+    assert "rtk" not in profile_anchor["outcomeTerms"]
+    assert any(anchor["sourcePath"] == "README.md" for anchor in first["anchors"])
     assert all(anchor["untrusted"] for anchor in first["anchors"])
 
 
@@ -254,6 +259,42 @@ def test_source_authority_ranks_strong_documentation_over_weak_preview() -> None
         assess_purpose_specificity(record, "Generated preview context for a member package")
         == "weak_source_only"
     )
+
+
+def test_strong_package_documentation_outranks_saturated_weak_root_preview() -> None:
+    profile, evidence, source_bundle = fixture()
+    profile["package"]["description"] = ""
+    profile["documents"].append(
+        {
+            "role": "package_local",
+            "evidencePath": "PACKAGE_README.md",
+            "sourcePath": "packages/rtk/README.md",
+            "sha256": "e" * 64,
+        }
+    )
+    evidence[1]["content"] = " ".join(
+        f"Generated preview context {index} describes a member package boundary."
+        for index in range(12)
+    )
+    evidence.append(
+        {
+            "sourcePath": "PACKAGE_README.md",
+            "sha256": "e" * 64,
+            "content": "RTK reduces token usage while preserving useful command output for agents.",
+        }
+    )
+    evidence[0]["content"] = json.dumps(profile, sort_keys=True, separators=(",", ":"))
+
+    record = build_outcome_purpose_anchors(
+        profile,
+        evidence,
+        candidate_id="rtk_ai_rtk.package",
+        source_bundle_sha256=source_bundle,
+    )
+
+    assert record["anchors"][0]["sourcePath"] == "PACKAGE_README.md"
+    assert record["anchors"][0]["sourceAuthority"] == "package_local_documentation"
+    assert record["sourceAuthorityState"] == "strong_anchor_available"
 
 
 @pytest.mark.parametrize(

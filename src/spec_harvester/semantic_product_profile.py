@@ -179,6 +179,13 @@ def validate_semantic_product_profile(profile: dict[str, Any]) -> None:
             or (source_path, item["sha256"]) not in bindings
         ):
             raise ValueError("semantic product profile document digest is invalid")
+    expected_roles = ["repository_root"] + (["package_local"] if len(documents) == 2 else [])
+    if (
+        len(documents) not in {1, 2}
+        or [item.get("role") for item in documents] != expected_roles
+        or len({item.get("evidencePath") for item in documents}) != len(documents)
+    ):
+        raise ValueError("semantic product profile document topology is invalid")
     manifest_sha256 = package.get("manifestSha256")
     if manifest_sha256 is not None and (
         not package.get("manifestPath")

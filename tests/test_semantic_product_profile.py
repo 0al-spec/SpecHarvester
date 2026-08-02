@@ -226,6 +226,10 @@ def test_python_39_toml_backport_is_declared() -> None:
             "document digest is invalid",
         ),
         (
+            lambda value: value["documents"][0].update({"role": "package_local"}),
+            "document topology is invalid",
+        ),
+        (
             lambda value: value["package"].update({"manifestSha256": "b" * 64}),
             "manifest binding is invalid",
         ),

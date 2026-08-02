@@ -10,18 +10,21 @@ PASS
 - Field-level provenance for descriptive manifest metadata.
 - Strong-documentation preference over generated preview and repository
   mechanics.
+- Bounded selection that retains strong package-local evidence ahead of a
+  saturated weak root preview.
 - Weak-only, no-source, and legacy assessments that remain reviewer-visible
   but are not calibration eligible.
 - Candidate, source bundle, evidence-content, request, and anchor integrity
-  checks before provider invocation.
+  checks before provider invocation, including fixed document topology and
+  allowlisted-document evidence bindings.
 - Proposal-only authority and existing provider/repair budget preservation.
 
 ## Quality Gates
 
 | Gate | Result |
 | --- | --- |
-| Focused authority, semantic, and docs suites | PASS: 317 passed |
-| `PYTHONPATH=src python -m pytest` | PASS: 1423 passed, 1 skipped |
+| Focused authority, semantic, and docs suites | PASS: 118 passed |
+| `PYTHONPATH=src python -m pytest` | PASS: 1427 passed, 1 skipped |
 | `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90` | PASS: 90.00% exact coverage |
 | `ruff check src tests` | PASS |
 | `ruff format --check src tests` | PASS: 201 files already formatted |

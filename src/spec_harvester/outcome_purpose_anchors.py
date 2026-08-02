@@ -164,6 +164,14 @@ def build_outcome_purpose_anchors(
             if len(candidates) >= 24:
                 break
 
+    candidates.sort(
+        key=lambda candidate: (
+            -SOURCE_AUTHORITY_RANKS[_phrase_source_authority(candidate[2], candidate[3])],
+            candidate[0],
+            candidate[1],
+            candidate[2].casefold(),
+        )
+    )
     anchors: list[dict[str, Any]] = []
     seen_phrases: set[str] = set()
     for source_path, sha256, phrase, source_authority in candidates:

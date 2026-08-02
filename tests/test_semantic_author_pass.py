@@ -11,7 +11,10 @@ from spec_harvester.experimental_intent_policy import (
     load_experimental_intent_decision_policy,
 )
 from spec_harvester.relevant_intent_routing import build_relevant_intent_catalog
-from spec_harvester.semantic_author_input_pack import build_semantic_author_input_pack
+from spec_harvester.semantic_author_input_pack import (
+    SemanticAuthorInputPackOptions,
+    build_semantic_author_input_pack,
+)
 from spec_harvester.semantic_author_pass import (
     CodexSparkSemanticAuthorProvider,
     LMStudioSemanticAuthorProvider,
@@ -125,7 +128,16 @@ def pack(
         (tmp_path / "semantic-product-profile.json").write_text(
             json.dumps(routed_profile(), sort_keys=True)
         )
-    return build_semantic_author_input_pack(tmp_path, catalog_override or catalog(intent_id))
+    options = (
+        SemanticAuthorInputPackOptions(document_paths=("README.md",))
+        if catalog_override is not None and "routing" in catalog_override
+        else None
+    )
+    return build_semantic_author_input_pack(
+        tmp_path,
+        catalog_override or catalog(intent_id),
+        options=options,
+    )
 
 
 def proposal(input_pack: dict) -> dict:
@@ -273,6 +285,95 @@ def test_tampered_input_pack_evidence_fails_before_provider_invocation(tmp_path:
         run_semantic_author_pass(input_pack, provider)
 
     assert provider.requests == []
+
+
+def test_rehashed_profile_cannot_escalate_candidate_yaml_to_documentation(
+    tmp_path: Path,
+) -> None:
+    input_pack = pack(tmp_path, catalog_override=routed_catalog())
+    profile_evidence = next(
+        item
+        for item in input_pack["evidence"]
+        if item["class"] == "deterministic_semantic_product_profile"
+    )
+    candidate_evidence = next(
+        item
+        for item in input_pack["evidence"]
+        if item["class"] == "validated_candidate_yaml" and item["sourcePath"] == "specpm.yaml"
+    )
+    profile = json.loads(profile_evidence["content"])
+    profile["documents"][0].update(
+        {
+            "evidencePath": "specpm.yaml",
+            "sourcePath": "specpm.yaml",
+            "sha256": candidate_evidence["sha256"],
+            "byteCount": candidate_evidence["byteCount"],
+        }
+    )
+    profile["sourceBindings"] = [
+        {"sourcePath": "harvest.json", "sha256": hashlib.sha256(b"{}").hexdigest()},
+        {"sourcePath": "specpm.yaml", "sha256": candidate_evidence["sha256"]},
+        {
+            "sourcePath": "package.json",
+            "sha256": profile["package"]["manifestSha256"],
+        },
+    ]
+    profile["profileSha256"] = hashlib.sha256(
+        json.dumps(
+            {key: value for key, value in profile.items() if key != "profileSha256"},
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode()
+    ).hexdigest()
+    profile_evidence["content"] = json.dumps(profile, sort_keys=True, separators=(",", ":"))
+    profile_evidence["sha256"] = hashlib.sha256(profile_evidence["content"].encode()).hexdigest()
+    profile_evidence["byteCount"] = len(profile_evidence["content"].encode())
+    _refresh_input_pack_bindings(input_pack)
+    input_pack.pop("outcomePurposeAnchors")
+    provider = FakeProvider(proposal(input_pack))
+
+    with pytest.raises(ValueError, match="product profile document is stale"):
+        run_semantic_author_pass(input_pack, provider)
+
+    assert provider.requests == []
+
+
+def test_duplicate_embedded_profile_fails_before_provider_invocation(tmp_path: Path) -> None:
+    input_pack = pack(tmp_path, catalog_override=routed_catalog())
+    profile_evidence = next(
+        item
+        for item in input_pack["evidence"]
+        if item["class"] == "deterministic_semantic_product_profile"
+    )
+    duplicate = copy.deepcopy(profile_evidence)
+    duplicate["id"] = "duplicate_semantic_product_profile"
+    input_pack["evidence"].append(duplicate)
+    input_pack.pop("outcomePurposeAnchors")
+    _refresh_input_pack_bindings(input_pack)
+    provider = FakeProvider(proposal(input_pack))
+
+    with pytest.raises(ValueError, match="product profile is malformed"):
+        run_semantic_author_pass(input_pack, provider)
+
+    assert provider.requests == []
+
+
+def _refresh_input_pack_bindings(input_pack: dict) -> None:
+    bindings = [
+        {key: item[key] for key in ("id", "class", "sourcePath", "sha256", "byteCount")}
+        for item in input_pack["evidence"]
+    ]
+    source_bundle_sha256 = hashlib.sha256(
+        json.dumps(bindings, sort_keys=True, separators=(",", ":")).encode()
+    ).hexdigest()
+    input_pack["sourceBundleSha256"] = source_bundle_sha256
+    for item in input_pack["evidence"]:
+        item["sourceBundleSha256"] = source_bundle_sha256
+    input_pack["request"]["sourceBundleSha256"] = source_bundle_sha256
+    input_pack["request"]["evidence"] = [
+        {key: item[key] for key in ("id", "class", "sourcePath", "sha256", "sourceBundleSha256")}
+        for item in input_pack["evidence"]
+    ]
 
 
 def test_generic_reuse_and_experimental_novelty_are_mutually_exclusive(

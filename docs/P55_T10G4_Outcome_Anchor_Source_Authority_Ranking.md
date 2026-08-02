@@ -8,7 +8,9 @@ evidence for a semantic intent claim.
 ## Ranked Evidence
 
 Each outcome-purpose anchor carries an explicit `sourceAuthority` under the
-versioned `p55-t10g4-outcome-anchor-source-authority/v1` policy.
+versioned `p55-t10g4-outcome-anchor-source-authority/v1` policy. Selection is
+ordered by that authority before the bounded anchor limit is applied, so many
+weak root-document phrases cannot displace a later strong package-local source.
 
 Strong authority can support a source-bound purpose claim:
 
@@ -43,10 +45,12 @@ because their generated wording sounds specific.
 ## Integrity and Authority Boundaries
 
 Before a provider is called, the input pack is verified against the pinned
-candidate, source bundle, evidence content, and request bindings. Anchor
-validation reconstructs the expected authority from the pinned semantic
-product profile and source role, so recomputing only an outer digest cannot
-upgrade weak text to strong authority.
+candidate, source bundle, evidence content, and request bindings. An embedded
+product profile must have the fixed repository-root/package-local document
+topology, and every declared document must match an
+`allowlisted_source_documentation` evidence item. Anchor validation reconstructs
+the expected authority from that pinned profile and source role, so recomputing
+only an outer digest cannot upgrade weak text to strong authority.
 
 This work is proposal-only. It does not run a provider, change provider or
 repair budgets, materialize a proposal, or mutate SpecPM, registry, or
