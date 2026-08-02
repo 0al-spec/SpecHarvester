@@ -16,7 +16,7 @@
   "$defs": {
     "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
     "candidateId": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"},
-    "safePath": {"type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9][A-Za-z0-9._/-]*$"},
+    "safePath": {"type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9][A-Za-z0-9@._/-]*$"},
     "providerId": {"type": "string", "pattern": "^[a-z][a-z0-9._-]*$", "maxLength": 128},
     "intentId": {"type": "string", "pattern": "^intent\\.[a-z0-9][a-z0-9._-]*$", "maxLength": 200},
     "experimentalIntentId": {"type": "string", "pattern": "^intent\\.experimental\\.[a-z0-9][a-z0-9._-]*$", "maxLength": 200},
