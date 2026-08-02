@@ -291,6 +291,17 @@ def test_tampered_input_pack_evidence_fails_before_provider_invocation(tmp_path:
     assert provider.requests == []
 
 
+def test_profile_pack_requires_outcome_anchors_before_provider_invocation(tmp_path: Path) -> None:
+    input_pack = pack(tmp_path, catalog_override=routed_catalog())
+    input_pack.pop("outcomePurposeAnchors")
+    provider = FakeProvider(proposal(input_pack))
+
+    with pytest.raises(ValueError, match="outcome anchors are required"):
+        run_semantic_author_pass(input_pack, provider)
+
+    assert provider.requests == []
+
+
 def test_rehashed_profile_cannot_escalate_candidate_yaml_to_documentation(
     tmp_path: Path,
 ) -> None:

@@ -26,6 +26,7 @@ from spec_harvester.relevant_intent_routing import (
     has_specific_purpose_generic_only_contradiction,
     validate_relevant_intent_routing,
 )
+from spec_harvester.semantic_author_input_pack import validate_semantic_author_input_pack_integrity
 
 QUALITY_REPORT_API_VERSION = "spec-harvester.semantic-proposal-quality/v0"
 QUALITY_REPORT_KIND = "SpecHarvesterSemanticProposalQualityReport"
@@ -118,6 +119,10 @@ def evaluate_semantic_proposal_quality(
         return _report(input_pack, semantic_pass, policy, diagnostics, _empty_metrics(False))
 
     schema_valid = _validate_schema(proposal, diagnostics)
+    try:
+        validate_semantic_author_input_pack_integrity(input_pack)
+    except ValueError as exc:
+        diagnostics.append(_diagnostic("input_pack_integrity_invalid", "error", detail=str(exc)))
     _validate_envelope_bindings(input_pack, semantic_pass, proposal, decision_policy, diagnostics)
     evidence_by_binding = _validate_evidence(input_pack, proposal, diagnostics)
     _validate_candidate_yaml(input_pack, diagnostics)

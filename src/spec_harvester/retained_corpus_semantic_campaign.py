@@ -883,12 +883,18 @@ def read_pinned_manifest_metadata(
         harvest.get("projectProfile") if isinstance(harvest.get("projectProfile"), dict) else {}
     )
     manifests = project.get("manifests") if isinstance(project.get("manifests"), list) else []
+    source_record = harvest.get("source") if isinstance(harvest.get("source"), dict) else {}
+    target = source_record.get("target") if isinstance(source_record.get("target"), dict) else {}
+    target_path = PurePosixPath(str(target.get("path") or "."))
+    if target_path.is_absolute() or ".." in target_path.parts:
+        raise ValueError("Package target path is unsafe")
+    paths = [
+        PurePosixPath(item["path"])
+        for item in manifests
+        if isinstance(item, dict) and isinstance(item.get("path"), str)
+    ]
     path = next(
-        (
-            str(item["path"])
-            for item in manifests
-            if isinstance(item, dict) and isinstance(item.get("path"), str)
-        ),
+        (candidate.as_posix() for candidate in paths if candidate.parent == target_path),
         "",
     )
     if not path:

@@ -48,14 +48,18 @@ Before a provider is called, the input pack is verified against the pinned
 candidate, source bundle, evidence content, and request bindings. An embedded
 product profile must have the fixed repository-root/package-local document
 topology, and every declared document must match an
-`allowlisted_source_documentation` evidence item. Anchor validation reconstructs
-the expected authority from that pinned profile and source role, so recomputing
-only an outer digest cannot upgrade weak text to strong authority.
+`allowlisted_source_documentation` evidence item. Profile-bearing packs must
+also carry their anchor record, and independent quality evaluation applies the
+same input-pack integrity validation. Anchor validation reconstructs the
+expected authority from that pinned profile and source role, so recomputing only
+an outer digest cannot upgrade weak text to strong authority.
 
 A descriptive manifest purpose is strong only when the input pack also carries
 the corresponding `pinned_package_manifest` bytes. The profile's normalized
-description must occur in that bound manifest evidence before the provider can
-be called.
+description must equal the parsed `description` field in that bound manifest
+before the provider can be called. In a monorepo, the retained manifest is
+selected from the candidate's target directory rather than a root or sibling
+package.
 
 This work is proposal-only. It does not run a provider, change provider or
 repair budgets, materialize a proposal, or mutate SpecPM, registry, or

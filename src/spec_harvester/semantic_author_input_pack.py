@@ -6,13 +6,19 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-import tomllib
+try:
+    import tomllib
+except ModuleNotFoundError:  # pragma: no cover - exercised on Python < 3.11
+    import tomli as tomllib
 import yaml
 from jsonschema import Draft202012Validator
 
 from spec_harvester.ai_semantic_author_schema import load_ai_semantic_author_schema
 from spec_harvester.interface_index import validate_public_interface_index
-from spec_harvester.outcome_purpose_anchors import build_outcome_purpose_anchors
+from spec_harvester.outcome_purpose_anchors import (
+    build_outcome_purpose_anchors,
+    validate_outcome_purpose_anchors,
+)
 from spec_harvester.relevant_intent_routing import validate_relevant_intent_catalog
 from spec_harvester.semantic_product_profile import (
     PROFILE_FILENAME,
@@ -105,8 +111,18 @@ def build_semantic_author_input_pack(
             )
         )
     )
+    profile_document_paths = {
+        document["evidencePath"] for document in (profile or {}).get("documents", [])
+    }
     for path in document_paths:
-        _append_file(evidence, workspace, path, "allowlisted_source_documentation", options)
+        _append_file(
+            evidence,
+            workspace,
+            path,
+            "allowlisted_source_documentation",
+            options,
+            allow_oversized_document=path in profile_document_paths,
+        )
 
     observed_intents, catalog_binding = _validate_catalog(observed_intent_catalog, options)
     intent_routing = observed_intent_catalog.get("routing")
@@ -233,17 +249,28 @@ def validate_semantic_author_input_pack_integrity(pack: dict[str, Any]) -> None:
         raise ValueError("semantic author input pack request is malformed")
     if request.get("evidence") != bindings:
         raise ValueError("semantic author input pack request evidence is stale")
-    _validate_profile_document_authority(pack, evidence)
+    profile = _validate_profile_document_authority(pack, evidence)
+    if profile is None:
+        return
+    anchors = pack.get("outcomePurposeAnchors")
+    if not isinstance(anchors, dict):
+        raise ValueError("semantic author input pack outcome anchors are required")
+    validate_outcome_purpose_anchors(anchors, profile=profile, evidence=evidence)
+    if (
+        anchors.get("candidateId") != pack.get("candidateId")
+        or anchors.get("sourceBundleSha256") != source_bundle_sha256
+    ):
+        raise ValueError("semantic author input pack outcome anchor binding is stale")
 
 
 def _validate_profile_document_authority(
     pack: dict[str, Any], evidence: list[dict[str, Any]]
-) -> None:
+) -> dict[str, Any] | None:
     profile_records = [
         item for item in evidence if item.get("class") == "deterministic_semantic_product_profile"
     ]
     if not profile_records:
-        return
+        return None
     if len(profile_records) != 1:
         raise ValueError("semantic author input pack product profile is malformed")
     try:
@@ -281,6 +308,7 @@ def _validate_profile_document_authority(
         description = profile["package"]["description"].strip()
         if not isinstance(manifest, dict) or _manifest_description(manifest) != description:
             raise ValueError("semantic author input pack product profile manifest is stale")
+    return profile
 
 
 def _manifest_description(manifest: dict[str, Any]) -> str:
@@ -342,6 +370,8 @@ def _append_file(
     relative: str,
     evidence_class: str,
     options: SemanticAuthorInputPackOptions,
+    *,
+    allow_oversized_document: bool = False,
 ) -> None:
     path = _workspace_file(workspace, relative)
     file_size = path.stat().st_size
@@ -351,6 +381,7 @@ def _append_file(
     if (
         evidence_class == "allowlisted_source_documentation"
         and file_size > options.max_document_bytes
+        and not allow_oversized_document
     ):
         raise ValueError(f"documentation evidence exceeds byte budget: {relative}")
     raw = path.read_bytes()

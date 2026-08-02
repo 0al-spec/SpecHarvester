@@ -625,6 +625,21 @@ def test_outcome_anchor_diagnostic_rejects_stale_pack_binding(tmp_path: Path) ->
     assert "outcome_purpose_anchors_invalid" in diagnostic_codes(report)
 
 
+def test_quality_rejects_profile_pack_without_outcome_anchors(tmp_path: Path) -> None:
+    source = workspace(tmp_path)
+    write_semantic_product_profile(
+        source / "semantic-product-profile.json", routed_generic_profile()
+    )
+    pack = build_semantic_author_input_pack(source, catalog("intent.ai.context_selection"))
+    passed = semantic_pass(pack)
+    pack.pop("outcomePurposeAnchors")
+
+    report = evaluate_semantic_proposal_quality(pack, passed)
+
+    assert report["status"] == "rejected"
+    assert "input_pack_integrity_invalid" in diagnostic_codes(report)
+
+
 def test_weak_outcome_anchor_requires_review_without_calibration_eligibility(
     tmp_path: Path,
 ) -> None:

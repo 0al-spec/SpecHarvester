@@ -274,7 +274,7 @@ def test_strong_package_documentation_outranks_saturated_weak_root_preview() -> 
     )
     evidence[1]["content"] = " ".join(
         f"Generated preview context {index} describes a member package boundary."
-        for index in range(12)
+        for index in range(25)
     )
     evidence.append(
         {

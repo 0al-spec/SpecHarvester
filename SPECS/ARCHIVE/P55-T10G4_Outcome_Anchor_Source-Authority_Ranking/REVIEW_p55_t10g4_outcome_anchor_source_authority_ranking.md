@@ -10,8 +10,9 @@ included in the final branch scope.
 - [ ] Request changes
 - [ ] Block
 
-The independent read-only review found two P1 integrity/correctness gaps. Both
-were fixed and covered by regression tests before this report was recorded.
+The independent read-only review found two P1 integrity/correctness gaps and
+three P2 compatibility/authority gaps. All were fixed and covered by
+regression tests before this report was updated.
 
 ### Critical Issues
 
@@ -27,11 +28,21 @@ were fixed and covered by regression tests before this report was recorded.
   description also requires the matching `pinned_package_manifest` bytes. Fully
   rehashed candidate-YAML and manifest-description escalations stop before the
   fake provider receives a request.
+- [P1, fixed] A profile-bearing input pack could omit anchors, bypassing
+  source-authority diagnostics in the provider and autonomous quality paths.
+  Anchors are now required whenever profile evidence exists, and quality
+  evaluation reuses full input-pack integrity validation.
 
 ### Secondary Issues
 
-None. The review artifact itself was the outstanding archive item and is
-completed by the following ARCHIVE-REVIEW step.
+- [P2, fixed] Default pack construction retains profile-bound source documents
+  even when they exceed the per-document cap, while preserving the total pack
+  byte budget.
+- [P2, fixed] Candidate collection applies its 24-candidate bound per document,
+  so a saturated weak root document cannot suppress a later package-local
+  source before authority ordering.
+- [P2, fixed] Retained-corpus manifest metadata is selected only from the
+  candidate's `source.target.path`, not an unrelated root or sibling manifest.
 
 ### Architectural Notes
 
@@ -43,9 +54,9 @@ completed by the following ARCHIVE-REVIEW step.
 
 ### Tests
 
-- Focused semantic, campaign, and schema suites: `89 passed`.
-- Full suite: `1428 passed, 1 skipped`.
-- Coverage: `90.01%`, threshold reached.
+- Focused semantic, campaign, and schema suites: `117 passed`.
+- Full suite: `1432 passed, 1 skipped`.
+- Coverage: `90.02%`, threshold reached.
 - Ruff check/format and `git diff --check`: PASS.
 - Swift manifest and `SpecHarvesterDocs` target: PASS; existing unhandled DocC
   resource warning remains non-fatal.

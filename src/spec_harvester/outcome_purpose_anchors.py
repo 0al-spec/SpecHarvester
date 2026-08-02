@@ -155,13 +155,15 @@ def build_outcome_purpose_anchors(
         source_authority = _document_source_authority(
             document_roles.get((document.get("evidencePath"), document.get("sha256")))
         )
+        document_candidate_count = 0
         for match in SENTENCE_PATTERN.finditer(str(item["content"])):
             phrase = " ".join(match.group().split())
             if 20 <= len(phrase) <= 360:
                 candidates.append(
                     (str(item["sourcePath"]), str(item["sha256"]), phrase, source_authority)
                 )
-            if len(candidates) >= 24:
+                document_candidate_count += 1
+            if document_candidate_count >= 24:
                 break
 
     candidates.sort(

@@ -18,6 +18,17 @@ from spec_harvester.semantic_product_profile import (
 )
 
 
+def test_toml_parser_has_supported_python_fallback() -> None:
+    module_source = (
+        Path(__file__)
+        .parents[1]
+        .joinpath("src/spec_harvester/semantic_author_input_pack.py")
+        .read_text(encoding="utf-8")
+    )
+
+    assert "import tomli as tomllib" in module_source
+
+
 def catalog() -> dict:
     value = {
         "sourcePath": "catalog/observed-intents.json",
@@ -119,6 +130,33 @@ def test_input_pack_includes_validated_semantic_product_profile(tmp_path: Path) 
         item["class"] == "allowlisted_source_documentation" and item["sourcePath"] == "README.md"
         for item in result["evidence"]
     )
+
+
+def test_default_profile_pack_allows_required_document_above_document_cap(tmp_path: Path) -> None:
+    source = workspace(tmp_path)
+    (source / "README.md").write_text("x" * (25 * 1024), encoding="utf-8")
+    readme = (source / "README.md").read_bytes()
+    profile = build_semantic_product_profile(
+        repository_id="demo",
+        candidate_id="demo.package",
+        harvest=json.loads((source / "harvest.json").read_text()),
+        root_document={
+            "evidencePath": "README.md",
+            "sourcePath": "README.md",
+            "sha256": hashlib.sha256(readme).hexdigest(),
+            "byteCount": len(readme),
+            "harvestSha256": hashlib.sha256((source / "harvest.json").read_bytes()).hexdigest(),
+        },
+    )
+    write_semantic_product_profile(source / PROFILE_FILENAME, profile)
+
+    result = build_semantic_author_input_pack(source, catalog())
+
+    document = next(
+        item for item in result["evidence"] if item["class"] == "allowlisted_source_documentation"
+    )
+    assert document["sourcePath"] == "README.md"
+    assert document["byteCount"] == len(readme)
 
 
 def test_input_pack_retains_empty_outcome_anchor_assessment(
