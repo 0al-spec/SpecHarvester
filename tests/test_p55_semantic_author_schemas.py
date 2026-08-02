@@ -148,6 +148,17 @@ def test_schema_errors_are_reported_by_cross_record_validator() -> None:
         validate_semantic_author_fixture(payload)
 
 
+def test_schema_allows_scoped_package_evidence_paths_and_rejects_unsafe_paths() -> None:
+    request = copy.deepcopy(load(VALID)["request"])
+    schema_validator = Draft202012Validator(load(SCHEMA), format_checker=FormatChecker())
+
+    request["evidence"][0]["sourcePath"] = "packages/@n8n/agents/package.json"
+    schema_validator.validate(request)
+
+    request["evidence"][0]["sourcePath"] = "packages/../secrets/package.json"
+    assert list(schema_validator.iter_errors(request))
+
+
 def test_proposal_requires_complete_semantic_sections_and_an_intent_decision() -> None:
     payload = copy.deepcopy(load(VALID))
     schema_validator = Draft202012Validator(load(SCHEMA), format_checker=FormatChecker())
