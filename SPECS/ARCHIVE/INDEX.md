@@ -1004,3 +1004,4 @@
 | 2026-08-01 | P55-T10G3 | Archived Repeat Ten-Repository Semantic Calibration (PARTIAL) |
 | 2026-08-01 | P55-T10G3 | Archived REVIEW_p55_t10g3_repeat_ten_repository_semantic_calibration report |
 | 2026-08-02 | P55-T10G4 | Archived Outcome Anchor Source-Authority Ranking (PASS) |
+| 2026-08-02 | P55-T10G4 | Archived REVIEW_p55_t10g4_outcome_anchor_source_authority_ranking report |
