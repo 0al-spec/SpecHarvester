@@ -681,9 +681,7 @@ def _validate_transport_proposal(payload: dict[str, Any], provider_payload: dict
             if binding not in allowed_evidence:
                 raise ValueError("semantic proposal evidence is not in provider allowlist")
     candidate_id = str(request.get("candidateId", ""))
-    violations = capability_namespace_violations(
-        provider_payload.get("evidence", []), candidate_id
-    )
+    violations = capability_namespace_violations(provider_payload.get("evidence", []), candidate_id)
     if violations:
         try:
             validate_capability_namespace_repairs(

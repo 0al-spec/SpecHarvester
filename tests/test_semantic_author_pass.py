@@ -1052,9 +1052,9 @@ def test_codex_repairs_capability_namespace_violation(
     )
 
     assert completion.receipt["jsonRepairNeeded"] is True
-    assert completion.payload["capabilityNamespaceRepairs"] == repaired[
-        "capabilityNamespaceRepairs"
-    ]
+    assert (
+        completion.payload["capabilityNamespaceRepairs"] == repaired["capabilityNamespaceRepairs"]
+    )
     repair_messages = json.loads(prompts[1])
     assert [message["role"] for message in repair_messages] == [
         "system",
