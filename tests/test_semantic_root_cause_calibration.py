@@ -23,6 +23,7 @@ from spec_harvester.semantic_root_cause_calibration import (
 ROOT = Path(__file__).resolve().parents[1]
 EVIDENCE = ROOT / "SPECS/EVIDENCE/P55-T10G"
 EVIDENCE_G3 = ROOT / "SPECS/EVIDENCE/P55-T10G3"
+EVIDENCE_G6 = ROOT / "SPECS/EVIDENCE/P55-T10G6"
 
 
 def test_p55_t10g3_durable_rerun_evidence_preserves_frozen_contract() -> None:
@@ -67,6 +68,36 @@ def test_p55_t10g3_durable_rerun_evidence_preserves_frozen_contract() -> None:
         )
     assert all(value is False for value in report["privacy"].values())
     assert all(value is False for value in report["executionBoundary"].values())
+
+
+def test_p55_t10g6_durable_rerun_preserves_the_partial_exit_decision() -> None:
+    report_path = EVIDENCE_G6 / "P55-T10G6_Semantic_Root-Cause_Calibration.json"
+    archive_path = EVIDENCE_G6 / "P55-T10G6_Semantic_Proposal_Records.tar.gz"
+    assessment_path = EVIDENCE_G6 / "P55-T10G6_Purpose_Assessment.json"
+    report = json.loads(report_path.read_text())
+    assessment = json.loads(assessment_path.read_text())
+
+    assert report["planSha256"] == (
+        "376001a3ea1053afb5908bf1b7cb8125b95da4eebf2d76a6422e733f06844a11"
+    )
+    assert report["reportSha256"] == calibration._digest_without(report, "reportSha256")
+    assert assessment["assessmentSha256"] == calibration._digest_without(
+        assessment, "assessmentSha256"
+    )
+    assert report["purposeAssessment"] == assessment
+    assert report["summary"]["completedCount"] == 10
+    assert report["summary"]["failedCount"] == 0
+    assert report["summary"]["metrics"] == {
+        "evidenceSupportedClaimRate": 1.0,
+        "purposeAccuracyRate": 0.8,
+        "reviewerEditBurdenRate": 0.3,
+        "schemaValidProposalRate": 1.0,
+    }
+    assert report["summary"]["passed"] is False
+    assert report["summary"]["p55T10HUnblocked"] is False
+    assert report["summary"]["currentGenericIntentReuseCount"] == 0
+    assert report["summary"]["falseNoveltyCount"] == 0
+    assert report["archive"]["sha256"] == hashlib.sha256(archive_path.read_bytes()).hexdigest()
 
 
 def test_build_plan_binds_current_scope_and_immutable_baseline(

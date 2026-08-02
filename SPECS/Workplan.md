@@ -2928,7 +2928,7 @@ Acceptance:
   violations. Carry the exact candidate namespace, prohibited identifier, and
   replacement shape into the preserved repair request; reject unchanged
   violations without increasing the two-provider-attempt or one-repair budget.
-- [ ] `P55-T10G6` Repeat the exact P55-T10G ten-repository calibration after
+- [x] `P55-T10G6` Repeat the exact P55-T10G ten-repository calibration after
   P55-T10G4 and P55-T10G5. Reuse the same plan, targets, Codex 5.3 Spark model,
   P55-T10C baseline, thresholds, denominators, purpose rubric, and budgets.
   P55-T10H may proceed only if every unchanged gate passes with zero false

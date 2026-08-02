@@ -1,0 +1,394 @@
+{
+  "apiVersion": "spec-harvester.semantic-root-cause-calibration/v0",
+  "archive": {
+    "path": "P55-T10G6_Semantic_Proposal_Records.tar.gz",
+    "recordCount": 10,
+    "sha256": "eb932f676179e5ce6bd74a379bbcd984b6b3b39a900b1f0f1e2b41fa9f12889d"
+  },
+  "authority": "semantic_root_cause_calibration_evidence_only",
+  "campaignInputSha256": "53d0e1e34d18da2b10c286765148a4af647ab1c5ea3d93fe69d7dc6b0229dfc2",
+  "comparisons": [
+    {
+      "baselineGenericIntentIds": [
+        "intent.package.javascript_library"
+      ],
+      "baselineJsonRepairNeeded": true,
+      "baselineRecordSha256": "6b19b3fc98de2d580bef36c78304a659f6d41484d3bc8e480274698482e88733",
+      "baselineStatus": "completed",
+      "currentDiagnosticCodes": [],
+      "currentExperimentalIntentIds": [
+        "intent.experimental.http_client_browser_node.ed136501"
+      ],
+      "currentGenericIntentIds": [],
+      "currentJsonRepairNeeded": false,
+      "currentQualityStatus": "eligible_for_calibration",
+      "currentRecordSha256": "73911e028dc5df2c684b479fdfc3326afc87347d5c0db98b9d88f82d7b309b21",
+      "currentStatus": "completed",
+      "purposeAccurate": true,
+      "repositoryId": "axios-axios",
+      "reviewerEditRequired": false,
+      "rootCause": "no_blocking_quality_issue"
+    },
+    {
+      "baselineGenericIntentIds": [
+        "intent.package.javascript_library"
+      ],
+      "baselineJsonRepairNeeded": true,
+      "baselineRecordSha256": "3cd3779317c657c499b293ae7ca10d21aadb6f279256e9eec275b42d8b0950ff",
+      "baselineStatus": "completed",
+      "currentDiagnosticCodes": [],
+      "currentExperimentalIntentIds": [
+        "intent.experimental.agent_sdk_code_first_execution.cba64423"
+      ],
+      "currentGenericIntentIds": [],
+      "currentJsonRepairNeeded": true,
+      "currentQualityStatus": "eligible_for_calibration",
+      "currentRecordSha256": "9e64491bcc4f8eda734ce706227d2c1a4a203054dfaad9c75426dadc431426f4",
+      "currentStatus": "completed",
+      "purposeAccurate": true,
+      "repositoryId": "n8n-io-n8n",
+      "reviewerEditRequired": false,
+      "rootCause": "no_blocking_quality_issue"
+    },
+    {
+      "baselineGenericIntentIds": [
+        "intent.package.javascript_library"
+      ],
+      "baselineJsonRepairNeeded": true,
+      "baselineRecordSha256": "b407b56f2563985723d1fe0f0e2fd82324b7435c1b0a0df0e6e4d777d8f7b64a",
+      "baselineStatus": "completed",
+      "currentDiagnosticCodes": [
+        "purpose_outcome_anchor_missing"
+      ],
+      "currentExperimentalIntentIds": [
+        "intent.experimental.web_search_scrape_api.ab0cff06"
+      ],
+      "currentGenericIntentIds": [],
+      "currentJsonRepairNeeded": true,
+      "currentQualityStatus": "review_required",
+      "currentRecordSha256": "97199ae5b16067064a67d50d9defe0ad25c00a785eb26334715b8ce6eb0a9163",
+      "currentStatus": "completed",
+      "purposeAccurate": true,
+      "repositoryId": "firecrawl-firecrawl",
+      "reviewerEditRequired": true,
+      "rootCause": "semantic_quality_diagnostic"
+    },
+    {
+      "baselineGenericIntentIds": [
+        "intent.package.public_repository_metadata"
+      ],
+      "baselineJsonRepairNeeded": true,
+      "baselineRecordSha256": "1d7bf9bfae3b3af49c6ab600d1e27433311b05d72a211ad310e8ecc9480c2e26",
+      "baselineStatus": "completed",
+      "currentDiagnosticCodes": [
+        "capability_namespace_repair_proposed",
+        "purpose_outcome_anchor_missing"
+      ],
+      "currentExperimentalIntentIds": [
+        "intent.experimental.package_manifest_discovery.84970bb5"
+      ],
+      "currentGenericIntentIds": [],
+      "currentJsonRepairNeeded": true,
+      "currentQualityStatus": "review_required",
+      "currentRecordSha256": "9f05fe95bc171d77d958aa8cd204ad35346be75adcef8a34f2dc9fa843102d74",
+      "currentStatus": "completed",
+      "purposeAccurate": false,
+      "repositoryId": "bitcoin-bitcoin",
+      "reviewerEditRequired": true,
+      "rootCause": "semantic_quality_diagnostic"
+    },
+    {
+      "baselineGenericIntentIds": [
+        "intent.package.javascript_library"
+      ],
+      "baselineJsonRepairNeeded": true,
+      "baselineRecordSha256": "8e103500e3aae41f9dd4edc7629d88c20f05c4f94b2959d27cae3d5f3d16afca",
+      "baselineStatus": "completed",
+      "currentDiagnosticCodes": [],
+      "currentExperimentalIntentIds": [
+        "intent.experimental.install_utils_via_managers.ffebf65c"
+      ],
+      "currentGenericIntentIds": [],
+      "currentJsonRepairNeeded": false,
+      "currentQualityStatus": "eligible_for_calibration",
+      "currentRecordSha256": "ff95b35d46fa03b3cad65c7d5a1898b5a41412420701269b3d64ffea6c13edbf",
+      "currentStatus": "completed",
+      "purposeAccurate": true,
+      "repositoryId": "excalidraw-excalidraw",
+      "reviewerEditRequired": false,
+      "rootCause": "no_blocking_quality_issue"
+    },
+    {
+      "baselineGenericIntentIds": [],
+      "baselineJsonRepairNeeded": false,
+      "baselineRecordSha256": "b559502f853188ef5070bdca1f7cb9be197a1b27a59392197a2e8e3613466402",
+      "baselineStatus": "completed",
+      "currentDiagnosticCodes": [],
+      "currentExperimentalIntentIds": [
+        "intent.experimental.local_coding_agent_action.abbc57aa"
+      ],
+      "currentGenericIntentIds": [],
+      "currentJsonRepairNeeded": false,
+      "currentQualityStatus": "eligible_for_calibration",
+      "currentRecordSha256": "c77c2e9c66b489c7b62cf3a613e88b499ad6a0d117eaa2784a37efd9e4342d09",
+      "currentStatus": "completed",
+      "purposeAccurate": true,
+      "repositoryId": "openai-codex",
+      "reviewerEditRequired": false,
+      "rootCause": "no_blocking_quality_issue"
+    },
+    {
+      "baselineGenericIntentIds": [],
+      "baselineJsonRepairNeeded": false,
+      "baselineRecordSha256": "3a26ff85aa35138aa96ff25b73d8c90a98aad33265047567390985cb29ea2367",
+      "baselineStatus": "completed",
+      "currentDiagnosticCodes": [],
+      "currentExperimentalIntentIds": [
+        "intent.experimental.persist_session_memory.f9014e15"
+      ],
+      "currentGenericIntentIds": [],
+      "currentJsonRepairNeeded": true,
+      "currentQualityStatus": "eligible_for_calibration",
+      "currentRecordSha256": "abe023efdfac15c3e61a6a775f74b1b1211f3cc9f90becd43e4cfe5e76726594",
+      "currentStatus": "completed",
+      "purposeAccurate": true,
+      "repositoryId": "thedotmack-claude-mem",
+      "reviewerEditRequired": false,
+      "rootCause": "no_blocking_quality_issue"
+    },
+    {
+      "baselineGenericIntentIds": [],
+      "baselineJsonRepairNeeded": false,
+      "baselineRecordSha256": "08be13470916f185b4a45b143bf4fe0a6a7f1bab0e6bc4495b831bef8ee5430b",
+      "baselineStatus": "failed",
+      "currentDiagnosticCodes": [],
+      "currentExperimentalIntentIds": [
+        "intent.experimental.local_docs_setup_flow.f4db8248"
+      ],
+      "currentGenericIntentIds": [],
+      "currentJsonRepairNeeded": true,
+      "currentQualityStatus": "eligible_for_calibration",
+      "currentRecordSha256": "569fffb87f50a6f90375c30982f87b16a58fb578116fb93f4d66f17ead1177fc",
+      "currentStatus": "completed",
+      "purposeAccurate": true,
+      "repositoryId": "angular-angular",
+      "reviewerEditRequired": false,
+      "rootCause": "no_blocking_quality_issue"
+    },
+    {
+      "baselineGenericIntentIds": [
+        "intent.package.javascript_library"
+      ],
+      "baselineJsonRepairNeeded": true,
+      "baselineRecordSha256": "7397479eb6087ba6171c8f299748c48d9fc11cf5f27bb8e579799ad7a322a8bf",
+      "baselineStatus": "completed",
+      "currentDiagnosticCodes": [
+        "purpose_outcome_anchor_missing"
+      ],
+      "currentExperimentalIntentIds": [
+        "intent.experimental.import_entrypoint.959bb49d"
+      ],
+      "currentGenericIntentIds": [],
+      "currentJsonRepairNeeded": true,
+      "currentQualityStatus": "review_required",
+      "currentRecordSha256": "1d56930b9a6f96f979eb87ffbe32ef6b8dcbad93dd094ea49541ac8ef7b32b18",
+      "currentStatus": "completed",
+      "purposeAccurate": false,
+      "repositoryId": "electron-electron",
+      "reviewerEditRequired": true,
+      "rootCause": "semantic_quality_diagnostic"
+    },
+    {
+      "baselineGenericIntentIds": [
+        "intent.package.javascript_library"
+      ],
+      "baselineJsonRepairNeeded": false,
+      "baselineRecordSha256": "3b6a1b539d8894b3821920f604d007425488da2be31217e65c9e5a1c550acff3",
+      "baselineStatus": "completed",
+      "currentDiagnosticCodes": [],
+      "currentExperimentalIntentIds": [
+        "intent.experimental.expose_curriculum_api_surface.f6c7746a"
+      ],
+      "currentGenericIntentIds": [],
+      "currentJsonRepairNeeded": false,
+      "currentQualityStatus": "eligible_for_calibration",
+      "currentRecordSha256": "cc98957a2e3c8e6ba20a8cf185e6a40a01c861f2a6b3420e7b896b790e9803ee",
+      "currentStatus": "completed",
+      "purposeAccurate": true,
+      "repositoryId": "freecodecamp-freecodecamp",
+      "reviewerEditRequired": false,
+      "rootCause": "no_blocking_quality_issue"
+    }
+  ],
+  "executionBoundary": {
+    "candidateAccepted": false,
+    "canonicalIntentCreated": false,
+    "materializationPerformed": false,
+    "packageManagerInvoked": false,
+    "publicationPerformed": false,
+    "repositoryCodeExecuted": false,
+    "specpmRegistryMutated": false
+  },
+  "kind": "SpecHarvesterSemanticRootCauseCalibration",
+  "planSha256": "376001a3ea1053afb5908bf1b7cb8125b95da4eebf2d76a6422e733f06844a11",
+  "privacy": {
+    "chainOfThoughtPersisted": false,
+    "credentialsPersisted": false,
+    "machineLocalPathsPersisted": false,
+    "rawPromptsPersisted": false,
+    "rawResponsesPersisted": false
+  },
+  "provider": {
+    "modelId": "gpt-5.3-codex-spark",
+    "providerId": "gpt-5.3-codex-spark",
+    "transport": "codex_exec"
+  },
+  "purposeAssessment": {
+    "acceptanceAuthorityGranted": false,
+    "apiVersion": "spec-harvester.semantic-purpose-supervisor-assessment/v0",
+    "assessmentSha256": "49336263c443e27bf209559463826fb5f0789411116673ce6565cb869f6901e3",
+    "assessments": [
+      {
+        "purposeAccurate": true,
+        "rationale": "Identifies Axios as a Promise-based HTTP client for browser and Node.js API request and response workflows.",
+        "recordSha256": "73911e028dc5df2c684b479fdfc3326afc87347d5c0db98b9d88f82d7b309b21",
+        "repositoryId": "axios-axios"
+      },
+      {
+        "purposeAccurate": true,
+        "rationale": "Describes the selected n8n agents package as an SDK for developers building AI agent capabilities in the code-first execution engine.",
+        "recordSha256": "9e64491bcc4f8eda734ce706227d2c1a4a203054dfaad9c75426dadc431426f4",
+        "repositoryId": "n8n-io-n8n"
+      },
+      {
+        "purposeAccurate": true,
+        "rationale": "Connects the Firecrawl package to downstream web search and scraping API workflows rather than package metadata mechanics.",
+        "recordSha256": "97199ae5b16067064a67d50d9defe0ad25c00a785eb26334715b8ce6eb0a9163",
+        "repositoryId": "firecrawl-firecrawl"
+      },
+      {
+        "purposeAccurate": false,
+        "rationale": "Centers manifest-oriented discovery and build metadata extraction instead of Bitcoin Core's supported user outcome.",
+        "recordSha256": "9f05fe95bc171d77d958aa8cd204ad35346be75adcef8a34f2dc9fa843102d74",
+        "repositoryId": "bitcoin-bitcoin"
+      },
+      {
+        "purposeAccurate": true,
+        "rationale": "Describes the selected Excalidraw common package as shared utilities and constants that downstream projects can install and use.",
+        "recordSha256": "ff95b35d46fa03b3cad65c7d5a1898b5a41412420701269b3d64ffea6c13edbf",
+        "repositoryId": "excalidraw-excalidraw"
+      },
+      {
+        "purposeAccurate": true,
+        "rationale": "Identifies Codex CLI as a locally executed coding agent reached through the codex command-line workflow.",
+        "recordSha256": "c77c2e9c66b489c7b62cf3a613e88b499ad6a0d117eaa2784a37efd9e4342d09",
+        "repositoryId": "openai-codex"
+      },
+      {
+        "purposeAccurate": true,
+        "rationale": "Captures claude-mem context compression, persistence, and reuse across Claude Code sessions.",
+        "recordSha256": "abe023efdfac15c3e61a6a775f74b1b1211f3cc9f90becd43e4cfe5e76726594",
+        "repositoryId": "thedotmack-claude-mem"
+      },
+      {
+        "purposeAccurate": true,
+        "rationale": "Describes the selected Angular docs package's local build and preview workflow for documentation changes.",
+        "recordSha256": "569fffb87f50a6f90375c30982f87b16a58fb578116fb93f4d66f17ead1177fc",
+        "repositoryId": "angular-angular"
+      },
+      {
+        "purposeAccurate": false,
+        "rationale": "Describes generic JavaScript import mechanics instead of the selected dialog-helper's concrete user-facing outcome.",
+        "recordSha256": "1d56930b9a6f96f979eb87ffbe32ef6b8dcbad93dd094ea49541ac8ef7b32b18",
+        "repositoryId": "electron-electron"
+      },
+      {
+        "purposeAccurate": true,
+        "rationale": "Connects the selected freeCodeCamp API package to curriculum-related functionality that consumers integrate through its API surface.",
+        "recordSha256": "cc98957a2e3c8e6ba20a8cf185e6a40a01c861f2a6b3420e7b896b790e9803ee",
+        "repositoryId": "freecodecamp-freecodecamp"
+      }
+    ],
+    "authority": "calibration_measurement_only",
+    "kind": "SpecHarvesterSemanticPurposeSupervisorAssessment",
+    "schemaVersion": 1
+  },
+  "reportSha256": "7fcd25b7e230b4e8a615ea9ee9ba251fe53fe07ff596d6c3fcd66ed22b22824d",
+  "schemaVersion": 1,
+  "summary": {
+    "baselineGenericIntentReuseCount": 7,
+    "completedCount": 10,
+    "currentGenericIntentReuseCount": 0,
+    "experimentalIntentCount": 10,
+    "failedCount": 0,
+    "failedProviderAttemptCount": 1,
+    "falseNoveltyCount": 0,
+    "gates": {
+      "duplicateExperimentalIntentIds": {
+        "passed": true,
+        "value": 0
+      },
+      "duplicateExperimentalSemanticStems": {
+        "passed": true,
+        "value": 0
+      },
+      "evidenceSupportedClaimRate": {
+        "operator": "greater_than_or_equal",
+        "passed": true,
+        "threshold": 0.95,
+        "value": 1.0
+      },
+      "falseNovelty": {
+        "passed": true,
+        "value": 0
+      },
+      "genericIntentReduction": {
+        "baseline": 7,
+        "passed": true,
+        "value": 7
+      },
+      "purposeAccuracyRate": {
+        "operator": "greater_than_or_equal",
+        "passed": false,
+        "threshold": 0.85,
+        "value": 0.8
+      },
+      "repairedGenericCaseImprovement": {
+        "passed": true,
+        "repositoryIds": [
+          "axios-axios",
+          "bitcoin-bitcoin",
+          "electron-electron",
+          "excalidraw-excalidraw",
+          "firecrawl-firecrawl",
+          "n8n-io-n8n"
+        ]
+      },
+      "reviewerEditBurdenRate": {
+        "operator": "less_than_or_equal",
+        "passed": false,
+        "threshold": 0.25,
+        "value": 0.3
+      },
+      "schemaValidProposalRate": {
+        "operator": "equal",
+        "passed": true,
+        "threshold": 1.0,
+        "value": 1.0
+      }
+    },
+    "genericIntentReductionCount": 7,
+    "jsonRepairRecordCount": 6,
+    "metrics": {
+      "evidenceSupportedClaimRate": 1.0,
+      "purposeAccuracyRate": 0.8,
+      "reviewerEditBurdenRate": 0.3,
+      "schemaValidProposalRate": 1.0
+    },
+    "p55T10HUnblocked": false,
+    "passed": false,
+    "providerAttemptCount": 11,
+    "targetCount": 10
+  },
+  "taskId": "P55-T10G"
+}

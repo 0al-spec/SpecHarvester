@@ -1,25 +1,34 @@
-# Next Task: P55-T10G6 Repeat Ten-Repository Semantic Calibration
+# Next Task: P55-T10H Forty-Six-Repository Semantic Revalidation
 
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
-**Dependencies:** `P55-T10G4` Outcome Anchor Source-Authority Ranking and
-`P55-T10G5` Capability Namespace Repair
-**Status:** Ready
+**Dependencies:** `P55-T10G6` Repeat Ten-Repository Semantic Calibration
+**Status:** Blocked
 
 ## Objective
 
-Repeat the exact P55-T10G calibration after P55-T10G4 and P55-T10G5 using the
-same frozen targets, Codex 5.3 Spark model, baseline, thresholds, denominators,
-purpose rubric, and attempt budgets.
+Revalidate the exact 46-repository generic-intent scope with Codex 5.3 Spark
+only after the frozen ten-repository quality gate is fully satisfied.
 
 ## Required Scope
 
-Reuse only the frozen P55-T10G plan and durable baseline. Account for every
-terminal record, preserve proposal-only authority, and do not materialize,
-canonicalize, publish, or mutate SpecPM or registry truth. P55-T10H remains
-blocked unless every frozen gate passes.
+P55-T10G6 completed all ten records with schema and evidence rates of 1.00 and
+zero generic reuse, false novelty, or duplicate experimental intents. It did
+not meet the unchanged purpose accuracy (0.80 < 0.85) or reviewer edit burden
+(0.30 > 0.25) gates. Do not run the exact 46-repository generic-intent scope
+until a targeted follow-up closes both gaps. Any later revalidation must remain
+proposal-only, without accepting, materializing, canonicalizing, or publishing
+any result.
 
 ## Recently Archived
+
+- `P55-T10G6` Repeat Ten-Repository Semantic Calibration: PARTIAL. The final
+  Codex 5.3 Spark rerun completed all ten frozen targets, produced schema-valid
+  and fully evidence-supported proposals, eliminated all seven baseline generic
+  reuses, and produced no false novelty or duplicate experimental IDs. Purpose
+  accuracy was 0.80 and reviewer edit burden was 0.30, so P55-T10H remains
+  blocked. Bitcoin Core and Electron dialog-helper purpose grounding require a
+  targeted follow-up; no proposal was materialized or accepted.
 
 - `P55-T10G5` Capability Namespace Repair: PASS. Candidate-YAML capability IDs
   outside the candidate namespace now create exact, proposal-only replacement
