@@ -2924,7 +2924,7 @@ Acceptance:
   documentation and descriptive manifest purpose; require review when only weak
   generated candidate wording remains. Preserve untrusted digest bindings and
   proposal-only authority.
-- [ ] `P55-T10G5` Add validation-aware repair for capability namespace
+- [x] `P55-T10G5` Add validation-aware repair for capability namespace
   violations. Carry the exact candidate namespace, prohibited identifier, and
   replacement shape into the preserved repair request; reject unchanged
   violations without increasing the two-provider-attempt or one-repair budget.

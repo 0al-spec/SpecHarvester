@@ -65,3 +65,7 @@ same deterministic failure without broader authoring changes.
   implementation and tests stabilize.
 - The follow-up P55-T10G6 calibration remains a separate task and consumes no
   evidence from this implementation run.
+
+---
+**Archived:** 2026-08-02
+**Verdict:** PASS
