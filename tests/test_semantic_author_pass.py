@@ -21,6 +21,7 @@ from spec_harvester.semantic_author_pass import (
     ProviderCompletion,
     SemanticAuthorPassError,
     SemanticAuthorPassOptions,
+    _structured_output_schema,
     run_semantic_author_pass,
     validate_semantic_author_provider_receipt,
 )
@@ -52,6 +53,20 @@ class FakeProvider:
                 "chainOfThoughtPersisted": False,
             },
         )
+
+
+def test_codex_structured_output_schema_requires_transport_repair_padding() -> None:
+    schema = _structured_output_schema(
+        {
+            "request": {
+                "candidateId": "demo.package",
+                "sourceBundleSha256": "a" * 64,
+            }
+        }
+    )
+
+    assert schema["required"] == list(schema["properties"])
+    assert "capabilityNamespaceRepairs" in schema["required"]
 
 
 def catalog(intent_id: str = "intent.ai.context_selection") -> dict:
