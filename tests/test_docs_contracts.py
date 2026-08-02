@@ -156,6 +156,21 @@ def assert_current_next_task(next_text: str) -> None:
         assert "P55-T10H remains blocked unless every frozen gate passes" in normalized
         return
 
+    if "# Next Task: P55-T10G7 Purpose Anchor Coverage Repair" in next_text:
+        normalized = " ".join(next_text.split())
+        assert any(
+            status in next_text
+            for status in ("**Status:** Ready", "**Status:** Selected", "**Status:** In Progress")
+        )
+        assert "`P55-T10G6` Repeat Ten-Repository Semantic Calibration" in next_text
+        assert "Bitcoin Core, Electron dialog-helper, and Firecrawl" in normalized
+        assert "Do not invoke a provider" in next_text
+        assert (
+            "P55-T10H remains blocked until P55-T10G10 passes every unchanged exit gate"
+            in normalized
+        )
+        return
+
     if "# Next Task: P55-T10H Forty-Six-Repository Semantic Revalidation" in next_text:
         normalized = " ".join(next_text.split())
         assert any(
