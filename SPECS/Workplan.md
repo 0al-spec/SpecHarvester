@@ -2918,7 +2918,7 @@ Acceptance:
   supervisor purpose rubric. P55-T10H may proceed only if every frozen gate
   passes with zero false novelty and no duplicate experimental intent IDs or
   semantic stems.
-- [ ] `P55-T10G4` Rank outcome-anchor source authority and exclude generated
+- [x] `P55-T10G4` Rank outcome-anchor source authority and exclude generated
   preview, member-package boundary, import, discovery, and module mechanics from
   satisfying outcome specificity. Prefer pinned package-local or repository
   documentation and descriptive manifest purpose; require review when only weak

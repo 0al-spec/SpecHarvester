@@ -131,6 +131,19 @@ def assert_current_next_task(next_text: str) -> None:
         assert "do not invoke a provider" in normalized
         return
 
+    if "# Next Task: P55-T10G5 Capability Namespace Repair" in next_text:
+        normalized = " ".join(next_text.split())
+        assert any(
+            status in next_text
+            for status in ("**Status:** Ready", "**Status:** Selected", "**Status:** In Progress")
+        )
+        assert "`P55-T10G3` Repeat Ten-Repository Semantic Calibration" in next_text
+        assert "`P55-T10G4` Outcome Anchor Source-Authority Ranking" in next_text
+        assert "capability namespace violation" in normalized
+        assert "prohibited identifier" in normalized
+        assert "do not run the later P55-T10G6 calibration" in normalized
+        return
+
     if "# Next Task: P55-T10H Forty-Six-Repository Semantic Revalidation" in next_text:
         normalized = " ".join(next_text.split())
         assert any(

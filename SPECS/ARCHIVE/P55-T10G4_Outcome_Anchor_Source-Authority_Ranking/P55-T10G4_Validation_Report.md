@@ -20,10 +20,9 @@ PASS
 
 | Gate | Result |
 | --- | --- |
-| Focused authority and semantic suites | PASS: 114 passed |
-| `PYTHONPATH=src python -m pytest tests/test_docs_contracts.py` | PASS: 203 passed |
+| Focused authority, semantic, and docs suites | PASS: 317 passed |
 | `PYTHONPATH=src python -m pytest` | PASS: 1423 passed, 1 skipped |
-| `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90` | PASS: 90% displayed coverage |
+| `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90` | PASS: 90.00% exact coverage |
 | `ruff check src tests` | PASS |
 | `ruff format --check src tests` | PASS: 201 files already formatted |
 | `swift package dump-package` | PASS |
