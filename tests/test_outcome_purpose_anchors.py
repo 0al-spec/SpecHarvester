@@ -188,6 +188,10 @@ def test_builder_ignores_malformed_unbound_and_mechanics_only_candidates() -> No
     )
 
     assert record["anchors"] == []
+    assert record["sourceAuthorityState"] == "no_outcome_source"
+    assert assess_purpose_specificity(record, "Reduce token usage for coding agents") == (
+        "no_outcome_source"
+    )
 
 
 def test_builder_deduplicates_identical_profile_and_document_phrases() -> None:
