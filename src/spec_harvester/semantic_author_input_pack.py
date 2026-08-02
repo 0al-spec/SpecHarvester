@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+import tomllib
 import yaml
 from jsonschema import Draft202012Validator
 
@@ -278,8 +279,26 @@ def _validate_profile_document_authority(
             None,
         )
         description = profile["package"]["description"].strip()
-        if not isinstance(manifest, dict) or description not in manifest["content"]:
+        if not isinstance(manifest, dict) or _manifest_description(manifest) != description:
             raise ValueError("semantic author input pack product profile manifest is stale")
+
+
+def _manifest_description(manifest: dict[str, Any]) -> str:
+    try:
+        path = Path(manifest["sourcePath"])
+        content = manifest["content"]
+        value = json.loads(content) if path.suffix == ".json" else tomllib.loads(content)
+    except (KeyError, TypeError, json.JSONDecodeError, tomllib.TOMLDecodeError):
+        return ""
+    if not isinstance(value, dict):
+        return ""
+    package = value.get("package") if isinstance(value.get("package"), dict) else {}
+    project = value.get("project") if isinstance(value.get("project"), dict) else {}
+    tool = value.get("tool") if isinstance(value.get("tool"), dict) else {}
+    poetry = tool.get("poetry") if isinstance(tool.get("poetry"), dict) else {}
+    metadata = next((item for item in (project, package, poetry, value) if item), {})
+    description = metadata.get("description")
+    return description.strip() if isinstance(description, str) else ""
 
 
 def _safe_path(path: str) -> str:
