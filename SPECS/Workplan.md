@@ -2787,6 +2787,13 @@ Acceptance:
 
 ## Phase 55. Evidence-Grounded AI Semantic Authoring
 
+Status update (2026-09-05): P55-T10G6 remains PARTIAL. Pending tasks
+P55-T10G7 through P55-T10G10, P55-T10H, and P55-T11 are paused while Phase 56
+evaluates agent-first authoring. Their unchecked status and frozen historical
+gates remain intact. Phase 56 is an explicitly authorized comparative experiment
+and does not depend on completing P55-T11 or passing P55-T10H. Its exit decision
+must disposition the paused tasks before further scale-out.
+
 - [x] `P55-T1` Record the AI semantic-author product and authority contract.
   Depend explicitly on the completed `P54-T10` Phase 54 exit decision.
   Define model-as-author responsibilities, existing-intent reuse, novel
@@ -3057,3 +3064,101 @@ Acceptance:
   no package-manager or harvested-code execution, bounded provider budgets,
   proposal-only AI authority, explicit reviewer decisions, and independent
   SpecPM validation.
+
+## Phase 56. Agent-First Spec Authoring and Practical Utility Evaluation
+
+Motivation:
+
+- P55-T10G6 completed ten valid proposals, but purpose accuracy was 0.80 and
+  reviewer edit burden was 0.30. Generic-intent removal and schema validity
+  did not establish practical value compared with reading repository docs.
+- Preselected package boundaries and constrained evidence projections can
+  hide the product outcome. Test whether an agent that investigates sources
+  and authors complete packages delivers more useful specifications.
+
+Goal:
+
+- Compare agent-first authoring against the current pipeline and a README
+  baseline on five repositories before investing in more extraction heuristics.
+- Reuse checkout management, pinned revisions, validation, provenance, batch
+  execution, and Workbench infrastructure where useful. The experiment should
+  require a small authoring skill and runner, not a new universal analyzer.
+
+Tasks:
+
+- [ ] `P56-T1` Freeze Practical Utility Benchmark and Experiment Scope. Select
+  five diverse repositories including openai/codex, bitcoin/bitcoin, and a
+  monorepo; freeze revisions, user scenarios, intended product/package scope,
+  reference answers, scoring rubric, and numerical go/no-go thresholds before
+  authoring. Cover discovery, integration, supported operations, limitations,
+  and evidence verification. Record P55-T10G6 as historical context and the
+  paused Phase 55 tasks as explicit dependencies to disposition, not blockers.
+- [ ] `P56-T2` Define Complete Spec Authoring Contract and Repository Skill.
+  Version a repository-owned skill based on the existing specpm-author-spec
+  workflow, with valid specpm.yaml and BoundarySpec templates and a worked
+  example. Require useful scenarios, capabilities, interfaces, constraints,
+  dependencies, non-goals, and source evidence within supported SpecPM fields.
+  Permit justified package-boundary selection and documented unknowns. Avoid
+  mandatory keyword copying or treating new intent IDs as a quality target.
+- [ ] `P56-T3` Implement Bounded Investigative Authoring Runner. Let the worker
+  inspect pinned README, package docs, examples, public interfaces, and relevant
+  code/tests through read-only tools, then write a complete candidate package
+  into a separate output directory. Record selected boundary, inspected source
+  references, validation findings, model/settings, time, attempts, and available
+  usage. Enforce bounded reads and execution budgets without running harvested
+  code or package managers. Reuse existing infrastructure; validate output with
+  SpecPM and preserve uncertainty rather than inventing behavior.
+- [ ] `P56-T4` Generate Paired Five-Repository Candidate Sets. Run the current
+  pipeline and investigative skill on all five frozen revisions with the same
+  model/settings and predeclared comparable budgets. Use Codex 5.3 Spark as the
+  planned worker; if unavailable, revise the experiment contract explicitly
+  before either arm runs. Retain complete packages, failures, validation
+  reports, costs, and boundary choices. Keep all terminal outcomes; do not
+  cherry-pick retries. Compare both arms against the same user-level scope and
+  report boundary differences as an outcome, not an unnoticed confounder.
+- [ ] `P56-T5` Prepare Blinded Package and README Review. Present the two
+  candidate sets in Workbench with neutral randomized labels and a separate
+  pinned README baseline. Show complete readable specs, source references, and
+  validation results. Keep the arm mapping outside reviewer views. Reuse the
+  existing viewer or a minimal offline bundle, avoiding a separate review app.
+- [ ] `P56-T6` Execute Practical Utility Evaluation. Use the frozen questions
+  and reference answers to assess each package arm and README baseline with
+  equivalent consumer budgets and access rules. Measure answer correctness,
+  completeness, unsupported claims, additional source lookups, review/edit
+  time, and generation/consumption cost. Keep package-only and source-assisted
+  results separate; preserve failures and per-repository results. Distinguish
+  maintainer judgments from automated assessments and obtain explicit
+  maintainer review before declaring the approach useful enough to adopt.
+- [ ] `P56-T7` Analyze Failure Causes and Economics. Compare useful information
+  with packaging overhead, generation cost, and consumer effort. Attribute
+  failures to scope selection, missing evidence, authoring, schema limitations,
+  or model capability using retained evidence. Report limitations of a
+  five-repository sample. Any changed prompt, model, template, or repair is a
+  separately labeled follow-up, never a replacement for the frozen results.
+- [ ] `P56-T8` Record Architecture and Phase Exit Decision. Apply the frozen
+  thresholds and maintainer review to choose agent-first adoption, a bounded
+  hybrid, another explicitly justified experiment, or stop. Identify which
+  SpecHarvester components remain infrastructure and which extraction paths
+  should be retained or retired. Explicitly resume, supersede, or cancel every
+  paused Phase 55 task and define the next bounded rollout only if justified.
+  An architecture decision alone does not authorize mass execution or publish
+  candidate packages.
+
+Acceptance:
+
+- P56-T1 precedes Phase 56 implementation and provider runs; P56-T2 precedes P56-T3;
+  P56-T3 precedes P56-T4. P56-T4 and P56-T5 precede P56-T6, then P56-T7 and
+  P56-T8 follow in order. The benchmark questions and reference answers are
+  withheld from authoring workers; the evaluation rubric is fixed in advance.
+- Freeze exact model/settings, limits on tokens/time/tool calls/retries, cost
+  accounting, and failure handling in P56-T1. Missing provider usage is reported
+  as unavailable, not zero. No unrecorded model substitution is permitted.
+- Valid SpecPM output is necessary but insufficient. Adoption requires measured
+  practical utility against the current pipeline and README baseline under the
+  frozen rubric, with unsupported claims and manual effort accounted for.
+- Complete candidate YAML, provenance, and source references are portable.
+  Raw prompts/responses, hidden reasoning, credentials, and private machine
+  paths are excluded from published experiment evidence. Versioned skill and
+  template sources are retained for reproducibility.
+- All generated packages remain candidates. Repository content is untrusted;
+  the agent cannot grant itself acceptance, registry, or publication authority.

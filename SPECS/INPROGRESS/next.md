@@ -1,25 +1,29 @@
-# Next Task: P55-T10G7 Purpose Anchor Coverage Repair
+# Next Task: P56-T1 Freeze Practical Utility Benchmark and Experiment Scope
 
 **Priority:** P0
-**Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
+**Phase:** Phase 56. Agent-First Spec Authoring and Practical Utility Evaluation
 **Dependencies:** `P55-T10G6` Repeat Ten-Repository Semantic Calibration
 **Status:** Ready
 
 ## Objective
 
-Repair deterministic purpose-anchor coverage for the three P55-T10G6
-review-required cases before another provider calibration is attempted.
+Freeze a five-repository comparison of agent-first authoring, the current
+pipeline, and a pinned README baseline. Measure practical usefulness for
+discovery and integration, not just schema validity or intent novelty.
 
 ## Required Scope
 
-Create deterministic, digest-bound outcome-anchor coverage for Bitcoin Core,
-Electron dialog-helper, and Firecrawl. Strong repository or package-local
-documentation must outrank build, manifest, import, generated-preview, and
-other implementation mechanics. Identify insufficient source authority as
-review-required. Do not invoke a provider, change frozen thresholds, alter the
-ten-repository scope, or accept, materialize, canonicalize, or publish any
-proposal. P55-T10H remains blocked until P55-T10G10 passes every unchanged
-exit gate.
+Select five pinned repositories including openai/codex, bitcoin/bitcoin, and
+a monorepo. Freeze user scenarios, intended scope, reference answers, numerical
+go/no-go thresholds, model/settings, budgets, and failure accounting before
+authoring. The paired authoring arms use the same model; Codex 5.3 Spark is the
+planned worker. Keep reference answers and benchmark questions out of authoring
+inputs. Do not invoke a provider in this planning task.
+
+P55-T10G7 through P55-T10G10, P55-T10H, and P55-T11 are paused pending the
+P56-T8 architecture decision. Phase 56 may proceed from the existing PARTIAL
+evidence without passing the historical Phase 55 gates. Their historical
+results remain unchanged, and no publication authority is granted.
 
 ## Recently Archived
 
