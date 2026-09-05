@@ -32,6 +32,17 @@ The independent bounded re-review returned PASS with no remaining blockers.
 All referenced source-file hashes were recomputed by the main agent; automated
 integrity checks do not independently prove semantic correctness of every fact.
 
+## GitHub Review Addendum
+
+- Review r3941987972 claimed create belongs only to AxiosStatic. Rejected after
+  direct `git show 509719387e4993392ca40da03a49678269cdfb90:index.d.ts` inspection:
+  AxiosInstance declares create at line 715; AxiosStatic extends AxiosInstance
+  at line 762. Clarified the canonical fact and expanded its source span.
+- Review r3941987977 correctly noted the 100-minute adoption budget equaled
+  the aggregate execution cap. Reduced adoption to 60 model-wall minutes,
+  retaining the 100-minute aggregate hard cap, before any generation results.
+  Rebound the protocol and benchmark digests.
+
 ## Remaining Work
 
 T2 templates/skill, T3 enforced runner and subsequent generation/human evaluation

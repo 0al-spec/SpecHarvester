@@ -166,9 +166,11 @@ Agent-first adoption requires all of the following:
   and support their associated facts after source review.
 - Median maintainer edit time for B <= 10 minutes and no B package exceeds
   20 minutes. Failure or unreviewed units cannot pass this gate.
-- Median generation wall time B <= twice A and total B generation <= 100
+- Median generation wall time B <= twice A and total B generation <= 60
   model-wall minutes. Report source-assisted lookup counts and consumption
   costs for all arms, even when artifact-only gates pass.
+  The 60-minute adoption budget is stricter than the aggregate 100-minute
+  execution cap; a technically completed run can fail the economic gate.
 
 All gates require maintainer sign-off. If unavailable, report pending human
 evaluation. Failure selects diagnosis or stop, not automatic scale-out. Any

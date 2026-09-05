@@ -3,7 +3,7 @@
   "authority": "evaluation_only",
   "authoringInputAllowed": false,
   "protocolPath": "docs/P56_T1_Practical_Utility_Benchmark.md",
-  "protocolSha256": "67a33e6cca12bffcb7cf6ba59523cc36a217802837d8c25a6d79b988db84914d",
+  "protocolSha256": "57e179b59967ddaa64193f76fc8b247f850893ba1330a97d960cff9abe064da2",
   "repositories": [
     {
       "repository": "openai/codex",
@@ -344,7 +344,7 @@
           "question": "What public API supports custom adapters and client instances?",
           "facts": [
             "AxiosAdapter accepts internal request config and returns AxiosPromise.",
-            "AxiosInstance supports request calls and create(config)."
+            "At the pinned revision, AxiosInstance supports request calls and declares create(config); AxiosStatic inherits that factory through AxiosInstance."
           ],
           "sources": [
             "index.d.ts"
@@ -352,7 +352,7 @@
           "sourceSpans": {
             "index.d.ts": [
               164,
-              715
+              783
             ]
           }
         },
@@ -513,5 +513,5 @@
       ]
     }
   ],
-  "benchmarkSha256": "06c32fe14455df5f64dd8243d25316390917d75b5e6d58ad5ae0fe93bc82dc78"
+  "benchmarkSha256": "1f38cc0fe26003400440212fe5a8be2bea71dada6dcd08b025f814cd39a3b230"
 }
