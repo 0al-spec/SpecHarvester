@@ -1,0 +1,517 @@
+{
+  "schemaVersion": 1,
+  "authority": "evaluation_only",
+  "authoringInputAllowed": false,
+  "protocolPath": "docs/P56_T1_Practical_Utility_Benchmark.md",
+  "protocolSha256": "67a33e6cca12bffcb7cf6ba59523cc36a217802837d8c25a6d79b988db84914d",
+  "repositories": [
+    {
+      "repository": "openai/codex",
+      "revision": "16d7daad7c5dc73da8558102a65bb7d7709807e1",
+      "scope": "Local coding agent and its application integration surface",
+      "sources": {
+        "README.md": "ba4e1f69ff48386e72a9c5e1edaf76aad64a475c2d51af79ccba6d1128261ba7",
+        "codex-rs/app-server/README.md": "8c3c95f538c672340fb83e40792385030c19afb404d65a75aa2ed47e6fb520f2",
+        "SECURITY.md": "a71f3645c5438400bf803a210cae829a07b5319ac1babe289badad7d1091af3a"
+      },
+      "questions": [
+        {
+          "category": "discovery",
+          "question": "What is Codex CLI and how is it started?",
+          "facts": [
+            "A coding agent that runs locally.",
+            "After installation, run codex."
+          ],
+          "sources": [
+            "README.md"
+          ],
+          "sourceSpans": {
+            "README.md": [
+              1,
+              50
+            ]
+          }
+        },
+        {
+          "category": "integration",
+          "question": "What handshake does codex app-server require?",
+          "facts": [
+            "Default transport is newline-delimited JSON over stdio.",
+            "Send initialize then initialized before other requests."
+          ],
+          "sources": [
+            "codex-rs/app-server/README.md"
+          ],
+          "sourceSpans": {
+            "codex-rs/app-server/README.md": [
+              22,
+              83
+            ]
+          }
+        },
+        {
+          "category": "operations",
+          "question": "How does a client drive a conversation?",
+          "facts": [
+            "Start or resume a thread, then call turn/start.",
+            "Progress arrives as notifications; completion includes final state and token usage."
+          ],
+          "sources": [
+            "codex-rs/app-server/README.md"
+          ],
+          "sourceSpans": {
+            "codex-rs/app-server/README.md": [
+              78,
+              83
+            ]
+          }
+        },
+        {
+          "category": "limitations",
+          "question": "Is WebSocket transport production-supported?",
+          "facts": [
+            "WebSocket is experimental and unsupported.",
+            "The documentation says not to rely on it for production workloads."
+          ],
+          "sources": [
+            "codex-rs/app-server/README.md"
+          ],
+          "sourceSpans": {
+            "codex-rs/app-server/README.md": [
+              22,
+              37
+            ]
+          }
+        },
+        {
+          "category": "evidence",
+          "question": "Where are safety and vulnerability-reporting boundaries documented?",
+          "facts": [
+            "Linked security documentation covers sandbox, approvals and network controls.",
+            "Validated vulnerabilities should be reported through Bugcrowd."
+          ],
+          "sources": [
+            "SECURITY.md"
+          ],
+          "sourceSpans": {
+            "SECURITY.md": [
+              9,
+              17
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "repository": "bitcoin/bitcoin",
+      "revision": "a2aab6df97d9f3e1186e8c3fc57ad909cc8aef9b",
+      "scope": "Bitcoin Core full node with optional wallet and GUI",
+      "sources": {
+        "README.md": "45916e6961540c536e8b17b3a4d3305393afce5b407d1ea3da82c246cba8aa5d",
+        "doc/JSON-RPC-interface.md": "0d92a9f8b0319373462e93a02ba414fd5f61f173e89366d430227776ba23f4bd",
+        "doc/bitcoin-conf.md": "f0e4ef5eae69a3670f5a9c38597850900dadd770d4a3eb51201c63c5554034c7",
+        "doc/README.md": "efa121f49b44bb110d7ddead48106f6f71db71d0d9b619e85f38193f525a06e8",
+        "contrib/verify-binaries/README.md": "4308f163b45b41b262bd66b8e3e7656ca3f756c7e18eda4468bd16a7988bc3e9"
+      },
+      "questions": [
+        {
+          "category": "discovery",
+          "question": "What does Bitcoin Core provide?",
+          "facts": [
+            "Connects to the Bitcoin P2P network and fully validates blocks and transactions.",
+            "Wallet and GUI support are optional to build."
+          ],
+          "sources": [
+            "README.md"
+          ],
+          "sourceSpans": {
+            "README.md": [
+              12,
+              14
+            ]
+          }
+        },
+        {
+          "category": "integration",
+          "question": "How does an application access the RPC API?",
+          "facts": [
+            "bitcoind enables JSON-RPC by default; bitcoin-qt disables it by default.",
+            "The API exposes / and /wallet/<walletname>/ endpoints."
+          ],
+          "sources": [
+            "doc/JSON-RPC-interface.md"
+          ],
+          "sourceSpans": {
+            "doc/JSON-RPC-interface.md": [
+              3,
+              13
+            ]
+          }
+        },
+        {
+          "category": "operations",
+          "question": "How are runtime configuration changes applied?",
+          "facts": [
+            "Command-line options override bitcoin.conf.",
+            "Configuration-file changes require restart."
+          ],
+          "sources": [
+            "doc/bitcoin-conf.md"
+          ],
+          "sourceSpans": {
+            "doc/bitcoin-conf.md": [
+              5,
+              7
+            ]
+          }
+        },
+        {
+          "category": "limitations",
+          "question": "What deployment costs are stated?",
+          "facts": [
+            "Default full-history storage needs several hundred gigabytes or more.",
+            "Initial synchronization may take hours to several days or more."
+          ],
+          "sources": [
+            "doc/README.md"
+          ],
+          "sourceSpans": {
+            "doc/README.md": [
+              6,
+              6
+            ]
+          }
+        },
+        {
+          "category": "evidence",
+          "question": "How are release binaries verified?",
+          "facts": [
+            "Checksums are evaluated against signatures from selected trusted keys.",
+            "The verifier returns 0 on success and 1 on signature or hash failure."
+          ],
+          "sources": [
+            "contrib/verify-binaries/README.md"
+          ],
+          "sourceSpans": {
+            "contrib/verify-binaries/README.md": [
+              5,
+              37
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "repository": "rtk-ai/rtk",
+      "revision": "7da2674073394194754a228d346189a74869e6ba",
+      "scope": "Shell-output compression proxy for reducing agent context consumption",
+      "sources": {
+        "README.md": "9eedab13449e48321140887bad972786f1faa25ac5b4120f0259f4086dd601e9",
+        "hooks/codex/README.md": "340a489ec78b464b4a82774d52a40b14ef65f907842801f05f4b4f16c2694c86",
+        "docs/guide/analytics/gain.md": "fee2330922b228f6aa68b4b351e49589dff7d334f0b5be8604b41836649fb087",
+        "docs/guide/analytics/discover.md": "789e07ef766e8988a3662e6b15f060021a926a299f0d488d301b2a68f17369ca"
+      },
+      "questions": [
+        {
+          "category": "discovery",
+          "question": "What problem does RTK solve?",
+          "facts": [
+            "Compresses shell-command output before an agent reads it, reducing token consumption.",
+            "It is a single Rust binary; documentation claims 100+ commands and overhead below 10 ms."
+          ],
+          "sources": [
+            "README.md"
+          ],
+          "sourceSpans": {
+            "README.md": [
+              37,
+              41
+            ]
+          }
+        },
+        {
+          "category": "integration",
+          "question": "How is RTK connected to Codex?",
+          "facts": [
+            "Run rtk init -g --codex.",
+            "Integration installs under CODEX_HOME, falling back to ~/.codex/."
+          ],
+          "sources": [
+            "README.md",
+            "hooks/codex/README.md"
+          ],
+          "sourceSpans": {
+            "README.md": [
+              113,
+              117
+            ],
+            "hooks/codex/README.md": [
+              7,
+              9
+            ]
+          }
+        },
+        {
+          "category": "operations",
+          "question": "How are savings measured and exported?",
+          "facts": [
+            "rtk gain --all --format json exports machine-readable statistics.",
+            "History is local at ~/.local/share/rtk/history.db with 90-day retention."
+          ],
+          "sources": [
+            "docs/guide/analytics/gain.md"
+          ],
+          "sourceSpans": {
+            "docs/guide/analytics/gain.md": [
+              32,
+              127
+            ]
+          }
+        },
+        {
+          "category": "limitations",
+          "question": "What do token statistics not guarantee?",
+          "facts": [
+            "Estimates use bytes / 4, not a real tokenizer.",
+            "Absolute estimates do not match provider billing."
+          ],
+          "sources": [
+            "docs/guide/analytics/gain.md"
+          ],
+          "sourceSpans": {
+            "docs/guide/analytics/gain.md": [
+              110,
+              112
+            ]
+          }
+        },
+        {
+          "category": "evidence",
+          "question": "How can missed adoption be identified?",
+          "facts": [
+            "rtk discover finds command history without RTK filtering.",
+            "rtk session reports RTK-versus-raw command coverage."
+          ],
+          "sources": [
+            "docs/guide/analytics/discover.md"
+          ],
+          "sourceSpans": {
+            "docs/guide/analytics/discover.md": [
+              10,
+              45
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "repository": "axios/axios",
+      "revision": "509719387e4993392ca40da03a49678269cdfb90",
+      "scope": "HTTP client library for browsers and Node.js",
+      "sources": {
+        "README.md": "4db033f8e5c39cc3427078df94ebe079a37a7c6e557180e6f616638af5e3358f",
+        "package.json": "c9afce8c65c9fadaebaac41ca90db26779efdc5e95aeca49b4e9477b61bcc4b2",
+        "docs/pages/getting-started/first-steps.md": "c86c01b8dafec323dc97fb7bc944bfe51296223916cb3005e6b682c61c31af11",
+        "index.d.ts": "3768eb0975f030352ec96190aaa485af41910029d9a62d9c70557c976b30a6f7",
+        "docs/pages/advanced/request-config.md": "b5fbc2456922795b283093e01d1f4541f690fb834520210d222a9f94828c9d87",
+        "SECURITY.md": "e2f38eb60f2a39700f6f20f2902e8c7dec34128a8f29c00f10b0bd028264439f"
+      },
+      "questions": [
+        {
+          "category": "discovery",
+          "question": "What is Axios and how is it installed?",
+          "facts": [
+            "Promise-based HTTP client for browser and Node.js.",
+            "Install with npm install axios."
+          ],
+          "sources": [
+            "package.json",
+            "docs/pages/getting-started/first-steps.md"
+          ],
+          "sourceSpans": {
+            "package.json": [
+              2,
+              4
+            ],
+            "docs/pages/getting-started/first-steps.md": [
+              5,
+              13
+            ]
+          }
+        },
+        {
+          "category": "integration",
+          "question": "What public API supports custom adapters and client instances?",
+          "facts": [
+            "AxiosAdapter accepts internal request config and returns AxiosPromise.",
+            "AxiosInstance supports request calls and create(config)."
+          ],
+          "sources": [
+            "index.d.ts"
+          ],
+          "sourceSpans": {
+            "index.d.ts": [
+              164,
+              715
+            ]
+          }
+        },
+        {
+          "category": "operations",
+          "question": "How should request timeouts be handled?",
+          "facts": [
+            "timeout is in milliseconds and aborts an overdue request.",
+            "Without a timeout a stalled request can hang indefinitely."
+          ],
+          "sources": [
+            "docs/pages/advanced/request-config.md",
+            "docs/pages/getting-started/first-steps.md"
+          ],
+          "sourceSpans": {
+            "docs/pages/advanced/request-config.md": [
+              135,
+              137
+            ],
+            "docs/pages/getting-started/first-steps.md": [
+              108,
+              117
+            ]
+          }
+        },
+        {
+          "category": "limitations",
+          "question": "What security assumptions must callers handle?",
+          "facts": [
+            "Default maxContentLength and maxBodyLength are unlimited.",
+            "baseURL constructs URLs; it is not a security boundary for untrusted URLs."
+          ],
+          "sources": [
+            "docs/pages/advanced/request-config.md"
+          ],
+          "sourceSpans": {
+            "docs/pages/advanced/request-config.md": [
+              5,
+              30
+            ]
+          }
+        },
+        {
+          "category": "evidence",
+          "question": "For an attested Axios release, what does provenance verification establish?",
+          "facts": [
+            "npm provenance binds the tarball to the GitHub Actions workflow and commit SHA.",
+            "npm audit signatures verifies provenance, not absence of bugs."
+          ],
+          "sources": [
+            "SECURITY.md"
+          ],
+          "sourceSpans": {
+            "SECURITY.md": [
+              18,
+              32
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "repository": "n8n-io/n8n",
+      "revision": "082b5d9190f4bc81d93c6a94d6d4692bed4660ca",
+      "scope": "Workflow automation and AI-agent platform",
+      "sources": {
+        "README.md": "9af8818267836df37f8d58cbb1db8c02c83cbd110118361811f4910d4de59eca",
+        "package.json": "51acd872da9904e17d104c663ac557271fa16bab97f57a6a5a4b081ed0ebf80a",
+        "LICENSE.md": "d2f621f59aa4c10eab79b6333e59d9d3d5b53307dcfd16dbd75e40e679e84965",
+        "packages/core/src/observability/tracing/span-sampling.ts": "ffd96a6a77449364c7f218910758eeae075d2d27183da224347d848497112457"
+      },
+      "questions": [
+        {
+          "category": "discovery",
+          "question": "What is n8n?",
+          "facts": [
+            "A platform for AI agents and workflow automation.",
+            "Combines a visual canvas and custom code, with self-hosted or cloud deployment."
+          ],
+          "sources": [
+            "README.md"
+          ],
+          "sourceSpans": {
+            "README.md": [
+              3,
+              5
+            ]
+          }
+        },
+        {
+          "category": "integration",
+          "question": "What are the documented quick-start entry points?",
+          "facts": [
+            "npx n8n provides a Node.js-based start path.",
+            "Docker exposes the editor at http://localhost:5678."
+          ],
+          "sources": [
+            "README.md"
+          ],
+          "sourceSpans": {
+            "README.md": [
+              18,
+              33
+            ]
+          }
+        },
+        {
+          "category": "operations",
+          "question": "Which process modes are exposed by the repository package?",
+          "facts": [
+            "The webhook script invokes packages/cli/bin/n8n webhook.",
+            "The worker script invokes packages/cli/bin/n8n worker."
+          ],
+          "sources": [
+            "package.json"
+          ],
+          "sourceSpans": {
+            "package.json": [
+              72,
+              73
+            ]
+          }
+        },
+        {
+          "category": "limitations",
+          "question": "What licensing restrictions affect source use?",
+          "facts": [
+            "Non-Enterprise source is governed by the Sustainable Use License.",
+            "Files or directories containing .ee require a valid n8n Enterprise License."
+          ],
+          "sources": [
+            "LICENSE.md"
+          ],
+          "sourceSpans": {
+            "LICENSE.md": [
+              5,
+              14
+            ]
+          }
+        },
+        {
+          "category": "evidence",
+          "question": "How does the documented Sentry transaction hook sample production webhooks?",
+          "facts": [
+            "Successful production webhook transactions may be sampled down to webhook.sampleRate.",
+            "Errored webhook transactions are exempt from this webhook sampling rule; this is not a guarantee of end-to-end telemetry retention."
+          ],
+          "sources": [
+            "packages/core/src/observability/tracing/span-sampling.ts"
+          ],
+          "sourceSpans": {
+            "packages/core/src/observability/tracing/span-sampling.ts": [
+              85,
+              140
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "benchmarkSha256": "06c32fe14455df5f64dd8243d25316390917d75b5e6d58ad5ae0fe93bc82dc78"
+}
