@@ -1013,3 +1013,4 @@
 | 2026-08-02 | P55-T10G5 | Archived REVIEW_p55_t10g5_capability_namespace_repair report |
 | 2026-08-02 | P55-T10G6 | Archived REVIEW_p55_t10g6_repeat_ten_repository_semantic_calibration report |
 | 2026-09-05 | P56-T1 | Archived Practical Utility Benchmark (PASS) |
+| 2026-09-05 | P56-T1 | Archived REVIEW_p56_t1_practical_utility_benchmark report |
