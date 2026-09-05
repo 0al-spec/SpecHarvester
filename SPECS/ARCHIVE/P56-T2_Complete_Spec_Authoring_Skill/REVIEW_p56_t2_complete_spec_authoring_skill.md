@@ -40,6 +40,11 @@ the frozen protocol. No subagent performed core authoring or implementation.
 
 ## Follow-Up
 
+GitHub review r3942137928 identified two valid structural support targets used
+by the assets but absent from the guide list. Added scope and
+provenance.sourceConfidence and distinguished structural paths from ID targets.
+No package behavior or validator changes were required.
+
 FOLLOW-UP skipped: no additional task is necessary. Existing T3 implements
 enforcement and delivery; T4-T6 establish actual practical usefulness. T1
 benchmark and Phase 55 historical outcomes remain unchanged.

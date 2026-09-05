@@ -50,10 +50,11 @@ plugin, config and schema. Effect kinds include filesystem_read/write,
 network_read/write, database_read/write, process_spawn, environment_read/write,
 log_write, event_emit, message_publish and state_mutation.
 
-`supports` may name `intent.summary`, `scope.includes`, `scope.excludes`,
+`supports` may name `intent.summary`, `scope`, `scope.includes`, `scope.excludes`,
 `provides.capabilities.<id>`, `interfaces.inbound.<id>`,
 `interfaces.outbound.<id>`, `constraints.<id>` or
-`effects.sideEffects.<id>`. IDs must exist in the same BoundarySpec.
+`effects.sideEffects.<id>` or `provenance.sourceConfidence`. IDs must exist in
+the same BoundarySpec; structural targets such as `scope` do not need an ID.
 Do not append `.intentIds` to a support target.
 
 ## Completeness without Invention
