@@ -16,6 +16,7 @@ Verdict: PASS for benchmark preparation, not for agent-first effectiveness.
 
 ## Checks
 
+- `PYTHONPATH=src .venv/bin/python -m pytest`: 1442 passed, 1 skipped after archive and T2 handoff.
 - `PYTHONPATH=src .venv/bin/python -m pytest tests/test_p56_practical_utility_benchmark.py tests/test_docs_contracts.py -q`: 204 passed.
 - `PYTHONPATH=src .venv/bin/python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90`: 1442 passed, 1 skipped; coverage 90.03%.
 - `.venv/bin/ruff check src tests`: passed.
