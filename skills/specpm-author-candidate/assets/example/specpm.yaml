@@ -1,0 +1,29 @@
+apiVersion: specpm.dev/v0.1
+kind: SpecPackage
+preview_only: true
+metadata:
+  id: example.rowpick
+  name: Rowpick Synthetic Example
+  version: 0.1.0
+  summary: Describe a fictional command that selects JSON records for local data inspection.
+  license: MIT
+  authors:
+    - name: 0AL Spec
+specs:
+  - path: specs/main.spec.yaml
+index:
+  provides:
+    capabilities:
+      - example.rowpick.filter
+  requires:
+    capabilities: []
+compatibility:
+  platforms: []
+  languages: []
+keywords:
+  - synthetic
+  - record-selection
+foreignArtifacts:
+  - id: license_notice
+    role: documentation
+    path: LICENSE.txt

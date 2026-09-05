@@ -1,0 +1,81 @@
+apiVersion: specpm.dev/v0.1
+kind: BoundarySpec
+metadata:
+  id: example.rowpick
+  title: Rowpick Documented Command Boundary
+  version: 0.1.0
+  status: draft
+intent:
+  summary: Help an operator isolate records with an exact field value from newline-delimited JSON without modifying the input file.
+scope:
+  boundedContext: local_record_inspection
+  includes:
+    - The fictional documented rowpick CLI for one top-level string field.
+    - Streaming matching records to stdout for downstream inspection.
+  excludes:
+    - Nested-field queries, joins and regular expressions.
+    - Platform and throughput guarantees, which are not specified by the source.
+provides:
+  capabilities:
+    - id: example.rowpick.filter
+      role: primary
+      summary: Select records matching an exact top-level string field value; missing or non-string fields do not match.
+requires:
+  capabilities: []
+interfaces:
+  inbound:
+    - id: filter_cli
+      kind: cli
+      summary: "Invoke rowpick events.jsonl --field level --equals error. UTF-8 JSON objects are read line by line. Exit 0 means completion even with no matches; exit 2 reports invalid JSON, a non-object row or an unreadable input. Earlier stdout rows may already have been emitted on error."
+      inputs:
+        - name: events.jsonl
+          mediaTypes:
+            - application/x-ndjson
+      outputs:
+        - name: stdout
+          mediaTypes:
+            - application/x-ndjson
+  outbound:
+    - id: input_file
+      kind: file
+      summary: Reads the caller-selected local UTF-8 newline-delimited JSON file; it does not replace it.
+constraints:
+  - id: utf8_objects
+    level: MUST
+    statement: Each input line must be a valid UTF-8 JSON object; malformed or non-object input stops processing with exit 2.
+  - id: partial_output
+    level: MUST
+    statement: Consumers requiring a complete result must inspect the exit status because an error can leave partial stdout output.
+  - id: filesystem_access
+    level: MUST
+    statement: The caller must have permission to read the supplied input file.
+effects:
+  sideEffects:
+    - id: input_read
+      kind: filesystem_read
+      summary: Reads the selected file; the documented command does not modify that file or access the network.
+evidence:
+  - id: command_document
+    kind: documentation
+    path: evidence/command.md
+    supports:
+      - intent.summary
+      - scope
+      - provides.capabilities.example.rowpick.filter
+      - interfaces.inbound.filter_cli
+      - interfaces.outbound.input_file
+      - constraints.utf8_objects
+      - constraints.partial_output
+      - constraints.filesystem_access
+      - effects.sideEffects.input_read
+  - id: source_context
+    kind: documentation
+    path: evidence/source-notes.md
+    supports:
+      - provenance.sourceConfidence
+provenance:
+  sourceConfidence:
+    intent: high
+    boundary: high
+    behavior: low
+implementationBindings: []

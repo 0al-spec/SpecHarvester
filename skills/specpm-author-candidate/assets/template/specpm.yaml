@@ -1,0 +1,26 @@
+apiVersion: specpm.dev/v0.1
+kind: SpecPackage
+preview_only: true
+metadata:
+  id: example.contract
+  name: Synthetic Contract Starter
+  version: 0.1.0
+  summary: Synthetic abstract contract for selecting records by a field value.
+  license: NOASSERTION
+  authors:
+    - name: Synthetic Example Author
+specs:
+  - path: specs/main.spec.yaml
+index:
+  provides:
+    capabilities:
+      - example.contract.select_records
+  requires:
+    capabilities: []
+compatibility:
+  platforms: []
+  languages: []
+keywords:
+  - synthetic
+  - abstract
+foreignArtifacts: []

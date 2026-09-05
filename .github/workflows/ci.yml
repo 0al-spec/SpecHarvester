@@ -88,7 +88,13 @@ jobs:
       - name: Install tools
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -e ./SpecHarvester -e ./SpecPM
+          python -m pip install -e "./SpecHarvester[dev]" -e ./SpecPM
+
+      - name: Validate authoring skill assets with SpecPM
+        working-directory: SpecHarvester
+        run: |
+          python -c "import specpm.core"
+          python -m pytest tests/test_authoring_skill_assets.py -q
 
       - name: Build fixture repository
         run: |

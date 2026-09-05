@@ -1,0 +1,51 @@
+apiVersion: specpm.dev/v0.1
+kind: BoundarySpec
+metadata:
+  id: example.contract
+  title: Synthetic Record Selection Contract
+  version: 0.1.0
+  status: draft
+intent:
+  summary: Define an abstract selection boundary so a consumer can request records matching one field value.
+scope:
+  boundedContext: synthetic_record_selection
+  includes:
+    - Describe input records and a field-value predicate.
+  excludes:
+    - An implemented record selection engine.
+    - Performance and platform guarantees, which are not established.
+provides:
+  capabilities:
+    - id: example.contract.select_records
+      role: primary
+      summary: Specify selection of matching records; no implementation is supplied.
+requires:
+  capabilities: []
+interfaces:
+  inbound:
+    - id: select
+      kind: schema
+      summary: Abstract input consists of records, field and value; output consists of matching records.
+  outbound: []
+constraints:
+  - id: abstract_only
+    level: MUST
+    statement: Consumers must not treat this synthetic abstract contract as an implemented service.
+effects:
+  sideEffects: []
+evidence:
+  - id: contract_document
+    kind: documentation
+    path: evidence/contract.md
+    supports:
+      - intent.summary
+      - scope
+      - provides.capabilities.example.contract.select_records
+      - interfaces.inbound.select
+      - constraints.abstract_only
+provenance:
+  sourceConfidence:
+    intent: high
+    boundary: high
+    behavior: unknown
+implementationBindings: []
