@@ -1,11 +1,12 @@
 # Tasks Archive
 
-**Last Updated:** 2026-08-02
+**Last Updated:** 2026-09-05
 
 ## Archived Tasks
 
 | Task ID | Folder | Archived | Verdict |
 |---------|--------|----------|---------|
+| P56-T1 | [P56-T1_Practical_Utility_Benchmark/](P56-T1_Practical_Utility_Benchmark/) | 2026-09-05 | PASS |
 | P0-T1 | [P0-T1_Configure_Flow_Operating_Scaffold/](P0-T1_Configure_Flow_Operating_Scaffold/) | 2026-05-17 | PASS |
 | P1-T1 | [P1-T1_Define_PublicInterfaceIndex_Snapshot_Schema/](P1-T1_Define_PublicInterfaceIndex_Snapshot_Schema/) | 2026-05-17 | PASS |
 | P1-T2 | [P1-T2_Add_Python_Static_Public_API_Analyzer_Using_ast/](P1-T2_Add_Python_Static_Public_API_Analyzer_Using_ast/) | 2026-05-17 | PASS |
@@ -1011,3 +1012,5 @@
 | 2026-08-02 | P55-T10G5 | Archived Capability Namespace Repair (PASS) |
 | 2026-08-02 | P55-T10G5 | Archived REVIEW_p55_t10g5_capability_namespace_repair report |
 | 2026-08-02 | P55-T10G6 | Archived REVIEW_p55_t10g6_repeat_ten_repository_semantic_calibration report |
+| 2026-09-05 | P56-T1 | Archived Practical Utility Benchmark (PASS) |
+| 2026-09-05 | P56-T1 | Archived REVIEW_p56_t1_practical_utility_benchmark report |

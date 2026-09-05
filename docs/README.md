@@ -5,6 +5,11 @@ Current mass semantic-author execution evidence is documented in
 
 This directory is the operator and design entrypoint for SpecHarvester.
 
+The planned agent-first comparison uses the
+[P56-T1 practical utility benchmark](P56_T1_Practical_Utility_Benchmark.md).
+It measures package usefulness against the existing pipeline and pinned README;
+it is an experiment protocol, not a completed quality result.
+
 Use it the same way the SpecPM repository uses GitHub-facing documentation:
 start from the workflow, then drill into architecture, trust boundaries, and
 automation details.
