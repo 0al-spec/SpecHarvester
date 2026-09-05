@@ -20,6 +20,14 @@ source ranges/digests, actual provider settings, costs and failures. Reuse
 existing infrastructure without running harvested code or package managers.
 Prepare the pre-run lock before T4; no scored five-repository generation yet.
 
+## P56-T3 Progress
+
+Caller-side pinned source reads, shared evidence accounting, portable read
+ledger and bounded new-output sink are implemented and tested. This is not
+runtime isolation or experimental readiness. Provider integration, hard
+deadlines, actual denial probes, trusted validation and the paired execution
+lock remain outstanding. See docs/P56_T3_Bounded_Authoring_Runner.md.
+
 P55-T10G7 through P55-T10G10, P55-T10H, and P55-T11 are paused pending the
 P56-T8 architecture decision. Phase 56 may proceed from the existing PARTIAL
 evidence without passing the historical Phase 55 gates. Their historical

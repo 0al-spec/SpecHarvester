@@ -51,6 +51,6 @@ The independent Luna-medium Logrus smoke is not experimental evidence.
 
 ## Branch
 
-Started atop unmerged P56-T2 (#371) to retain the skill dependency. Until that
-PR is merged, the incremental PR base is its feature branch. User-owned
-untracked uv.lock is excluded. No merge is inferred from task execution.
+Started atop unmerged P56-T2 (#371) to retain the skill dependency. After explicit
+maintainer approval, #371 was merged at 9ccbc48a4c469450571420b655b3a8c6a421838c
+and this branch rebased onto main. User-owned untracked uv.lock is excluded.
