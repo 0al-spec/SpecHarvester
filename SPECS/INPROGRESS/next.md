@@ -3,7 +3,7 @@
 **Priority:** P0
 **Phase:** Phase 56. Agent-First Spec Authoring and Practical Utility Evaluation
 **Dependencies:** `P56-T2` Complete Spec Authoring Contract and Repository Skill; `P56-T1` Practical Utility Benchmark
-**Status:** Ready
+**Status:** In Progress
 
 ## Objective
 
@@ -19,6 +19,14 @@ Validate complete packages with trusted SpecPM and record selected boundaries,
 source ranges/digests, actual provider settings, costs and failures. Reuse
 existing infrastructure without running harvested code or package managers.
 Prepare the pre-run lock before T4; no scored five-repository generation yet.
+
+## P56-T3 Progress
+
+Caller-side pinned source reads, shared evidence accounting, portable read
+ledger and bounded new-output sink are implemented and tested. This is not
+runtime isolation or experimental readiness. Provider integration, hard
+deadlines, actual denial probes, trusted validation and the paired execution
+lock remain outstanding. See docs/P56_T3_Bounded_Authoring_Runner.md.
 
 P55-T10G7 through P55-T10G10, P55-T10H, and P55-T11 are paused pending the
 P56-T8 architecture decision. Phase 56 may proceed from the existing PARTIAL
