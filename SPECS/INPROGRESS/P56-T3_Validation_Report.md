@@ -34,7 +34,9 @@ Verdict: IN PROGRESS; I/O implementation checkpoint only
   were the shared docs-contract assertion that permitted only Ready rather
   than the selected In Progress status. The assertion now accepts the same
   lifecycle states as neighboring Phase 56 tasks.
-- Corrected full coverage run: pending completion.
+- `.venv/bin/python -m pytest -q --tb=short --cov=spec_harvester
+  --cov-report=term --cov-fail-under=90`: 1475 passed, six skipped;
+  90.07% coverage. The corrected full run passed.
 
 ## Remaining Acceptance
 
