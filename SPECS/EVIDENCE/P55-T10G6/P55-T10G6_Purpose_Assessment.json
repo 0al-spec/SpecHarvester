@@ -1,0 +1,70 @@
+{
+  "acceptanceAuthorityGranted": false,
+  "apiVersion": "spec-harvester.semantic-purpose-supervisor-assessment/v0",
+  "assessmentSha256": "49336263c443e27bf209559463826fb5f0789411116673ce6565cb869f6901e3",
+  "assessments": [
+    {
+      "purposeAccurate": true,
+      "rationale": "Identifies Axios as a Promise-based HTTP client for browser and Node.js API request and response workflows.",
+      "recordSha256": "73911e028dc5df2c684b479fdfc3326afc87347d5c0db98b9d88f82d7b309b21",
+      "repositoryId": "axios-axios"
+    },
+    {
+      "purposeAccurate": true,
+      "rationale": "Describes the selected n8n agents package as an SDK for developers building AI agent capabilities in the code-first execution engine.",
+      "recordSha256": "9e64491bcc4f8eda734ce706227d2c1a4a203054dfaad9c75426dadc431426f4",
+      "repositoryId": "n8n-io-n8n"
+    },
+    {
+      "purposeAccurate": true,
+      "rationale": "Connects the Firecrawl package to downstream web search and scraping API workflows rather than package metadata mechanics.",
+      "recordSha256": "97199ae5b16067064a67d50d9defe0ad25c00a785eb26334715b8ce6eb0a9163",
+      "repositoryId": "firecrawl-firecrawl"
+    },
+    {
+      "purposeAccurate": false,
+      "rationale": "Centers manifest-oriented discovery and build metadata extraction instead of Bitcoin Core's supported user outcome.",
+      "recordSha256": "9f05fe95bc171d77d958aa8cd204ad35346be75adcef8a34f2dc9fa843102d74",
+      "repositoryId": "bitcoin-bitcoin"
+    },
+    {
+      "purposeAccurate": true,
+      "rationale": "Describes the selected Excalidraw common package as shared utilities and constants that downstream projects can install and use.",
+      "recordSha256": "ff95b35d46fa03b3cad65c7d5a1898b5a41412420701269b3d64ffea6c13edbf",
+      "repositoryId": "excalidraw-excalidraw"
+    },
+    {
+      "purposeAccurate": true,
+      "rationale": "Identifies Codex CLI as a locally executed coding agent reached through the codex command-line workflow.",
+      "recordSha256": "c77c2e9c66b489c7b62cf3a613e88b499ad6a0d117eaa2784a37efd9e4342d09",
+      "repositoryId": "openai-codex"
+    },
+    {
+      "purposeAccurate": true,
+      "rationale": "Captures claude-mem context compression, persistence, and reuse across Claude Code sessions.",
+      "recordSha256": "abe023efdfac15c3e61a6a775f74b1b1211f3cc9f90becd43e4cfe5e76726594",
+      "repositoryId": "thedotmack-claude-mem"
+    },
+    {
+      "purposeAccurate": true,
+      "rationale": "Describes the selected Angular docs package's local build and preview workflow for documentation changes.",
+      "recordSha256": "569fffb87f50a6f90375c30982f87b16a58fb578116fb93f4d66f17ead1177fc",
+      "repositoryId": "angular-angular"
+    },
+    {
+      "purposeAccurate": false,
+      "rationale": "Describes generic JavaScript import mechanics instead of the selected dialog-helper's concrete user-facing outcome.",
+      "recordSha256": "1d56930b9a6f96f979eb87ffbe32ef6b8dcbad93dd094ea49541ac8ef7b32b18",
+      "repositoryId": "electron-electron"
+    },
+    {
+      "purposeAccurate": true,
+      "rationale": "Connects the selected freeCodeCamp API package to curriculum-related functionality that consumers integrate through its API surface.",
+      "recordSha256": "cc98957a2e3c8e6ba20a8cf185e6a40a01c861f2a6b3420e7b896b790e9803ee",
+      "repositoryId": "freecodecamp-freecodecamp"
+    }
+  ],
+  "authority": "calibration_measurement_only",
+  "kind": "SpecHarvesterSemanticPurposeSupervisorAssessment",
+  "schemaVersion": 1
+}

@@ -269,6 +269,7 @@
 | P55-T10F | [P55-T10F_Relevant_Intent_Routing_and_Generic_Contradiction_Gate/](P55-T10F_Relevant_Intent_Routing_and_Generic_Contradiction_Gate/) | 2026-08-01 | PASS |
 | P55-T10G | [P55-T10G_Ten-Repository_Semantic_Root-Cause_Calibration/](P55-T10G_Ten-Repository_Semantic_Root-Cause_Calibration/) | 2026-08-01 | PARTIAL |
 | P55-T10G5 | [P55-T10G5_Capability_Namespace_Repair/](P55-T10G5_Capability_Namespace_Repair/) | 2026-08-02 | PASS |
+| P55-T10G6 | [P55-T10G6_Repeat_Ten-Repository_Semantic_Calibration/](P55-T10G6_Repeat_Ten-Repository_Semantic_Calibration/) | 2026-08-02 | PARTIAL |
 
 ## Historical Artifacts
 
@@ -1009,3 +1010,4 @@
 | 2026-08-02 | P55-T10G4 | Archived REVIEW_p55_t10g4_outcome_anchor_source_authority_ranking report |
 | 2026-08-02 | P55-T10G5 | Archived Capability Namespace Repair (PASS) |
 | 2026-08-02 | P55-T10G5 | Archived REVIEW_p55_t10g5_capability_namespace_repair report |
+| 2026-08-02 | P55-T10G6 | Archived REVIEW_p55_t10g6_repeat_ten_repository_semantic_calibration report |

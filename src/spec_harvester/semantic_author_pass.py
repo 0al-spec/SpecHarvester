@@ -552,10 +552,9 @@ def _structured_output_schema(provider_payload: dict[str, Any]) -> dict[str, Any
         "intentDecisions": {"type": "array", "items": intent},
         REPAIR_FIELD: {"type": "array", "items": capability_namespace_repair},
     }
-    return _strict_object_schema(
-        properties,
-        required=[key for key in properties if key != REPAIR_FIELD],
-    )
+    # Codex structured output requires every declared property to be required.
+    # Transport padding is removed by semantic validation when it is not meaningful.
+    return _strict_object_schema(properties)
 
 
 def _strict_object_schema(
@@ -938,7 +937,8 @@ def _system_prompt() -> str:
         "$defs, JSON Pointer, or schema objects in proposal value fields. Describe the concrete "
         "user outcome before implementation shape, follow semanticFocus only when supported by "
         "the supplied evidence, and keep capability identifiers under the candidate namespace. "
-        "When capabilityNamespaceRepairRequirements is present, return one proposal-only "
+        "Always include capabilityNamespaceRepairs: return an empty array when no "
+        "capabilityNamespaceRepairRequirements are present; otherwise return one proposal-only "
         "capabilityNamespaceRepairs entry for every prohibited capability ID, with its "
         "replacementCapabilityId matching the supplied replacementIdPattern. "
         "The purpose claim must include at least one exact complete term, with the same spelling, "
