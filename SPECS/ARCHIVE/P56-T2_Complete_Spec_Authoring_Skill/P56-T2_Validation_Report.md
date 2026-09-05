@@ -14,6 +14,7 @@ Verdict: PASS for skill/asset delivery, not for live authoring quality.
 
 ## Executed Checks
 
+- `PYTHONPATH=src .venv/bin/python -m pytest`: 1445 passed, 6 skipped after archive and T3 handoff.
 - `PYTHONPATH=src .venv/bin/python -m pytest --cov=spec_harvester --cov-report=term-missing --cov-fail-under=90`: 1445 passed, 6 skipped; coverage 90.03%.
 - `PYTHONPATH=../SpecPM/src:src .venv/bin/python -m pytest tests/test_authoring_skill_assets.py tests/test_p56_practical_utility_benchmark.py tests/test_docs_contracts.py -q`: 212 passed.
 - `PYTHONPATH=../SpecPM/src:src .venv/bin/python -m pytest tests/test_authoring_skill_assets.py -q`: 8 passed, including all five external-validator cases skipped in Python-only testing.
