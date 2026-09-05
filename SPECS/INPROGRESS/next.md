@@ -1,24 +1,23 @@
-# Next Task: P56-T1 Freeze Practical Utility Benchmark and Experiment Scope
+# Next Task: P56-T2 Define Complete Spec Authoring Contract and Repository Skill
 
 **Priority:** P0
 **Phase:** Phase 56. Agent-First Spec Authoring and Practical Utility Evaluation
-**Dependencies:** `P55-T10G6` Repeat Ten-Repository Semantic Calibration
-**Status:** In Progress
+**Dependencies:** `P56-T1` Practical Utility Benchmark
+**Status:** Ready
 
 ## Objective
 
-Freeze a five-repository comparison of agent-first authoring, the current
-pipeline, and a pinned README baseline. Measure practical usefulness for
-discovery and integration, not just schema validity or intent novelty.
+Define a repository-owned skill, valid SpecPM package templates and a worked
+example for useful source-investigating authoring under the frozen T1 protocol.
 
 ## Required Scope
 
-Select five pinned repositories including openai/codex, bitcoin/bitcoin, and
-a monorepo. Freeze user scenarios, intended scope, reference answers, numerical
-go/no-go thresholds, model/settings, budgets, and failure accounting before
-authoring. The paired authoring arms use the same model; Codex 5.3 Spark is the
-planned worker. Keep reference answers and benchmark questions out of authoring
-inputs. Do not invoke a provider in this planning task.
+Build on the existing specpm-author-spec workflow. Include valid specpm.yaml
+and BoundarySpec templates, practical scenarios, capabilities, interfaces,
+constraints, dependencies, non-goals and source evidence in supported fields.
+Allow justified package boundaries and explicit unknowns. Keep reference answers
+and benchmark questions out of the repository-owned skill and worker inputs.
+Do not optimize literal keywords or intent novelty. No scored generation yet.
 
 P55-T10G7 through P55-T10G10, P55-T10H, and P55-T11 are paused pending the
 P56-T8 architecture decision. Phase 56 may proceed from the existing PARTIAL
@@ -26,6 +25,11 @@ evidence without passing the historical Phase 55 gates. Their historical
 results remain unchanged, and no publication authority is granted.
 
 ## Recently Archived
+
+- `P56-T1` Practical Utility Benchmark: PASS for preparation. Five source-pinned
+  repositories, 25 questions, 50 canonical facts, frozen comparison budgets and
+  human-reviewed practical utility gates. No effectiveness result or publication
+  approval is implied. See docs/P56_T1_Practical_Utility_Benchmark.md.
 
 - `P55-T10G6` Repeat Ten-Repository Semantic Calibration: PARTIAL. The final
   Codex 5.3 Spark rerun completed all ten frozen targets, produced schema-valid

@@ -37,3 +37,7 @@ P55 gates remain unchanged. No candidate generation or publication runs here.
 Two read-only GPT 5.6 Luna agents at high reasoning research source answers
 and experimental validity independently. The main agent owns all edits and Git
 state. A fresh read-only reviewer checks the integrated artifact.
+
+---
+**Archived:** 2026-09-05
+**Verdict:** PASS

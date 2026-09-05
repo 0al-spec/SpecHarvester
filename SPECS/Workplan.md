@@ -3086,7 +3086,7 @@ Goal:
 
 Tasks:
 
-- [ ] `P56-T1` Freeze Practical Utility Benchmark and Experiment Scope. Select
+- [x] `P56-T1` Freeze Practical Utility Benchmark and Experiment Scope. Select
   five diverse repositories including openai/codex, bitcoin/bitcoin, and a
   monorepo; freeze revisions, user scenarios, intended product/package scope,
   reference answers, scoring rubric, and numerical go/no-go thresholds before
