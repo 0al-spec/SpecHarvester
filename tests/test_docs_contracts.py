@@ -39,6 +39,20 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if next_text.startswith(
+        "# Next Task: P56-T1 Freeze Practical Utility Benchmark and Experiment Scope"
+    ):
+        normalized = " ".join(next_text.split())
+        assert any(
+            status in next_text
+            for status in ("**Status:** Ready", "**Status:** Selected", "**Status:** In Progress")
+        )
+        assert "`P55-T10G6` Repeat Ten-Repository Semantic Calibration" in next_text
+        assert "openai/codex, bitcoin/bitcoin, and a monorepo" in normalized
+        assert "Do not invoke a provider" in normalized
+        assert "paused pending the P56-T8 architecture decision" in normalized
+        return
+
     if "# Next Task: P55-T10D Semantic Repair Context Preservation" in next_text:
         normalized = " ".join(next_text.split())
         assert any(
