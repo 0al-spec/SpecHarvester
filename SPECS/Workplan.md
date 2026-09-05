@@ -2933,8 +2933,36 @@ Acceptance:
   P55-T10C baseline, thresholds, denominators, purpose rubric, and budgets.
   P55-T10H may proceed only if every unchanged gate passes with zero false
   novelty and no duplicate experimental intent IDs or semantic stems.
+- [ ] `P55-T10G7` Purpose Anchor Coverage Repair. Build deterministic,
+  digest-bound outcome-anchor coverage for the P55-T10G6 Bitcoin Core,
+  Electron dialog-helper, and Firecrawl failures. Prefer repository and
+  package-local documentation over build, manifest, import, and generated
+  mechanics; identify candidates without sufficient authoritative outcome
+  evidence as review-required. Do not invoke a provider, change frozen gates,
+  materialize, canonicalize, publish, or mutate SpecPM or registry truth.
+- [ ] `P55-T10G8` Purpose-Diagnostic-Aware Semantic Repair. Carry the exact
+  outcome-anchor coverage and `purpose_outcome_anchor_missing` diagnostic into
+  the bounded semantic-author validation and repair path. Reject a
+  mechanics-only purpose instead of treating a schema-valid proposal as
+  calibration-eligible; preserve Codex 5.3 Spark's two-attempt and one-repair
+  budgets, provider neutrality, proposal-only authority, and privacy boundary.
+- [ ] `P55-T10G9` Targeted Three-Repository Semantic Quality Calibration. Run
+  only `bitcoin/bitcoin`, `electron/electron`, and `firecrawl/firecrawl` at
+  their P55-T10G6 pinned revisions with Codex 5.3 Spark and a digest-bound
+  baseline. Require accurate source-supported purpose, no
+  `purpose_outcome_anchor_missing` reviewer requirement, schema-valid and
+  evidence-supported proposals, zero false novelty, and zero duplicate
+  experimental intent IDs or semantic stems. Do not change static candidates,
+  accept, materialize, canonicalize, publish, or mutate registry truth.
+- [ ] `P55-T10G10` Repeat Ten-Repository Semantic Exit Calibration. Repeat the
+  exact P55-T10G ten-repository scope with the same immutable baseline,
+  Codex 5.3 Spark model, thresholds, denominators, purpose rubric, and attempt
+  budgets after P55-T10G7 through P55-T10G9. P55-T10H may proceed only if all
+  unchanged gates pass: purpose accuracy at least 0.85, reviewer edit burden
+  at most 0.25, schema and evidence rates at their frozen thresholds, reduced
+  generic reuse, and zero false novelty or duplicate experimental IDs or stems.
 - [ ] `P55-T10H` Revalidate the exact 46-repository generic-intent scope only if
-  P55-T10G6 passes the frozen P55-T10G gates. Use Codex 5.3 Spark as the primary
+  P55-T10G10 passes the frozen P55-T10G gates. Use Codex 5.3 Spark as the primary
   worker, permit a separate digest-bound recovery model only for verified
   usage-limit failures, and compare all terminal records with P55-T10 and
   P55-T10C without accepting, materializing, canonicalizing, or publishing
@@ -3014,8 +3042,9 @@ Acceptance:
   P55-T10H must address the context, product-profile, and routing root causes.
 - P55-T10D through P55-T10F must complete before P55-T10G. P55-T10G1 and
   P55-T10G2 must complete before P55-T10G3. P55-T10G4 and P55-T10G5 must
-  complete before P55-T10G6. P55-T10H may run only after P55-T10G6 meets the
-  frozen purpose, generic-reduction, false-novelty,
+  complete before P55-T10G6. P55-T10G7 and P55-T10G8 must complete before
+  P55-T10G9, and P55-T10G9 must complete before P55-T10G10. P55-T10H may run
+  only after P55-T10G10 meets the frozen purpose, generic-reduction, false-novelty,
   provider-failure, and reviewer-burden gates.
 - P55-T11 remains blocked until P55-T10D through P55-T10H complete and their
   Workbench review evidence distinguishes useful experimental intents from

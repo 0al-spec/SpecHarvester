@@ -1,24 +1,25 @@
-# Next Task: P55-T10H Forty-Six-Repository Semantic Revalidation
+# Next Task: P55-T10G7 Purpose Anchor Coverage Repair
 
 **Priority:** P0
 **Phase:** Phase 55. Evidence-Grounded AI Semantic Authoring
 **Dependencies:** `P55-T10G6` Repeat Ten-Repository Semantic Calibration
-**Status:** Blocked
+**Status:** Ready
 
 ## Objective
 
-Revalidate the exact 46-repository generic-intent scope with Codex 5.3 Spark
-only after the frozen ten-repository quality gate is fully satisfied.
+Repair deterministic purpose-anchor coverage for the three P55-T10G6
+review-required cases before another provider calibration is attempted.
 
 ## Required Scope
 
-P55-T10G6 completed all ten records with schema and evidence rates of 1.00 and
-zero generic reuse, false novelty, or duplicate experimental intents. It did
-not meet the unchanged purpose accuracy (0.80 < 0.85) or reviewer edit burden
-(0.30 > 0.25) gates. Do not run the exact 46-repository generic-intent scope
-until a targeted follow-up closes both gaps. Any later revalidation must remain
-proposal-only, without accepting, materializing, canonicalizing, or publishing
-any result.
+Create deterministic, digest-bound outcome-anchor coverage for Bitcoin Core,
+Electron dialog-helper, and Firecrawl. Strong repository or package-local
+documentation must outrank build, manifest, import, generated-preview, and
+other implementation mechanics. Identify insufficient source authority as
+review-required. Do not invoke a provider, change frozen thresholds, alter the
+ten-repository scope, or accept, materialize, canonicalize, or publish any
+proposal. P55-T10H remains blocked until P55-T10G10 passes every unchanged
+exit gate.
 
 ## Recently Archived
 
