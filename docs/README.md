@@ -10,6 +10,9 @@ The planned agent-first comparison uses the
 It measures package usefulness against the existing pipeline and pinned README;
 it is an experiment protocol, not a completed quality result.
 
+The [P56-T2 authoring skill](P56_T2_Complete_Spec_Authoring_Skill.md) supplies
+complete candidate templates and a synthetic example for that experiment.
+
 Use it the same way the SpecPM repository uses GitHub-facing documentation:
 start from the workflow, then drill into architecture, trust boundaries, and
 automation details.
