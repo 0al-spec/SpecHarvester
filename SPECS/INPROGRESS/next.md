@@ -3,7 +3,7 @@
 **Priority:** P0
 **Phase:** Phase 56. Agent-First Spec Authoring and Practical Utility Evaluation
 **Dependencies:** `P56-T1` Practical Utility Benchmark
-**Status:** Ready
+**Status:** In Progress
 
 ## Objective
 
