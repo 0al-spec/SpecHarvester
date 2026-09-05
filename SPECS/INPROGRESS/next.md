@@ -1,23 +1,24 @@
-# Next Task: P56-T2 Define Complete Spec Authoring Contract and Repository Skill
+# Next Task: P56-T3 Implement Bounded Investigative Authoring Runner
 
 **Priority:** P0
 **Phase:** Phase 56. Agent-First Spec Authoring and Practical Utility Evaluation
-**Dependencies:** `P56-T1` Practical Utility Benchmark
-**Status:** In Progress
+**Dependencies:** `P56-T2` Complete Spec Authoring Contract and Repository Skill; `P56-T1` Practical Utility Benchmark
+**Status:** Ready
 
 ## Objective
 
-Define a repository-owned skill, valid SpecPM package templates and a worked
-example for useful source-investigating authoring under the frozen T1 protocol.
+Implement a bounded file-producing runner for the repository-owned authoring
+skill, with caller-enforced isolation and read-only source investigation.
 
 ## Required Scope
 
-Build on the existing specpm-author-spec workflow. Include valid specpm.yaml
-and BoundarySpec templates, practical scenarios, capabilities, interfaces,
-constraints, dependencies, non-goals and source evidence in supported fields.
-Allow justified package boundaries and explicit unknowns. Keep reference answers
-and benchmark questions out of the repository-owned skill and worker inputs.
-Do not optimize literal keywords or intent novelty. No scored generation yet.
+Use skills/specpm-author-candidate without exposing the maintainer checkout,
+benchmark questions, reference answers or sibling outputs. Enforce T1 budgets,
+source/output allowlists, denial probes, retry limits and portable evidence.
+Validate complete packages with trusted SpecPM and record selected boundaries,
+source ranges/digests, actual provider settings, costs and failures. Reuse
+existing infrastructure without running harvested code or package managers.
+Prepare the pre-run lock before T4; no scored five-repository generation yet.
 
 P55-T10G7 through P55-T10G10, P55-T10H, and P55-T11 are paused pending the
 P56-T8 architecture decision. Phase 56 may proceed from the existing PARTIAL
@@ -25,6 +26,11 @@ evidence without passing the historical Phase 55 gates. Their historical
 results remain unchanged, and no publication authority is granted.
 
 ## Recently Archived
+
+- `P56-T2` Complete Spec Authoring Skill: PASS. Self-contained investigative
+  skill, supported-field guide, valid starter and fictional worked example.
+  Both assets validate with SpecPM; only the intentional preview warning remains.
+  No live generation or quality claim. Runtime enforcement belongs to T3.
 
 - `P56-T1` Practical Utility Benchmark: PASS for preparation. Five source-pinned
   repositories, 25 questions, 50 canonical facts, frozen comparison budgets and

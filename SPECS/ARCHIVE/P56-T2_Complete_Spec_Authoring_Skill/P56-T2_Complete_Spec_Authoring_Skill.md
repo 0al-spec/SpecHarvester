@@ -33,3 +33,7 @@ unchanged; runner enforcement belongs to T3, generation to T4.
 
 Run focused asset tests, skill validation, external SpecPM validation, full
 pytest/coverage, Ruff, Swift manifest/build and diff hygiene before archiving.
+
+---
+**Archived:** 2026-09-06
+**Verdict:** PASS

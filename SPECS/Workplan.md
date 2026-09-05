@@ -3093,7 +3093,7 @@ Tasks:
   authoring. Cover discovery, integration, supported operations, limitations,
   and evidence verification. Record P55-T10G6 as historical context and the
   paused Phase 55 tasks as explicit dependencies to disposition, not blockers.
-- [ ] `P56-T2` Define Complete Spec Authoring Contract and Repository Skill.
+- [x] `P56-T2` Define Complete Spec Authoring Contract and Repository Skill.
   Version a repository-owned skill based on the existing specpm-author-spec
   workflow, with valid specpm.yaml and BoundarySpec templates and a worked
   example. Require useful scenarios, capabilities, interfaces, constraints,
