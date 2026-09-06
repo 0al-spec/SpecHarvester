@@ -44,6 +44,7 @@ def assert_current_next_task(next_text: str) -> None:
             "# Next Task: P56-T3A Simplify Exploratory Pilot Protocol",
             "# Next Task: P56-T4 Generate Five Exploratory Candidate Packages",
             "# Next Task: P56-T5 Prepare Side-by-Side Package Review",
+            "# Next Task: P56-T6 Review Five Packages for Practical Utility",
         )
     ):
         assert any(

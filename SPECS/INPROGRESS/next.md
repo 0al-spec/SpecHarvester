@@ -1,22 +1,26 @@
-# Next Task: P56-T5 Prepare Side-by-Side Package Review
+# Next Task: P56-T6 Review Five Packages for Practical Utility
 
 **Priority:** P0
 **Phase:** Phase 56. Agent-First Spec Authoring and Practical Utility Evaluation
-**Dependencies:** `P56-T4` Five Exploratory Candidate Packages; `P56-T3A` protocol
-**Status:** In Progress
+**Dependencies:** `P56-T5` Side-by-Side Package Review; `P56-T4` originals; `P56-T3A` protocol
+**Status:** Ready
 
 ## Objective
 
-Present all five original Luna medium candidates under
-p56-exploratory-authoring/v2 beside pinned README and both retained baseline
-types, using existing Workbench or existing offline rendering.
+Review all five original Luna medium candidates under
+p56-exploratory-authoring/v2 beside pinned README and retained baseline types,
+using the prepared local side-by-side view. Record explicit maintainer findings,
+not an automatically inferred quality score.
 
 ## Required Scope
 
-Use the digest-bound P56-T4 archive and baseline lock. Surface warnings, evidence
-defects, omitted provenance and historical boundary/source-bundle mismatches.
-Do not fix or regenerate originals, materialize rejected historical proposals,
-hide unavailable usage, or invent human scores. T6 owns practical human review.
+Use P56-T5 comparison routes and empty human-review-template.json. For each
+surface record answers to the five practical questions, source-backed reasons
+and additional lookups separately. Record material errors, useful information,
+edits and review/edit minutes. Stop correction work after twenty minutes and
+mark unfinished work explicitly. Preserve originals and distinguish AI notes
+from maintainer disposition. README source-text presentation is a viewer limit,
+not a content failure. Do not materialize historical proposals or invent scores.
 P56-T3 and draft PR #372 remain deferred and unmerged, not prerequisites.
 No automatic acceptance/publication or new review application.
 
@@ -26,6 +30,10 @@ evidence without passing the historical Phase 55 gates. Their historical
 results remain unchanged, and no publication authority is granted.
 
 ## Recently Archived
+
+- `P56-T5` Side-by-Side Package Review: PASS for preparation. Five original
+  candidates, pinned README and retained sets/proposals are reachable through
+  a local offline comparison; all files unchanged. Human review remains pending.
 
 - `P56-T4` Five Exploratory Candidate Packages: PASS for collection only.
   Five originals, zero validation errors, seven warnings, zero repairs and

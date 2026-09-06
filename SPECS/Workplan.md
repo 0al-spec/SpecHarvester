@@ -3134,10 +3134,13 @@ Tasks:
   **Collected 2026-09-06:** five originals, zero SpecPM errors, seven warnings,
   zero repairs; unchanged sources. Evidence-fidelity defects retained for T6;
   collection completion is not practical-utility approval.
-- [ ] `P56-T5` Prepare Side-by-Side Package Review. Show each new candidate,
+- [x] `P56-T5` Prepare Side-by-Side Package Review. Show each new candidate,
   pinned README and retained prior package/proposal in existing Workbench or
   existing offline rendering. Label provenance, missing baselines and boundary,
   revision or model mismatches explicitly. No blinded labels or new review app.
+  **Prepared 2026-09-06:** offline comparison reuses static renderer; all five
+  originals and all 84 retained packages visible, with separate semantic layers.
+  README shown as escaped source text; human usefulness review pending in T6.
 - [ ] `P56-T6` Review Five Packages for Practical Utility. A maintainer reviews
   purpose, getting started, operations, limitations and supporting evidence.
   Record supported/partial/missing/incorrect answers, additional lookups,
