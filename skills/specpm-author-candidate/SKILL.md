@@ -57,6 +57,11 @@ capabilities; explain useful scenarios in summaries and interface descriptions.
 Record limitations, non-goals, runtime prerequisites, side effects and unknowns
 in the supported fields described in the guide.
 
+Before finalizing effects, trace data across the chosen boundary: what leaves,
+where it goes, what returns and under which configuration. Apply the
+[data-flow review in the field guide](references/authoring-contract.md) to each
+external interaction; receiving a response does not make a request read-only.
+
 Use package-owned capability IDs. Canonical intent IDs are optional: reuse only
 an exact relevant ID from a caller-supplied approved catalog. When none fits,
 keep the precise natural-language purpose and capabilities without fabricating
@@ -85,7 +90,9 @@ Never repair by changing the validator, budgets or source evidence.
 
 Check that the package index equals the declared capabilities, source paths
 are portable, claims retain their qualifiers and the chosen boundary matches
-the task. Schema validity does not prove factual correctness or usefulness.
+the task. Cross-check effect kinds and disclosure summaries against the source
+inputs and destinations, not just the list of valid enum values. Schema validity
+does not prove factual correctness or usefulness.
 Retain unresolved warnings/errors and stop on budget exhaustion. If validation
 is unavailable, label the result unvalidated; do not claim success.
 
