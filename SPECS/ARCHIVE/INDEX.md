@@ -6,6 +6,7 @@
 
 | Task ID | Folder | Archived | Verdict |
 |---------|--------|----------|---------|
+| P56-T3A | [P56-T3A_Exploratory_Pilot_Protocol/](P56-T3A_Exploratory_Pilot_Protocol/) | 2026-09-06 | PASS |
 | P56-T2 | [P56-T2_Complete_Spec_Authoring_Skill/](P56-T2_Complete_Spec_Authoring_Skill/) | 2026-09-06 | PASS |
 | P56-T1 | [P56-T1_Practical_Utility_Benchmark/](P56-T1_Practical_Utility_Benchmark/) | 2026-09-05 | PASS |
 | P0-T1 | [P0-T1_Configure_Flow_Operating_Scaffold/](P0-T1_Configure_Flow_Operating_Scaffold/) | 2026-05-17 | PASS |
@@ -1017,3 +1018,4 @@
 | 2026-09-05 | P56-T1 | Archived REVIEW_p56_t1_practical_utility_benchmark report |
 | 2026-09-06 | P56-T2 | Archived Complete Spec Authoring Skill (PASS) |
 | 2026-09-06 | P56-T2 | Archived REVIEW_p56_t2_complete_spec_authoring_skill report |
+| 2026-09-06 | P56-T3A | Archived Exploratory Pilot Protocol (PASS for preparation) |

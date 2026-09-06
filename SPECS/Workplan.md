@@ -3120,7 +3120,7 @@ Tasks:
   SpecPM and preserve uncertainty rather than inventing behavior.
   **Deferred under v2.** Draft PR #372 is an unfinished I/O checkpoint, remains
   unmerged, and is not a dependency of the exploratory pilot.
-- [ ] `P56-T3A` Simplify Exploratory Pilot Protocol. Record v2 with the same five
+- [x] `P56-T3A` Simplify Exploratory Pilot Protocol. Record v2 with the same five
   source-pinned targets, Luna medium, one candidate per target, bounded
   validation repair, side-by-side human review and honest measurement limits.
   Preserve v1, defer T3, and revise pending T4-T8 without generating packages.
