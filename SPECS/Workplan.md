@@ -3124,13 +3124,16 @@ Tasks:
   source-pinned targets, Luna medium, one candidate per target, bounded
   validation repair, side-by-side human review and honest measurement limits.
   Preserve v1, defer T3, and revise pending T4-T8 without generating packages.
-- [ ] `P56-T4` Generate Five Exploratory Candidate Packages. Freeze the skill
+- [x] `P56-T4` Generate Five Exploratory Candidate Packages. Freeze the skill
   identity, prepare the five unchanged source snapshots and select/hash retained
   baselines before authoring. Use gpt-5.6-luna with medium reasoning, one initial
   attempt and at most one validation-error repair per target under the v2
   observed timebox. No silent model fallback or quality-based retries. Retain
   originals, failures, validation, source identity, actual settings and available
   usage. Do not rerun the old pipeline or claim proven runtime isolation.
+  **Collected 2026-09-06:** five originals, zero SpecPM errors, seven warnings,
+  zero repairs; unchanged sources. Evidence-fidelity defects retained for T6;
+  collection completion is not practical-utility approval.
 - [ ] `P56-T5` Prepare Side-by-Side Package Review. Show each new candidate,
   pinned README and retained prior package/proposal in existing Workbench or
   existing offline rendering. Label provenance, missing baselines and boundary,

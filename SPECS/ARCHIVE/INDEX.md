@@ -6,6 +6,7 @@
 
 | Task ID | Folder | Archived | Verdict |
 |---------|--------|----------|---------|
+| P56-T4 | [P56-T4_Five_Exploratory_Candidate_Packages/](P56-T4_Five_Exploratory_Candidate_Packages/) | 2026-09-06 | PASS (collection only) |
 | P56-T3A | [P56-T3A_Exploratory_Pilot_Protocol/](P56-T3A_Exploratory_Pilot_Protocol/) | 2026-09-06 | PASS |
 | P56-T2 | [P56-T2_Complete_Spec_Authoring_Skill/](P56-T2_Complete_Spec_Authoring_Skill/) | 2026-09-06 | PASS |
 | P56-T1 | [P56-T1_Practical_Utility_Benchmark/](P56-T1_Practical_Utility_Benchmark/) | 2026-09-05 | PASS |
@@ -1020,3 +1021,4 @@
 | 2026-09-06 | P56-T2 | Archived REVIEW_p56_t2_complete_spec_authoring_skill report |
 | 2026-09-06 | P56-T3A | Archived Exploratory Pilot Protocol (PASS for preparation) |
 | 2026-09-06 | P56-T3A | Archived REVIEW_p56_t3a_exploratory_pilot_protocol report; no follow-up defects |
+| 2026-09-06 | P56-T4 | Archived five original candidate outcomes; human utility review pending |

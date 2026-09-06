@@ -1,25 +1,24 @@
-# Next Task: P56-T4 Generate Five Exploratory Candidate Packages
+# Next Task: P56-T5 Prepare Side-by-Side Package Review
 
 **Priority:** P0
 **Phase:** Phase 56. Agent-First Spec Authoring and Practical Utility Evaluation
-**Dependencies:** `P56-T3A` Exploratory Pilot Protocol; `P56-T2` Complete Spec Authoring Skill; `P56-T1` source pins
-**Status:** In Progress
+**Dependencies:** `P56-T4` Five Exploratory Candidate Packages; `P56-T3A` protocol
+**Status:** Ready
 
 ## Objective
 
-Generate one complete candidate for each of the five pinned targets using
-Luna medium under p56-exploratory-authoring/v2, with all outcomes retained.
+Present all five original Luna medium candidates under
+p56-exploratory-authoring/v2 beside pinned README and both retained baseline
+types, using existing Workbench or existing offline rendering.
 
 ## Required Scope
 
-Follow docs/P56_T3A_Exploratory_Pilot_Protocol.md. Before authoring, record skill
-identity and actual model/settings, prepare unchanged pinned sources and
-select/hash retained baselines. Use gpt-5.6-luna with medium reasoning, one
-initial attempt and at most one validation-error repair under the observed
-timebox. Keep originals, diagnostics, source identity and available usage;
-missing usage is not zero. Do not rerun the old pipeline, replace targets,
-silently switch models or claim proven isolation. P56-T3 and draft PR #372 are
-deferred, unmerged and not prerequisites. No automatic acceptance/publication.
+Use the digest-bound P56-T4 archive and baseline lock. Surface warnings, evidence
+defects, omitted provenance and historical boundary/source-bundle mismatches.
+Do not fix or regenerate originals, materialize rejected historical proposals,
+hide unavailable usage, or invent human scores. T6 owns practical human review.
+P56-T3 and draft PR #372 remain deferred and unmerged, not prerequisites.
+No automatic acceptance/publication or new review application.
 
 P55-T10G7 through P55-T10G10, P55-T10H, and P55-T11 are paused pending the
 P56-T8 architecture decision. Phase 56 may proceed from the existing PARTIAL
@@ -27,6 +26,11 @@ evidence without passing the historical Phase 55 gates. Their historical
 results remain unchanged, and no publication authority is granted.
 
 ## Recently Archived
+
+- `P56-T4` Five Exploratory Candidate Packages: PASS for collection only.
+  Five originals, zero validation errors, seven warnings, zero repairs and
+  unchanged sources. Evidence fidelity/provenance findings remain visible,
+  including altered RTK code excerpts. Human utility review is pending.
 
 - `P56-T3A` Exploratory Pilot Protocol: PASS for preparation. V2 retains the five
   original pins, uses Luna medium and practical human side-by-side review.
