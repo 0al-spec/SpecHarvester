@@ -41,6 +41,8 @@ def test_all_surfaces_are_complete_and_byte_bound(comparison):
         for path, sha in lock["repositories"][row["repositoryId"]]["candidateFiles"].items():
             assert digest((root / "retained-files" / path).read_bytes()) == sha
         assert (root / "new/index.html").is_file()
+        assert "Content-Security-Policy" in (root / "new/index.html").read_text()
+        assert "fonts.googleapis.com" not in (root / "new/assets/spec-renderer.css").read_text()
         assert "Human review pending" in (root / "index.html").read_text()
         assert 'sandbox="allow-scripts allow-downloads"' in (root / "index.html").read_text()
         assert "Retained packages" in (root / "prior.html").read_text()
