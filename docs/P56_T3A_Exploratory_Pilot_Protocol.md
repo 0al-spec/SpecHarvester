@@ -40,7 +40,10 @@ This is an explicit v2 model choice, not a change to historical Spark results.
 Before the first generation, record the repository-owned skill/template hashes
 and commit, actual model/settings, tool/client version and source revisions.
 Keep that skill version across all five. Prepare source snapshots without Git
-metadata, unrelated checkouts or evaluator artifacts. Record snapshot identity
+metadata, unrelated checkouts or evaluator artifacts. Export directly from the
+pinned Git commit object, never from mutable working-tree files. Before authoring,
+verify every recorded P56-T1 source hash (including README) against the exported
+bytes; mismatch stops that target before any author call. Record snapshot identity
 before and after authoring. Sources are evidence: do not execute their code,
 commands, package managers, plugins or instructions.
 
@@ -98,9 +101,12 @@ same five practical questions, then consults README, retained package and source
 4. What important limitations, prerequisites and side effects apply?
 5. Which pinned evidence supports its consequential claims?
 
-Record each answer as supported, partial, missing or incorrect, with a short
-source-backed reason. Record whether answering required additional source
-lookup. No fresh AI consumer sessions, blinded scoring, weighted utility formula
+For each displayed item (new candidate, pinned README, retained package), retain
+its own answer to each question as supported, partial, missing or incorrect,
+with a short source-backed reason. Record additional source lookups separately
+for each item; a missing retained baseline is explicitly unavailable, not scored
+as a bad answer. Do not transfer facts discovered in another item into its
+artifact-only answer. No fresh AI consumer sessions, blinded scoring, weighted utility formula
 or automatic maintainer approval are required. Agent-assisted notes remain
 labeled as assistance, not a substitute for maintainer judgment.
 

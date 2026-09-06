@@ -43,3 +43,11 @@ Architecture lint is not needed for this documentation/test-only change.
 
 Six full-suite tests were skipped under the local environment; no claim is made
 that a live SpecPM integration or external-provider gate ran for this task.
+
+## PR Review Corrections
+
+Before merging #373, addressed source-pin and baseline-review feedback:
+require commit-object exports plus verification of every frozen source hash
+before authoring, and retain per-question answers/lookups for each displayed
+baseline without transferring facts between artifacts. Added regression checks;
+the 207 focused benchmark/docs tests passed again. No target or model changed.
