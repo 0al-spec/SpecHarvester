@@ -137,6 +137,8 @@ def test_missing_baseline_is_unavailable_not_invented(tmp_path):
         ("revision", "source_identity_mismatch"),
         ("candidate", "candidate_identity_mismatch"),
         ("readme", "readme_identity_mismatch"),
+        ("errorCount", "invalid_diagnostic_count"),
+        ("warningCount", "invalid_diagnostic_count"),
     ],
 )
 def test_tampered_inputs_fail_before_output(tmp_path, change, error):
@@ -153,6 +155,10 @@ def test_tampered_inputs_fail_before_output(tmp_path, change, error):
         report["repositories"][0]["revision"] = "wrong"
     elif change == "candidate":
         report["repositories"][0]["candidateSha256"] = "wrong"
+    elif change in ("errorCount", "warningCount"):
+        report["repositories"][0][change] = (
+            '<meta http-equiv="refresh" content="0;url=https://bad">'
+        )
     else:
         preparation = json.loads((evidence / "preparation.json").read_text())
         preparation["repositories"][0]["readmeSha256"] = "wrong"
@@ -169,6 +175,21 @@ def test_tampered_inputs_fail_before_output(tmp_path, change, error):
 def test_output_inside_repository_refused(tmp_path):
     with pytest.raises(ValueError, match="output_must_be_outside_repository"):
         ExploratoryComparison(ROOT, ROOT / "does-not-exist-p56").write()
+
+
+@pytest.mark.parametrize("field", ["errorCount", "warningCount"])
+@pytest.mark.parametrize("value", [True, -1, 1.5, None, "0"])
+def test_counts_reject_non_integer_or_negative_values(tmp_path, field, value):
+    repo = tmp_path / "repo"
+    evidence = repo / "SPECS/EVIDENCE/P56-T4"
+    shutil.copytree(ROOT / "SPECS/EVIDENCE/P56-T4", evidence)
+    report = json.loads((evidence / "generation-report.json").read_text())
+    report["repositories"][0][field] = value
+    (evidence / "generation-report.json").write_text(json.dumps(report))
+    output = tmp_path / "output"
+    with pytest.raises(ValueError, match="invalid_diagnostic_count"):
+        ExploratoryComparison(repo, output).write()
+    assert not output.exists()
 
 
 def test_renderer_failure_is_not_a_success(tmp_path):

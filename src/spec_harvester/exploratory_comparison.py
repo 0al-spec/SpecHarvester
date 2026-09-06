@@ -133,6 +133,10 @@ class ExploratoryComparison:
         ids = [safe_path(row["repositoryId"]) for row in rows]
         if len(ids) != 5 or len(set(ids)) != 5 or any("/" in key for key in ids):
             raise ValueError("invalid_five_target_set")
+        for row in rows:
+            for field in ("errorCount", "warningCount"):
+                if type(row.get(field)) is not int or row[field] < 0:
+                    raise ValueError("invalid_diagnostic_count")
         originals = FrozenArchive(
             evidence / safe_path(report["archive"]["path"]), report["archive"]["sha256"]
         ).read(report["archive"]["members"], exact=True)
@@ -206,7 +210,7 @@ class ExploratoryComparison:
             body = f"<header><nav>{nav}</nav><h1>{escaped(row['repository'])}</h1>"
             body += (
                 f'<p class="metadata">{escaped(row["revision"])} | '
-                f"{escaped(row['model'])} / medium | {warnings} | Human review pending</p>"
+                f"{escaped(row['model'])} / medium | {escaped(warnings)} | Human review pending</p>"
             )
             body += f"<p>{escaped(row['requestedScope'])}</p>"
             if notes:

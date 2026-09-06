@@ -52,6 +52,16 @@ the server became available and the one retry confirmed offline rendering.
 
 ## Limits
 
+## PR Review Correction
+
+PR #375 thread PRRT_kwDOSUP2JM6frUDT: untrusted diagnostic counts could inject
+HTML. Both fields now require exact nonnegative integer values (not booleans),
+before archive reading or output creation. The assembled label is also escaped.
+Regressions cover meta-refresh markup in both fields and invalid scalar types.
+Focused comparison suite: 34 passed. Original T4 artifacts remain unchanged.
+
+## Remaining Limits
+
 README intentionally remains escaped source text; external images/HTML do not
 render. This presentation limitation must not be mistaken for missing README
 content in T6. Download flows and exhaustive per-file UI navigation were not
