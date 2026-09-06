@@ -79,6 +79,13 @@ jobs:
           repository: 0al-spec/SpecPM
           path: SpecPM
 
+      - name: Checkout historical P56-T4 validator
+        uses: actions/checkout@v4
+        with:
+          repository: 0al-spec/SpecPM
+          ref: 8a5ce3dece3d18bf8f601a5a599520bd520c7839
+          path: SpecPMHistorical
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -90,11 +97,19 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -e "./SpecHarvester[dev]" -e ./SpecPM
 
-      - name: Validate authoring skill assets and exploratory originals with SpecPM
+      - name: Validate authoring skill assets with current SpecPM
         working-directory: SpecHarvester
         run: |
           python -c "import specpm.core"
-          python -m pytest tests/test_authoring_skill_assets.py tests/test_p56_exploratory_candidates.py -q
+          python -m pytest tests/test_authoring_skill_assets.py -q
+
+      - name: Replay exploratory originals with recorded SpecPM
+        working-directory: SpecHarvester
+        env:
+          PYTHONPATH: ../SpecPMHistorical/src
+        run: |
+          python -c "import pathlib, specpm.core; assert pathlib.Path(specpm.core.__file__).resolve().is_relative_to(pathlib.Path('../SpecPMHistorical').resolve())"
+          python -m pytest tests/test_p56_exploratory_candidates.py -q
 
       - name: Build fixture repository
         run: |
