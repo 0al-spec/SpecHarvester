@@ -29,11 +29,13 @@ historical v1 were not modified. No provider or publication path ran.
 
 ## Bounded Browser Check
 
-Playwright, 13 tool invocations including two failures, four screenshots
+Playwright, 15 tool invocations including three failures, four screenshots
 visually inspected. No maintainer data mutation or scoring. Checks:
 
 - Codex reference switches to retained packages (4 links) and semantic proposal.
 - Existing viewer JavaScript renders the n8n candidate in the sandboxed frame.
+- Final offline-specific check renders Codex overview with zero external requests;
+  derived viewer CSS removes Google Fonts and viewer HTML adds local-resource CSP.
 - n8n retained selector exposes all 77 package links.
 - Final complete-spec route exposes Purpose first at 1440x1000 and 390x844.
 - DOM scroll width equals viewport width (1440/1440 and 390/390); no horizontal
@@ -45,6 +47,8 @@ The file URL was blocked by the automation browser, so local HTTP was used.
 One screenshot-path introspection used unavailable require; navigation/layout
 actions before that error succeeded and measurements were separately confirmed.
 No repeated tool troubleshooting. Local screenshots are not committed.
+A single connection-refused response occurred during the local server restart;
+the server became available and the one retry confirmed offline rendering.
 
 ## Limits
 

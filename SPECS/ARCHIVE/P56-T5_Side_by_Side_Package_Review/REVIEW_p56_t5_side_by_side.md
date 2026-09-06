@@ -27,6 +27,11 @@ of that directory. Transactional multi-user serving is outside this static task.
 
 ## Findings and Limits
 
+- Offline review found the existing viewer's optional Google Fonts import.
+  The comparison builder strips that import from derived CSS and adds a local
+  resource CSP to generated viewer pages. New regression assertions enforce
+  both; source packages and the shared viewer assets remain unchanged.
+
 - Presentation: the initial full YAML view buried intent under manifest fields.
   Corrected by prioritizing purpose and collapsing technical fields. Both final
   desktop and mobile screenshots show the purpose text without horizontal overflow.

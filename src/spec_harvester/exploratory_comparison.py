@@ -318,6 +318,18 @@ class ExploratoryComparison:
             result = render_static_spec_site(StaticSpecRendererOptions(candidate, output))
             if result["status"] != "ok":
                 raise ValueError("retained_package_render_failed")
+        # Keep the existing viewer local, including its optional font stylesheet.
+        css = output / "assets/spec-renderer.css"
+        stylesheet = css.read_text()
+        if stylesheet.startswith('@import url("https://fonts.googleapis.com/'):
+            css.write_text(stylesheet.partition("\n")[2])
+        index = output / "index.html"
+        policy = (
+            '<meta http-equiv="Content-Security-Policy" content="default-src \'none\'; '
+            "script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; "
+            "base-uri 'none'; form-action 'none'\">"
+        )
+        index.write_text(index.read_text().replace("<head>", "<head>" + policy, 1))
         docs, links = [], []
         for path, data in sorted(files.items()):
             raw = output / "original" / safe_path(path)
