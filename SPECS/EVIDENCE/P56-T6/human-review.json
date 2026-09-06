@@ -1,0 +1,813 @@
+{
+  "authority": "maintainer_review_pending",
+  "humanReview": "pending",
+  "protocol": "p56-exploratory-authoring/v2",
+  "repositories": [
+    {
+      "candidateSha256": "dee962db34329aa2b40a5b9f7ada88323902da9703c4ecaf25762133cadd8683",
+      "editMinutes": null,
+      "humanDisposition": null,
+      "materialMistakes": [],
+      "missingGuidance": [],
+      "proposedEdits": [],
+      "repositoryId": "openai-codex",
+      "retainedSetSha256": "d25ed7547deec7c5b9c4ddc1ae70e95d5b67c6e4998ddd0f3c264c8c2e3ca90e",
+      "reviewMinutes": null,
+      "semanticRecordSha256": "954bc9d442a4193aec4ffabf3749728855c20a90806b88200bf2e100e619fa38",
+      "sourceRevision": "16d7daad7c5dc73da8558102a65bb7d7709807e1",
+      "surfaces": {
+        "new_candidate": {
+          "answers": [
+            {
+              "answer": null,
+              "question": "Purpose and intended consumer?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Getting started with the public interface?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Useful operations and configuration?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Limitations, prerequisites and side effects?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Pinned evidence supporting consequential claims?",
+              "reason": null,
+              "verdict": null
+            }
+          ],
+          "sourceLookups": [],
+          "status": "not_reviewed"
+        },
+        "pinned_readme": {
+          "answers": [
+            {
+              "answer": null,
+              "question": "Purpose and intended consumer?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Getting started with the public interface?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Useful operations and configuration?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Limitations, prerequisites and side effects?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Pinned evidence supporting consequential claims?",
+              "reason": null,
+              "verdict": null
+            }
+          ],
+          "sourceLookups": [],
+          "status": "not_reviewed"
+        },
+        "retained_packages": {
+          "answers": [
+            {
+              "answer": null,
+              "question": "Purpose and intended consumer?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Getting started with the public interface?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Useful operations and configuration?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Limitations, prerequisites and side effects?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Pinned evidence supporting consequential claims?",
+              "reason": null,
+              "verdict": null
+            }
+          ],
+          "sourceLookups": [],
+          "status": "not_reviewed"
+        },
+        "semantic_proposal": {
+          "answers": [
+            {
+              "answer": null,
+              "question": "Purpose and intended consumer?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Getting started with the public interface?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Useful operations and configuration?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Limitations, prerequisites and side effects?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Pinned evidence supporting consequential claims?",
+              "reason": null,
+              "verdict": null
+            }
+          ],
+          "sourceLookups": [],
+          "status": "not_reviewed"
+        }
+      },
+      "usefulInformation": []
+    },
+    {
+      "candidateSha256": "b067f829238482af599d6f6d42be421c66da08feb20de17f6ce30242b9a26d08",
+      "editMinutes": null,
+      "humanDisposition": null,
+      "materialMistakes": [],
+      "missingGuidance": [],
+      "proposedEdits": [],
+      "repositoryId": "bitcoin-bitcoin",
+      "retainedSetSha256": "d29337808c9fdf1441db6ba8d4a2baf56e10b227e8bffd3cc5d2c345d8ece3f1",
+      "reviewMinutes": null,
+      "semanticRecordSha256": "df6c35de6bbf943555815ed00a115e54a6cc516e462695f87ade7a237668580d",
+      "sourceRevision": "a2aab6df97d9f3e1186e8c3fc57ad909cc8aef9b",
+      "surfaces": {
+        "new_candidate": {
+          "answers": [
+            {
+              "answer": null,
+              "question": "Purpose and intended consumer?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Getting started with the public interface?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Useful operations and configuration?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Limitations, prerequisites and side effects?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Pinned evidence supporting consequential claims?",
+              "reason": null,
+              "verdict": null
+            }
+          ],
+          "sourceLookups": [],
+          "status": "not_reviewed"
+        },
+        "pinned_readme": {
+          "answers": [
+            {
+              "answer": null,
+              "question": "Purpose and intended consumer?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Getting started with the public interface?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Useful operations and configuration?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Limitations, prerequisites and side effects?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Pinned evidence supporting consequential claims?",
+              "reason": null,
+              "verdict": null
+            }
+          ],
+          "sourceLookups": [],
+          "status": "not_reviewed"
+        },
+        "retained_packages": {
+          "answers": [
+            {
+              "answer": null,
+              "question": "Purpose and intended consumer?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Getting started with the public interface?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Useful operations and configuration?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Limitations, prerequisites and side effects?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Pinned evidence supporting consequential claims?",
+              "reason": null,
+              "verdict": null
+            }
+          ],
+          "sourceLookups": [],
+          "status": "not_reviewed"
+        },
+        "semantic_proposal": {
+          "answers": [
+            {
+              "answer": null,
+              "question": "Purpose and intended consumer?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Getting started with the public interface?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Useful operations and configuration?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Limitations, prerequisites and side effects?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Pinned evidence supporting consequential claims?",
+              "reason": null,
+              "verdict": null
+            }
+          ],
+          "sourceLookups": [],
+          "status": "not_reviewed"
+        }
+      },
+      "usefulInformation": []
+    },
+    {
+      "candidateSha256": "2aa5fa94dd36d2bd9c8b0b89b31291ebe5cbe9f8543c773f862c9445dba18082",
+      "editMinutes": null,
+      "humanDisposition": null,
+      "materialMistakes": [],
+      "missingGuidance": [],
+      "proposedEdits": [],
+      "repositoryId": "rtk-ai-rtk",
+      "retainedSetSha256": "51726ff5c33376d74f070bf6e73f6480644e899fb0cb5f6c6bf31936ed811c71",
+      "reviewMinutes": null,
+      "semanticRecordSha256": "445f0b1a775878a42ed2ac6748e0c9ba3a4569b4cc39df47bdbd7ac5d8f4c24a",
+      "sourceRevision": "7da2674073394194754a228d346189a74869e6ba",
+      "surfaces": {
+        "new_candidate": {
+          "answers": [
+            {
+              "answer": null,
+              "question": "Purpose and intended consumer?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Getting started with the public interface?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Useful operations and configuration?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Limitations, prerequisites and side effects?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Pinned evidence supporting consequential claims?",
+              "reason": null,
+              "verdict": null
+            }
+          ],
+          "sourceLookups": [],
+          "status": "not_reviewed"
+        },
+        "pinned_readme": {
+          "answers": [
+            {
+              "answer": null,
+              "question": "Purpose and intended consumer?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Getting started with the public interface?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Useful operations and configuration?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Limitations, prerequisites and side effects?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Pinned evidence supporting consequential claims?",
+              "reason": null,
+              "verdict": null
+            }
+          ],
+          "sourceLookups": [],
+          "status": "not_reviewed"
+        },
+        "retained_packages": {
+          "answers": [
+            {
+              "answer": null,
+              "question": "Purpose and intended consumer?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Getting started with the public interface?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Useful operations and configuration?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Limitations, prerequisites and side effects?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Pinned evidence supporting consequential claims?",
+              "reason": null,
+              "verdict": null
+            }
+          ],
+          "sourceLookups": [],
+          "status": "not_reviewed"
+        },
+        "semantic_proposal": {
+          "answers": [
+            {
+              "answer": null,
+              "question": "Purpose and intended consumer?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Getting started with the public interface?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Useful operations and configuration?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Limitations, prerequisites and side effects?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Pinned evidence supporting consequential claims?",
+              "reason": null,
+              "verdict": null
+            }
+          ],
+          "sourceLookups": [],
+          "status": "not_reviewed"
+        }
+      },
+      "usefulInformation": []
+    },
+    {
+      "candidateSha256": "c86a431d46f06dda1886a618e5c1d5393803deffb293974f23aaa6fcee1e1ee4",
+      "editMinutes": null,
+      "humanDisposition": null,
+      "materialMistakes": [],
+      "missingGuidance": [],
+      "proposedEdits": [],
+      "repositoryId": "axios-axios",
+      "retainedSetSha256": "d2c5820e390351b513bd19d2d9e977c4a984ec9c8c48d7744d5eba23936c1df3",
+      "reviewMinutes": null,
+      "semanticRecordSha256": "6c70e0ae2bc4bb497f44cbb991cb1cb2a535f9744fba7f8bb5a68c40cf84dd46",
+      "sourceRevision": "509719387e4993392ca40da03a49678269cdfb90",
+      "surfaces": {
+        "new_candidate": {
+          "answers": [
+            {
+              "answer": null,
+              "question": "Purpose and intended consumer?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Getting started with the public interface?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Useful operations and configuration?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Limitations, prerequisites and side effects?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Pinned evidence supporting consequential claims?",
+              "reason": null,
+              "verdict": null
+            }
+          ],
+          "sourceLookups": [],
+          "status": "not_reviewed"
+        },
+        "pinned_readme": {
+          "answers": [
+            {
+              "answer": null,
+              "question": "Purpose and intended consumer?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Getting started with the public interface?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Useful operations and configuration?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Limitations, prerequisites and side effects?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Pinned evidence supporting consequential claims?",
+              "reason": null,
+              "verdict": null
+            }
+          ],
+          "sourceLookups": [],
+          "status": "not_reviewed"
+        },
+        "retained_packages": {
+          "answers": [
+            {
+              "answer": null,
+              "question": "Purpose and intended consumer?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Getting started with the public interface?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Useful operations and configuration?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Limitations, prerequisites and side effects?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Pinned evidence supporting consequential claims?",
+              "reason": null,
+              "verdict": null
+            }
+          ],
+          "sourceLookups": [],
+          "status": "not_reviewed"
+        },
+        "semantic_proposal": {
+          "answers": [
+            {
+              "answer": null,
+              "question": "Purpose and intended consumer?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Getting started with the public interface?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Useful operations and configuration?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Limitations, prerequisites and side effects?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Pinned evidence supporting consequential claims?",
+              "reason": null,
+              "verdict": null
+            }
+          ],
+          "sourceLookups": [],
+          "status": "not_reviewed"
+        }
+      },
+      "usefulInformation": []
+    },
+    {
+      "candidateSha256": "12ea51b0d0b1715aba78d5f8e1b3d868b55740e64f2e5b14fd844125974f9e1b",
+      "editMinutes": null,
+      "humanDisposition": null,
+      "materialMistakes": [],
+      "missingGuidance": [],
+      "proposedEdits": [],
+      "repositoryId": "n8n-io-n8n",
+      "retainedSetSha256": "555b2c15fa12ee7dfeba5b6da5f3ff12de950f5da07909cb0be581c39dc82b68",
+      "reviewMinutes": null,
+      "semanticRecordSha256": "76f8c9f4dc385323ebe5d77474d89ec1fabb21c098b8fbff691576bf600513f9",
+      "sourceRevision": "082b5d9190f4bc81d93c6a94d6d4692bed4660ca",
+      "surfaces": {
+        "new_candidate": {
+          "answers": [
+            {
+              "answer": null,
+              "question": "Purpose and intended consumer?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Getting started with the public interface?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Useful operations and configuration?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Limitations, prerequisites and side effects?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Pinned evidence supporting consequential claims?",
+              "reason": null,
+              "verdict": null
+            }
+          ],
+          "sourceLookups": [],
+          "status": "not_reviewed"
+        },
+        "pinned_readme": {
+          "answers": [
+            {
+              "answer": null,
+              "question": "Purpose and intended consumer?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Getting started with the public interface?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Useful operations and configuration?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Limitations, prerequisites and side effects?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Pinned evidence supporting consequential claims?",
+              "reason": null,
+              "verdict": null
+            }
+          ],
+          "sourceLookups": [],
+          "status": "not_reviewed"
+        },
+        "retained_packages": {
+          "answers": [
+            {
+              "answer": null,
+              "question": "Purpose and intended consumer?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Getting started with the public interface?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Useful operations and configuration?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Limitations, prerequisites and side effects?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Pinned evidence supporting consequential claims?",
+              "reason": null,
+              "verdict": null
+            }
+          ],
+          "sourceLookups": [],
+          "status": "not_reviewed"
+        },
+        "semantic_proposal": {
+          "answers": [
+            {
+              "answer": null,
+              "question": "Purpose and intended consumer?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Getting started with the public interface?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Useful operations and configuration?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Limitations, prerequisites and side effects?",
+              "reason": null,
+              "verdict": null
+            },
+            {
+              "answer": null,
+              "question": "Pinned evidence supporting consequential claims?",
+              "reason": null,
+              "verdict": null
+            }
+          ],
+          "sourceLookups": [],
+          "status": "not_reviewed"
+        }
+      },
+      "usefulInformation": []
+    }
+  ],
+  "reviewer": null,
+  "sourceBindings": {
+    "baselineLockSha256": "63cb35570f2e96e567fc599d8c38ab3b431c072992f0faff3794aeef7b5c3f5f",
+    "comparisonSha256": "4a4bf82f0885dc8d75ed1910e7e21dac6f67dd76cf7543d54d80d5a34a09d136",
+    "generationReportSha256": "3e93a3fff77440963f024fcdb07308b58bf1522967f983734fd890b34fb7e876"
+  }
+}
