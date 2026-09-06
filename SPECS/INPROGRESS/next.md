@@ -1,24 +1,22 @@
-# Next Task: P56-T3 Implement Bounded Investigative Authoring Runner
+# Next Task: P56-T3A Simplify Exploratory Pilot Protocol
 
 **Priority:** P0
 **Phase:** Phase 56. Agent-First Spec Authoring and Practical Utility Evaluation
 **Dependencies:** `P56-T2` Complete Spec Authoring Contract and Repository Skill; `P56-T1` Practical Utility Benchmark
-**Status:** Ready
+**Status:** In Progress
 
 ## Objective
 
-Implement a bounded file-producing runner for the repository-owned authoring
-skill, with caller-enforced isolation and read-only source investigation.
+Version a simpler five-repository practical authoring pilot before further
+runtime investment. Preserve the original benchmark and its answer key.
 
 ## Required Scope
 
-Use skills/specpm-author-candidate without exposing the maintainer checkout,
-benchmark questions, reference answers or sibling outputs. Enforce T1 budgets,
-source/output allowlists, denial probes, retry limits and portable evidence.
-Validate complete packages with trusted SpecPM and record selected boundaries,
-source ranges/digests, actual provider settings, costs and failures. Reuse
-existing infrastructure without running harvested code or package managers.
-Prepare the pre-run lock before T4; no scored five-repository generation yet.
+Keep the same five pinned repositories. Fix Luna medium, one candidate per
+repository, side-by-side human review against README and retained packages,
+explicit limitations and no claim of proven isolation or mass-corpus readiness.
+Defer P56-T3 and draft PR #372; do not merge its I/O checkpoint. Update the
+remaining Phase 56 tasks. No provider or repository generation in this task.
 
 P55-T10G7 through P55-T10G10, P55-T10H, and P55-T11 are paused pending the
 P56-T8 architecture decision. Phase 56 may proceed from the existing PARTIAL
