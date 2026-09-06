@@ -2794,6 +2794,10 @@ gates remain intact. Phase 56 is an explicitly authorized comparative experiment
 and does not depend on completing P55-T11 or passing P55-T10H. Its exit decision
 must disposition the paused tasks before further scale-out.
 
+Status update (2026-09-06): the active Phase 56 plan is the qualitative
+`p56-exploratory-authoring/v2` pilot. The v1 comparative protocol remains
+historical; Phase 55 pause and disposition requirements are unchanged.
+
 - [x] `P55-T1` Record the AI semantic-author product and authority contract.
   Depend explicitly on the completed `P54-T10` Phase 54 exit decision.
   Define model-as-author responsibilities, existing-intent reuse, novel
@@ -3078,11 +3082,17 @@ Motivation:
 
 Goal:
 
-- Compare agent-first authoring against the current pipeline and a README
-  baseline on five repositories before investing in more extraction heuristics.
+- Assess five agent-authored packages through practical side-by-side human
+  review against pinned README and retained packages before more infrastructure.
 - Reuse checkout management, pinned revisions, validation, provenance, batch
   execution, and Workbench infrastructure where useful. The experiment should
   require a small authoring skill and runner, not a new universal analyzer.
+
+Active protocol: `p56-exploratory-authoring/v2`, documented in
+`docs/P56_T3A_Exploratory_Pilot_Protocol.md` (maintainer-approved simplification,
+2026-09-06). P56-T1 protocol and benchmark remain unchanged historical v1.
+Pending T4-T8 scope below supersedes their unexecuted paired/blinded v1 scope;
+this is not a v1 PASS or mass-corpus adoption decision.
 
 Tasks:
 
@@ -3108,54 +3118,52 @@ Tasks:
   usage. Enforce bounded reads and execution budgets without running harvested
   code or package managers. Reuse existing infrastructure; validate output with
   SpecPM and preserve uncertainty rather than inventing behavior.
-- [ ] `P56-T4` Generate Paired Five-Repository Candidate Sets. Run the current
-  pipeline and investigative skill on all five frozen revisions with the same
-  model/settings and predeclared comparable budgets. Use Codex 5.3 Spark as the
-  planned worker; if unavailable, revise the experiment contract explicitly
-  before either arm runs. Retain complete packages, failures, validation
-  reports, costs, and boundary choices. Keep all terminal outcomes; do not
-  cherry-pick retries. Compare both arms against the same user-level scope and
-  report boundary differences as an outcome, not an unnoticed confounder.
-- [ ] `P56-T5` Prepare Blinded Package and README Review. Present the two
-  candidate sets in Workbench with neutral randomized labels and a separate
-  pinned README baseline. Show complete readable specs, source references, and
-  validation results. Keep the arm mapping outside reviewer views. Reuse the
-  existing viewer or a minimal offline bundle, avoiding a separate review app.
-- [ ] `P56-T6` Execute Practical Utility Evaluation. Use the frozen questions
-  and reference answers to assess each package arm and README baseline with
-  equivalent consumer budgets and access rules. Measure answer correctness,
-  completeness, unsupported claims, additional source lookups, review/edit
-  time, and generation/consumption cost. Keep package-only and source-assisted
-  results separate; preserve failures and per-repository results. Distinguish
-  maintainer judgments from automated assessments and obtain explicit
-  maintainer review before declaring the approach useful enough to adopt.
-- [ ] `P56-T7` Analyze Failure Causes and Economics. Compare useful information
-  with packaging overhead, generation cost, and consumer effort. Attribute
-  failures to scope selection, missing evidence, authoring, schema limitations,
-  or model capability using retained evidence. Report limitations of a
-  five-repository sample. Any changed prompt, model, template, or repair is a
-  separately labeled follow-up, never a replacement for the frozen results.
-- [ ] `P56-T8` Record Architecture and Phase Exit Decision. Apply the frozen
-  thresholds and maintainer review to choose agent-first adoption, a bounded
-  hybrid, another explicitly justified experiment, or stop. Identify which
-  SpecHarvester components remain infrastructure and which extraction paths
-  should be retained or retired. Explicitly resume, supersede, or cancel every
-  paused Phase 55 task and define the next bounded rollout only if justified.
-  An architecture decision alone does not authorize mass execution or publish
-  candidate packages.
+  **Deferred under v2.** Draft PR #372 is an unfinished I/O checkpoint, remains
+  unmerged, and is not a dependency of the exploratory pilot.
+- [ ] `P56-T3A` Simplify Exploratory Pilot Protocol. Record v2 with the same five
+  source-pinned targets, Luna medium, one candidate per target, bounded
+  validation repair, side-by-side human review and honest measurement limits.
+  Preserve v1, defer T3, and revise pending T4-T8 without generating packages.
+- [ ] `P56-T4` Generate Five Exploratory Candidate Packages. Freeze the skill
+  identity, prepare the five unchanged source snapshots and select/hash retained
+  baselines before authoring. Use gpt-5.6-luna with medium reasoning, one initial
+  attempt and at most one validation-error repair per target under the v2
+  observed timebox. No silent model fallback or quality-based retries. Retain
+  originals, failures, validation, source identity, actual settings and available
+  usage. Do not rerun the old pipeline or claim proven runtime isolation.
+- [ ] `P56-T5` Prepare Side-by-Side Package Review. Show each new candidate,
+  pinned README and retained prior package/proposal in existing Workbench or
+  existing offline rendering. Label provenance, missing baselines and boundary,
+  revision or model mismatches explicitly. No blinded labels or new review app.
+- [ ] `P56-T6` Review Five Packages for Practical Utility. A maintainer reviews
+  purpose, getting started, operations, limitations and supporting evidence.
+  Record supported/partial/missing/incorrect answers, additional lookups,
+  material mistakes, useful information, edits and review/edit time. Preserve
+  original outputs and distinguish AI assistance from human disposition.
+- [ ] `P56-T7` Summarize Pilot Failures and Observed Effort. Account for all five
+  outcomes, source-backed errors, missing guidance, observed generation/review
+  effort and available usage. Do not treat missing usage as zero or mismatched
+  historical baselines as a controlled comparison. Label every subsequent
+  prompt/model/skill rerun separately; never overwrite the original result.
+- [ ] `P56-T8` Record Exploratory Pilot Exit Decision. With explicit maintainer
+  review, choose another bounded pilot, a named fix plus labeled rerun, or stop.
+  No population reliability, model-superiority or mass-execution claim follows
+  from this sample. Explicitly disposition all paused Phase 55 tasks and the
+  deferred T3/#372 work. No automatic acceptance or publication authority.
 
 Acceptance:
 
-- P56-T1 precedes Phase 56 implementation and provider runs; P56-T2 precedes P56-T3;
-  P56-T3 precedes P56-T4. P56-T4 and P56-T5 precede P56-T6, then P56-T7 and
-  P56-T8 follow in order. The benchmark questions and reference answers are
-  withheld from authoring workers; the evaluation rubric is fixed in advance.
-- Freeze exact model/settings, limits on tokens/time/tool calls/retries, cost
-  accounting, and failure handling in P56-T1. Missing provider usage is reported
-  as unavailable, not zero. No unrecorded model substitution is permitted.
-- Valid SpecPM output is necessary but insufficient. Adoption requires measured
-  practical utility against the current pipeline and README baseline under the
-  frozen rubric, with unsupported claims and manual effort accounted for.
+- P56-T1 and P56-T2 remain completed preparation. P56-T3A precedes v2 T4;
+  T4 -> T5 -> T6 -> T7 -> T8 proceed in order. T3 is deferred, not a hidden
+  prerequisite. Withhold reviewer questions, reference answers and prior
+  packages from authoring workers; use fresh context and clean inputs.
+- V2 fixes gpt-5.6-luna/medium and the original five revisions/scopes. Record
+  actual permissions, observed time, failures and available usage; do not claim
+  a hard resource cap or proven isolation from prompt instructions. No silent
+  model substitution, baseline regeneration or target replacement is allowed.
+- Valid SpecPM output is necessary but insufficient. All five outcomes and
+  human review must remain visible. Missing review leaves T8 pending; this
+  qualitative pilot cannot authorize mass execution or certify superiority.
 - Complete candidate YAML, provenance, and source references are portable.
   Raw prompts/responses, hidden reasoning, credentials, and private machine
   paths are excluded from published experiment evidence. Versioned skill and

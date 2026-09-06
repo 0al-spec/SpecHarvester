@@ -5,13 +5,14 @@ Current mass semantic-author execution evidence is documented in
 
 This directory is the operator and design entrypoint for SpecHarvester.
 
-The planned agent-first comparison uses the
-[P56-T1 practical utility benchmark](P56_T1_Practical_Utility_Benchmark.md).
-It measures package usefulness against the existing pipeline and pinned README;
-it is an experiment protocol, not a completed quality result.
+The active agent-first plan uses the
+[v2 exploratory pilot](P56_T3A_Exploratory_Pilot_Protocol.md): five Luna-medium
+packages and practical human review beside README and retained packages.
+The [P56-T1 practical utility benchmark](P56_T1_Practical_Utility_Benchmark.md)
+remains the unchanged historical v1 protocol, not a completed quality result.
 
 The [P56-T2 authoring skill](P56_T2_Complete_Spec_Authoring_Skill.md) supplies
-complete candidate templates and a synthetic example for that experiment.
+complete candidate templates and a synthetic example for authoring.
 
 Use it the same way the SpecPM repository uses GitHub-facing documentation:
 start from the workflow, then drill into architecture, trust boundaries, and

@@ -39,6 +39,20 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def assert_current_next_task(next_text: str) -> None:
+    if next_text.startswith(
+        (
+            "# Next Task: P56-T3A Simplify Exploratory Pilot Protocol",
+            "# Next Task: P56-T4 Generate Five Exploratory Candidate Packages",
+        )
+    ):
+        assert any(
+            f"**Status:** {status}" in next_text for status in ("Ready", "Selected", "In Progress")
+        )
+        assert "Luna medium" in next_text
+        assert "P56-T3" in next_text
+        assert "#372" in next_text
+        return
+
     if next_text.startswith("# Next Task: P56-T3 Implement Bounded Investigative Authoring Runner"):
         normalized = " ".join(next_text.split())
         assert "**Status:** Ready" in next_text
