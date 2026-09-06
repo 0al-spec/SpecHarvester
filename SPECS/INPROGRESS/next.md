@@ -3,7 +3,7 @@
 **Priority:** P0
 **Phase:** Phase 56. Agent-First Spec Authoring and Practical Utility Evaluation
 **Dependencies:** `P56-T3A` Exploratory Pilot Protocol; `P56-T2` Complete Spec Authoring Skill; `P56-T1` source pins
-**Status:** Ready
+**Status:** In Progress
 
 ## Objective
 
