@@ -1019,3 +1019,4 @@
 | 2026-09-06 | P56-T2 | Archived Complete Spec Authoring Skill (PASS) |
 | 2026-09-06 | P56-T2 | Archived REVIEW_p56_t2_complete_spec_authoring_skill report |
 | 2026-09-06 | P56-T3A | Archived Exploratory Pilot Protocol (PASS for preparation) |
+| 2026-09-06 | P56-T3A | Archived REVIEW_p56_t3a_exploratory_pilot_protocol report; no follow-up defects |
