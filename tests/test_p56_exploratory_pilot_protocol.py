@@ -44,6 +44,10 @@ def test_v2_is_explicit_exploration_not_relabelled_v1_success() -> None:
         "supported, partial, missing or incorrect",
         "Missing human review leaves the decision pending",
         "P56-T3 and draft PR #372 are deferred",
+        "Export directly from the pinned Git commit object",
+        "verify every recorded P56-T1 source hash",
+        "For each displayed item (new candidate, pinned README, retained package)",
+        "Record additional source lookups separately for each item",
     ):
         assert required in text
     workplan = (ROOT / "SPECS/Workplan.md").read_text()
