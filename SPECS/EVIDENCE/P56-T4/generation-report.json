@@ -1,0 +1,448 @@
+{
+  "archive": {
+    "members": {
+      "records/axios-axios/original/candidate/evidence/LICENSE": "82761059eaedacb3356803aea8a170d8298609f91b14fc32ee1bfb40d690183c",
+      "records/axios-axios/original/candidate/evidence/README-excerpt.md": "f704476b1ee8d5508766b87511344da515f80ccc89dd3c00dbc94d5c81f46e93",
+      "records/axios-axios/original/candidate/evidence/index-types-excerpt.md": "45a28972350170bfe5abf7a8088bd66e33103f36241b4811f4eeb1411faf6edf",
+      "records/axios-axios/original/candidate/evidence/package-metadata.md": "0ee091dfd759f2de83e12731ba682cca13e4d011e0954019057f32b30aae2a3e",
+      "records/axios-axios/original/candidate/evidence/source-notes.md": "b025211fc4badd6e81cb9494f92caa47ef5802d2172929ee8f0c397a77915454",
+      "records/axios-axios/original/candidate/specpm.yaml": "980cbe90a41f5ad9d0457d2b38c265467ac5fd07c8bb0f66b7d24f3d73bf182b",
+      "records/axios-axios/original/candidate/specs/main.spec.yaml": "2f9e85dac985461e95bb286ab606278abe65aced4804d1e82b647cf1749bc1c1",
+      "records/axios-axios/original/receipt.json": "ff4488af0b708635f4c45e6c7f6c09c852ccde32ac21bdb734f3d0a8fb65ac24",
+      "records/axios-axios/original/validation.json": "e360dce64be17195ac3c0680b0aa1288d4af509731d76ef1eb14e87bd753d979",
+      "records/axios-axios/readme/README.md": "4db033f8e5c39cc3427078df94ebe079a37a7c6e557180e6f616638af5e3358f",
+      "records/axios-axios/source-licenses/LICENSE": "82761059eaedacb3356803aea8a170d8298609f91b14fc32ee1bfb40d690183c",
+      "records/bitcoin-bitcoin/original/candidate/evidence/build-options.md": "c3ef2d03a96550d3fc3eebd2a267131cbe2226b4612a20cf91a14be41498ff49",
+      "records/bitcoin-bitcoin/original/candidate/evidence/operational-files.md": "bdefea06ccc95384ab3fa5c650ae490e4cac91e58491339196ac68fe222bbd69",
+      "records/bitcoin-bitcoin/original/candidate/evidence/product-overview.md": "4947ec047e5fee47338e1537b52b0bdb3811830e4b96cd6e6ba92ba3bda30df6",
+      "records/bitcoin-bitcoin/original/candidate/evidence/rpc.md": "d61a22545309d0501c87a33e00ec046c64df069fd0332f6a6d5ac67f94905f48",
+      "records/bitcoin-bitcoin/original/candidate/evidence/source-provenance.md": "4438872357164a4b6e004d69c8d158f702cc563ffd030621218fa8bbeff8c323",
+      "records/bitcoin-bitcoin/original/candidate/specpm.yaml": "2a1a8f2a8dbd9e46d4944286efbf2d1222fc38798a2fae3d66d2b8c9721a3a89",
+      "records/bitcoin-bitcoin/original/candidate/specs/main.spec.yaml": "83b1c96fc921887f121e720ec015aaf75db7034f3453b32b08075c8a806bf726",
+      "records/bitcoin-bitcoin/original/receipt.json": "2ddf85bfe04ecbc1c687ef3b923259a81809d1ea2b5743862c8af13af2ae73d5",
+      "records/bitcoin-bitcoin/original/validation.json": "79d417574e048ad3779df4dbf5443ef68f91d24ad2ce025bcd79b84ad99a2901",
+      "records/bitcoin-bitcoin/readme/README.md": "45916e6961540c536e8b17b3a4d3305393afce5b407d1ea3da82c246cba8aa5d",
+      "records/n8n-io-n8n/original/candidate/evidence/instance-ai-configuration.md": "07cf8d1c7617913aa348e251bfbfb7c36aca7340550c0735fb70bff0b96b98b0",
+      "records/n8n-io-n8n/original/candidate/evidence/instance-ai-overview.md": "7152176435be2be6b3923107529e9899ae5b1e2afaa12dab89b49ddc79c0c99b",
+      "records/n8n-io-n8n/original/candidate/evidence/instance-ai-sandbox.md": "1d50aad47e925b4754d9e9ede2e15848a44bac449f8f81951116f5b52835453c",
+      "records/n8n-io-n8n/original/candidate/evidence/instance-ai-tools.md": "e8570715e67a42f1020c4c3a321831a7fbbacad01e3ead3968cc4fa8a696dbb8",
+      "records/n8n-io-n8n/original/candidate/evidence/license-terms.md": "1bf55d77f555638337e373e8e27e052af518baba15c4d61823c1b1de19106b31",
+      "records/n8n-io-n8n/original/candidate/evidence/product-overview.md": "faf96c1432ec1a98d6a7d4b3a418853ba3635f81501ec5e77194110406db9814",
+      "records/n8n-io-n8n/original/candidate/evidence/source-provenance.md": "2cd24f0dec3949d2dd69be1b2d30a6930cad6e0f5e8e737fe4bd66916a778844",
+      "records/n8n-io-n8n/original/candidate/specpm.yaml": "6617eab4b17f59ead82c4f1f4738ee0be36751dcd51c1ce29bbeb0017cf0df5f",
+      "records/n8n-io-n8n/original/candidate/specs/main.spec.yaml": "1a8abbc9d4442b38c4f656605ac5173f6682a4942cd5a26bbb464a06cde10f84",
+      "records/n8n-io-n8n/original/receipt.json": "3e50e1f9d9ab91e990501e88663039d158943bb237bded746ddbf66e03a5e376",
+      "records/n8n-io-n8n/original/validation.json": "77f2fe0a35e9dff4d5ae4d8e3da262f4c47e87798d034f6d24561a77af8ea022",
+      "records/n8n-io-n8n/readme/README.md": "9af8818267836df37f8d58cbb1db8c02c83cbd110118361811f4910d4de59eca",
+      "records/n8n-io-n8n/source-licenses/LICENSE.md": "d2f621f59aa4c10eab79b6333e59d9d3d5b53307dcfd16dbd75e40e679e84965",
+      "records/n8n-io-n8n/source-licenses/LICENSE_EE.md": "6110c69fd3b92928328a89e863dc2c862ea449f2335c352a9c4a137a36b13040",
+      "records/openai-codex/original/candidate/evidence/license-notice.md": "79fc0cc228c30f915b1227fd4715af9283291610d67cc12393e9a48c40de9901",
+      "records/openai-codex/original/candidate/evidence/product-overview.md": "ce33e0591251861a5fb26e392c92ed4f30e1fe7c0600cb1c11fd8359a353e7b9",
+      "records/openai-codex/original/candidate/evidence/python-sdk.md": "d998c022e780d2d1797db3bb7f890b42ddbc20f08e063869137b311d4a0a9291",
+      "records/openai-codex/original/candidate/evidence/typescript-sdk.md": "0d11a96b568b1405a402bea571b465348726104ad8b43281ee51e999c1f86774",
+      "records/openai-codex/original/candidate/specpm.yaml": "c708946294d673ec9f2b230fae798b5007dbc7c87cc4c74d845eb5e572af823d",
+      "records/openai-codex/original/candidate/specs/main.spec.yaml": "38b25b1a95e1cb64b72de218883805f22ef72901c514c23b104a009406336f9b",
+      "records/openai-codex/original/receipt.json": "ce709796b235d36bd7237617a7a9506dff9aa1a7e54634697228b71ac98fc553",
+      "records/openai-codex/original/validation.json": "e360dce64be17195ac3c0680b0aa1288d4af509731d76ef1eb14e87bd753d979",
+      "records/openai-codex/readme/README.md": "ba4e1f69ff48386e72a9c5e1edaf76aad64a475c2d51af79ccba6d1128261ba7",
+      "records/openai-codex/source-licenses/LICENSE": "d17f227e4df5da1600391338865ce0f3055211760a36688f816941d58232d8dc",
+      "records/rtk-ai-rtk/original/candidate/evidence/configuration-excerpt.md": "5b553f2255b1392b41db26f7984cf3ebbe349134cd7b0162cb5d9f588dbcc712",
+      "records/rtk-ai-rtk/original/candidate/evidence/main-excerpt.rs": "65d547f71bdfa92d0848cfbc1724646ca9a8b9cc6e6c46b1a748c80038f31190",
+      "records/rtk-ai-rtk/original/candidate/evidence/readme-excerpt.md": "e03d26a369db3379b0def50ed34b6053fe4bf31868330f4e21edb870bb64135c",
+      "records/rtk-ai-rtk/original/candidate/evidence/rewrite-excerpt.rs": "92715332c8bb48bf2515316f5f3229dc4ba4e2e54c4e4bffd0e199d1a25e8b12",
+      "records/rtk-ai-rtk/original/candidate/evidence/runner-excerpt.rs": "85b1f2b3b5c876c6fad31115fbfa93aec8f94a22aff0389a3714ae2d3e81033b",
+      "records/rtk-ai-rtk/original/candidate/evidence/search-compress-excerpt.rs": "fd03b895025d4bd5b38ae11c7af878b5a9f1da6066dc92ab2b84e7839e5e7c11",
+      "records/rtk-ai-rtk/original/candidate/evidence/source-notes.md": "8d01530304478ec991d0ff164b94f69866fc2d14aed9d0f0464d8040892a7c11",
+      "records/rtk-ai-rtk/original/candidate/specpm.yaml": "a937eb9d1c9eda840a327027c380d22750184e8ea8fe068b3fd12940a6996992",
+      "records/rtk-ai-rtk/original/candidate/specs/main.spec.yaml": "7259157dedc8e4675fc4f133b6914391ce7f12ecf767c9cd3e65e89f70ea8048",
+      "records/rtk-ai-rtk/original/receipt.json": "140260c536548bb94c16183400dfc2f7fa62ab339dc9a4f0df98d4d49877b450",
+      "records/rtk-ai-rtk/original/validation.json": "e360dce64be17195ac3c0680b0aa1288d4af509731d76ef1eb14e87bd753d979",
+      "records/rtk-ai-rtk/readme/README.md": "9eedab13449e48321140887bad972786f1faa25ac5b4120f0259f4086dd601e9",
+      "records/rtk-ai-rtk/source-licenses/LICENSE": "4044ade9c21d8b084d3d16a03375cf3b7e166b946a327bb37a3fbbdb53287cfd"
+    },
+    "path": "P56-T4_Original_Candidates.tar.gz",
+    "sha256": "e36def1ee027d04f36fba97bdf63da51f564aabf56e439e83eb62a394eb93ac5"
+  },
+  "audit": {
+    "coverage": "Helper checked source and copied-file hashes for Codex/Bitcoin/RTK; main checked Axios/n8n source hashes and excerpt line membership. RTK rewrite independently confirmed.",
+    "method": "bounded static source/evidence review, not exhaustive semantic verification",
+    "reviewerScopeDeviation": "Read-only audit helper also opened an Axios manifest via wildcard; excluded from its findings. No author context or output changed.",
+    "runtimeBehaviorTested": false
+  },
+  "baselineLockSha256": "63cb35570f2e96e567fc599d8c38ab3b431c072992f0faff3794aeef7b5c3f5f",
+  "humanReview": "pending",
+  "preparationSha256": "0b567be49b1418db4f5ce91353bdb1eaf223f2b3555a55de016285e787f69c9a",
+  "protocol": "p56-exploratory-authoring/v2",
+  "publicationAuthorized": false,
+  "rawPromptsPersisted": false,
+  "rawTransportPersisted": false,
+  "repositories": [
+    {
+      "attempts": 1,
+      "candidateSha256": "dee962db34329aa2b40a5b9f7ada88323902da9703c4ecaf25762133cadd8683",
+      "completionObservedAt": "2026-09-06 07:34:10 UTC",
+      "errorCount": 0,
+      "files": {
+        "evidence/license-notice.md": "79fc0cc228c30f915b1227fd4715af9283291610d67cc12393e9a48c40de9901",
+        "evidence/product-overview.md": "ce33e0591251861a5fb26e392c92ed4f30e1fe7c0600cb1c11fd8359a353e7b9",
+        "evidence/python-sdk.md": "d998c022e780d2d1797db3bb7f890b42ddbc20f08e063869137b311d4a0a9291",
+        "evidence/typescript-sdk.md": "0d11a96b568b1405a402bea571b465348726104ad8b43281ee51e999c1f86774",
+        "specpm.yaml": "c708946294d673ec9f2b230fae798b5007dbc7c87cc4c74d845eb5e572af823d",
+        "specs/main.spec.yaml": "38b25b1a95e1cb64b72de218883805f22ef72901c514c23b104a009406336f9b"
+      },
+      "generationStatus": "completed",
+      "humanReview": "pending",
+      "model": "gpt-5.6-luna",
+      "modelSettingsEvidence": "spawn_agent_arguments",
+      "observedAuthorSeconds": 218,
+      "omittedFromSpecPMPackage": [],
+      "packageFileCollectionErrors": [],
+      "permissionsEvidence": "instructions_and_observed_source_hashes_not_proven_isolation",
+      "previewOnly": true,
+      "reasoningEffort": "medium",
+      "repairAttempts": 0,
+      "repository": "openai/codex",
+      "repositoryId": "openai-codex",
+      "requestedScope": "Local coding agent and its application integration surface",
+      "revision": "16d7daad7c5dc73da8558102a65bb7d7709807e1",
+      "runtimeIsolationProven": false,
+      "sourceChanges": [],
+      "sourceIntegrityFindings": [
+        "OS minima and logging claims are supported by docs/install.md but that source is absent from packaged evidence/provenance. CLI and SDK scope is not comprehensive app-server coverage."
+      ],
+      "sourceSnapshotSha256After": "3ff847888fb93b43f11b661760a8db09f1fd64c7b365f96b2e22a1dc67a4f442",
+      "sourceSnapshotSha256Before": "3ff847888fb93b43f11b661760a8db09f1fd64c7b365f96b2e22a1dc67a4f442",
+      "sourceUnchanged": true,
+      "specs": [
+        {
+          "capabilityCount": 3,
+          "id": "openai.codex",
+          "intent": {
+            "summary": "Help a developer use a locally running Codex coding agent for repository tasks, either interactively through the CLI or programmatically through the TypeScript and Python SDK surfaces."
+          },
+          "path": "specs/main.spec.yaml",
+          "scope": {
+            "boundedContext": "local_coding_agent_and_sdk_integration",
+            "excludes": [
+              "The Codex desktop application, IDE integrations and cloud-based Codex Web service.",
+              "A guarantee of model quality, task completion, latency, throughput or availability.",
+              "Detailed sandbox, approval, authentication protocol and app-server method semantics not present in the pinned snapshot.",
+              "Upstream release publication, certification, canonical intent mappings or security approval."
+            ],
+            "includes": [
+              "The locally running Codex CLI and its documented installation and repository-oriented execution surface.",
+              "TypeScript SDK embedding through threads, turns, streaming events, structured output schemas, image inputs and thread resumption.",
+              "Python SDK embedding through synchronous Codex threads and the app-server JSON-RPC client over stdio.",
+              "Configuration of working directory, environment and CLI config overrides where documented by the SDK materials."
+            ]
+          },
+          "status": "draft"
+        }
+      ],
+      "stage": "original",
+      "startedAt": "2026-09-06 07:30:32 UTC",
+      "timeboxEnforcement": "operator_observed_not_runtime_hardcap",
+      "unexpectedAccessAudit": "not independently audited",
+      "usage": null,
+      "usageStatus": "not_exposed_by_subagent_tool",
+      "validatedAt": "2026-09-06T07:34:11.656218+00:00",
+      "validationStatus": "warning_only",
+      "warningCount": 1
+    },
+    {
+      "attempts": 1,
+      "candidateSha256": "b067f829238482af599d6f6d42be421c66da08feb20de17f6ce30242b9a26d08",
+      "completionObservedAt": "2026-09-06 07:33:43 UTC",
+      "errorCount": 0,
+      "files": {
+        "evidence/build-options.md": "c3ef2d03a96550d3fc3eebd2a267131cbe2226b4612a20cf91a14be41498ff49",
+        "evidence/operational-files.md": "bdefea06ccc95384ab3fa5c650ae490e4cac91e58491339196ac68fe222bbd69",
+        "evidence/product-overview.md": "4947ec047e5fee47338e1537b52b0bdb3811830e4b96cd6e6ba92ba3bda30df6",
+        "evidence/rpc.md": "d61a22545309d0501c87a33e00ec046c64df069fd0332f6a6d5ac67f94905f48",
+        "evidence/source-provenance.md": "4438872357164a4b6e004d69c8d158f702cc563ffd030621218fa8bbeff8c323",
+        "specpm.yaml": "2a1a8f2a8dbd9e46d4944286efbf2d1222fc38798a2fae3d66d2b8c9721a3a89",
+        "specs/main.spec.yaml": "83b1c96fc921887f121e720ec015aaf75db7034f3453b32b08075c8a806bf726"
+      },
+      "generationStatus": "completed",
+      "humanReview": "pending",
+      "model": "gpt-5.6-luna",
+      "modelSettingsEvidence": "spawn_agent_arguments",
+      "observedAuthorSeconds": 190,
+      "omittedFromSpecPMPackage": [],
+      "packageFileCollectionErrors": [],
+      "permissionsEvidence": "instructions_and_observed_source_hashes_not_proven_isolation",
+      "previewOnly": true,
+      "reasoningEffort": "medium",
+      "repairAttempts": 0,
+      "repository": "bitcoin/bitcoin",
+      "repositoryId": "bitcoin-bitcoin",
+      "requestedScope": "Bitcoin Core full node with optional wallet and GUI",
+      "revision": "a2aab6df97d9f3e1186e8c3fc57ad909cc8aef9b",
+      "runtimeIsolationProven": false,
+      "sourceChanges": [],
+      "sourceIntegrityFindings": [
+        "Unknown interface kind network_read is a validator warning.",
+        "Evidence ranges omit doc/files.md:88 and JSON-RPC-interface.md:148-152 although copied claims occur there.",
+        "System-isolation recommendation is source-supported at JSON-RPC-interface.md:127-141 but its supporting passage is absent from packaged RPC evidence."
+      ],
+      "sourceSnapshotSha256After": "c2b85e32c309aa6ca9251db1f5045e184bcaf1b4c10a8ad98999789b1a6d02c1",
+      "sourceSnapshotSha256Before": "c2b85e32c309aa6ca9251db1f5045e184bcaf1b4c10a8ad98999789b1a6d02c1",
+      "sourceUnchanged": true,
+      "specs": [
+        {
+          "capabilityCount": 3,
+          "id": "bitcoin.core.fullnode",
+          "intent": {
+            "summary": "Help an operator run a Bitcoin network node that downloads and fully validates blocks and transactions, and optionally operate wallets through local or configured RPC and GUI surfaces."
+          },
+          "path": "specs/main.spec.yaml",
+          "scope": {
+            "boundedContext": "bitcoin_core_full_node_with_optional_wallet_and_gui",
+            "excludes": [
+              "A guarantee that the snapshot's development branch is stable or suitable for production without separate release and operational review.",
+              "Complete enumeration of RPC methods, wallet policy, GUI workflows, build dependencies, resource requirements, or runtime performance.",
+              "Security isolation or confidentiality guarantees beyond the documented configuration and access warnings."
+            ],
+            "includes": [
+              "The Bitcoin Core node and daemon entry points described by the pinned repository snapshot.",
+              "The authenticated JSON-RPC server and bitcoin-cli client for node and wallet operations.",
+              "The optional wallet component, bitcoin-wallet tool, and bitcoin-qt graphical interface when enabled or built."
+            ]
+          },
+          "status": "draft"
+        }
+      ],
+      "stage": "original",
+      "startedAt": "2026-09-06 07:30:33 UTC",
+      "timeboxEnforcement": "operator_observed_not_runtime_hardcap",
+      "unexpectedAccessAudit": "not independently audited",
+      "usage": null,
+      "usageStatus": "not_exposed_by_subagent_tool",
+      "validatedAt": "2026-09-06T07:33:44.206665+00:00",
+      "validationStatus": "warning_only",
+      "warningCount": 2
+    },
+    {
+      "attempts": 1,
+      "candidateSha256": "2aa5fa94dd36d2bd9c8b0b89b31291ebe5cbe9f8543c773f862c9445dba18082",
+      "completionObservedAt": "2026-09-06 07:36:01 UTC",
+      "errorCount": 0,
+      "files": {
+        "evidence/configuration-excerpt.md": "5b553f2255b1392b41db26f7984cf3ebbe349134cd7b0162cb5d9f588dbcc712",
+        "evidence/main-excerpt.rs": "65d547f71bdfa92d0848cfbc1724646ca9a8b9cc6e6c46b1a748c80038f31190",
+        "evidence/readme-excerpt.md": "e03d26a369db3379b0def50ed34b6053fe4bf31868330f4e21edb870bb64135c",
+        "evidence/rewrite-excerpt.rs": "92715332c8bb48bf2515316f5f3229dc4ba4e2e54c4e4bffd0e199d1a25e8b12",
+        "evidence/runner-excerpt.rs": "85b1f2b3b5c876c6fad31115fbfa93aec8f94a22aff0389a3714ae2d3e81033b",
+        "evidence/search-compress-excerpt.rs": "fd03b895025d4bd5b38ae11c7af878b5a9f1da6066dc92ab2b84e7839e5e7c11",
+        "evidence/source-notes.md": "8d01530304478ec991d0ff164b94f69866fc2d14aed9d0f0464d8040892a7c11",
+        "specpm.yaml": "a937eb9d1c9eda840a327027c380d22750184e8ea8fe068b3fd12940a6996992",
+        "specs/main.spec.yaml": "7259157dedc8e4675fc4f133b6914391ce7f12ecf767c9cd3e65e89f70ea8048"
+      },
+      "generationStatus": "completed",
+      "humanReview": "pending",
+      "model": "gpt-5.6-luna",
+      "modelSettingsEvidence": "spawn_agent_arguments",
+      "observedAuthorSeconds": 328,
+      "omittedFromSpecPMPackage": [
+        "evidence/source-notes.md"
+      ],
+      "packageFileCollectionErrors": [],
+      "permissionsEvidence": "instructions_and_observed_source_hashes_not_proven_isolation",
+      "previewOnly": true,
+      "reasoningEffort": "medium",
+      "repairAttempts": 0,
+      "repository": "rtk-ai/rtk",
+      "repositoryId": "rtk-ai-rtk",
+      "requestedScope": "Shell-output compression proxy for reducing agent context consumption",
+      "revision": "7da2674073394194754a228d346189a74869e6ba",
+      "runtimeIsolationProven": false,
+      "sourceChanges": [],
+      "sourceIntegrityFindings": [
+        "Material evidence fidelity defect: runner-excerpt.rs:23 uses unconditional println! whereas src/core/runner.rs:142-146 branches on no_trailing_newline. Source-notes claims unchanged copies.",
+        "Search test and configuration excerpts include source lines outside declared ranges.",
+        "evidence/source-notes.md is preserved in this archive but omitted by SpecPM package file collection."
+      ],
+      "sourceSnapshotSha256After": "8400e81e948232202dd54e65cd1c56d2c3cf48c5fbca03cbe9319e3e5d535aaf",
+      "sourceSnapshotSha256Before": "8400e81e948232202dd54e65cd1c56d2c3cf48c5fbca03cbe9319e3e5d535aaf",
+      "sourceUnchanged": true,
+      "specs": [
+        {
+          "capabilityCount": 3,
+          "id": "rtk.shell_output_proxy",
+          "intent": {
+            "summary": "Help AI-agent workflows reduce shell-output context by executing supported commands through RTK filters while preserving useful results and command exit status."
+          },
+          "path": "specs/main.spec.yaml",
+          "scope": {
+            "boundedContext": "rtk_cli_proxy_and_hook_rewrite",
+            "excludes": [
+              "A guarantee that every shell command is supported or filtered; unrecognized commands pass through.",
+              "A tokenizer, exact billing or universal token-cost reduction guarantee.",
+              "Native agent tools that do not issue Bash tool calls through the configured hook path.",
+              "The complete analytics, telemetry, custom-filter trust, and agent-specific hook implementations as independent boundaries."
+            ],
+            "includes": [
+              "The rtk CLI entry point for supported command wrappers, output filtering, tracking, and passthrough execution.",
+              "The rewrite boundary used by configured agent hooks to turn a raw supported shell command into its rtk equivalent."
+            ]
+          },
+          "status": "draft"
+        }
+      ],
+      "stage": "original",
+      "startedAt": "2026-09-06 07:30:33 UTC",
+      "timeboxEnforcement": "operator_observed_not_runtime_hardcap",
+      "unexpectedAccessAudit": "not independently audited",
+      "usage": null,
+      "usageStatus": "not_exposed_by_subagent_tool",
+      "validatedAt": "2026-09-06T07:36:01.902017+00:00",
+      "validationStatus": "warning_only",
+      "warningCount": 1
+    },
+    {
+      "attempts": 1,
+      "candidateSha256": "c86a431d46f06dda1886a618e5c1d5393803deffb293974f23aaa6fcee1e1ee4",
+      "completionObservedAt": "2026-09-06 07:37:10 UTC",
+      "errorCount": 0,
+      "files": {
+        "evidence/LICENSE": "82761059eaedacb3356803aea8a170d8298609f91b14fc32ee1bfb40d690183c",
+        "evidence/README-excerpt.md": "f704476b1ee8d5508766b87511344da515f80ccc89dd3c00dbc94d5c81f46e93",
+        "evidence/index-types-excerpt.md": "45a28972350170bfe5abf7a8088bd66e33103f36241b4811f4eeb1411faf6edf",
+        "evidence/package-metadata.md": "0ee091dfd759f2de83e12731ba682cca13e4d011e0954019057f32b30aae2a3e",
+        "evidence/source-notes.md": "b025211fc4badd6e81cb9494f92caa47ef5802d2172929ee8f0c397a77915454",
+        "specpm.yaml": "980cbe90a41f5ad9d0457d2b38c265467ac5fd07c8bb0f66b7d24f3d73bf182b",
+        "specs/main.spec.yaml": "2f9e85dac985461e95bb286ab606278abe65aced4804d1e82b647cf1749bc1c1"
+      },
+      "generationStatus": "completed",
+      "humanReview": "pending",
+      "model": "gpt-5.6-luna",
+      "modelSettingsEvidence": "spawn_agent_arguments",
+      "observedAuthorSeconds": 216,
+      "omittedFromSpecPMPackage": [],
+      "packageFileCollectionErrors": [],
+      "permissionsEvidence": "instructions_and_observed_source_hashes_not_proven_isolation",
+      "previewOnly": true,
+      "reasoningEffort": "medium",
+      "repairAttempts": 0,
+      "repository": "axios/axios",
+      "repositoryId": "axios-axios",
+      "requestedScope": "HTTP client library for browsers and Node.js",
+      "revision": "509719387e4993392ca40da03a49678269cdfb90",
+      "runtimeIsolationProven": false,
+      "sourceChanges": [],
+      "sourceIntegrityFindings": [],
+      "sourceSnapshotSha256After": "dda3e9887cc0010a83761d316ed858cf4d9943d5f612d96778c870c3f6c34496",
+      "sourceSnapshotSha256Before": "dda3e9887cc0010a83761d316ed858cf4d9943d5f612d96778c870c3f6c34496",
+      "sourceUnchanged": true,
+      "specs": [
+        {
+          "capabilityCount": 3,
+          "id": "axios.http_client",
+          "intent": {
+            "summary": "Let browser and Node.js application developers issue asynchronous HTTP requests and receive typed response or error information through the Axios default API or a configured instance."
+          },
+          "path": "specs/main.spec.yaml",
+          "scope": {
+            "boundedContext": "public_axios_http_client_api",
+            "excludes": [
+              "A standalone command-line client, HTTP server, or application-level retry/cache policy.",
+              "Exhaustive adapter-specific behavior, browser compatibility beyond the documented support statement, and performance or availability guarantees.",
+              "Deprecated CancelToken as a recommended new-project interface."
+            ],
+            "includes": [
+              "The package default export and callable Axios instances created with axios.create.",
+              "Request aliases and configuration for URL, method, query parameters, request data, headers, response type, timeout, status validation, progress callbacks and cancellation signals.",
+              "Response fields, Promise rejection behavior and Axios error type guards."
+            ]
+          },
+          "status": "draft"
+        }
+      ],
+      "stage": "original",
+      "startedAt": "2026-09-06 07:33:34 UTC",
+      "timeboxEnforcement": "operator_observed_not_runtime_hardcap",
+      "unexpectedAccessAudit": "not independently audited",
+      "usage": null,
+      "usageStatus": "not_exposed_by_subagent_tool",
+      "validatedAt": "2026-09-06T07:37:10.906964+00:00",
+      "validationStatus": "warning_only",
+      "warningCount": 1
+    },
+    {
+      "attempts": 1,
+      "candidateSha256": "12ea51b0d0b1715aba78d5f8e1b3d868b55740e64f2e5b14fd844125974f9e1b",
+      "completionObservedAt": "2026-09-06 07:38:14 UTC",
+      "errorCount": 0,
+      "files": {
+        "evidence/instance-ai-configuration.md": "07cf8d1c7617913aa348e251bfbfb7c36aca7340550c0735fb70bff0b96b98b0",
+        "evidence/instance-ai-overview.md": "7152176435be2be6b3923107529e9899ae5b1e2afaa12dab89b49ddc79c0c99b",
+        "evidence/instance-ai-sandbox.md": "1d50aad47e925b4754d9e9ede2e15848a44bac449f8f81951116f5b52835453c",
+        "evidence/instance-ai-tools.md": "e8570715e67a42f1020c4c3a321831a7fbbacad01e3ead3968cc4fa8a696dbb8",
+        "evidence/license-terms.md": "1bf55d77f555638337e373e8e27e052af518baba15c4d61823c1b1de19106b31",
+        "evidence/product-overview.md": "faf96c1432ec1a98d6a7d4b3a418853ba3635f81501ec5e77194110406db9814",
+        "evidence/source-provenance.md": "2cd24f0dec3949d2dd69be1b2d30a6930cad6e0f5e8e737fe4bd66916a778844",
+        "specpm.yaml": "6617eab4b17f59ead82c4f1f4738ee0be36751dcd51c1ce29bbeb0017cf0df5f",
+        "specs/main.spec.yaml": "1a8abbc9d4442b38c4f656605ac5173f6682a4942cd5a26bbb464a06cde10f84"
+      },
+      "generationStatus": "completed",
+      "humanReview": "pending",
+      "model": "gpt-5.6-luna",
+      "modelSettingsEvidence": "spawn_agent_arguments",
+      "observedAuthorSeconds": 280,
+      "omittedFromSpecPMPackage": [],
+      "packageFileCollectionErrors": [],
+      "permissionsEvidence": "instructions_and_observed_source_hashes_not_proven_isolation",
+      "previewOnly": true,
+      "reasoningEffort": "medium",
+      "repairAttempts": 0,
+      "repository": "n8n-io/n8n",
+      "repositoryId": "n8n-io-n8n",
+      "requestedScope": "Workflow automation and AI-agent platform",
+      "revision": "082b5d9190f4bc81d93c6a94d6d4692bed4660ca",
+      "runtimeIsolationProven": false,
+      "sourceChanges": [],
+      "sourceIntegrityFindings": [
+        "Duplicate instance_ai_configuration ID is a validator warning.",
+        "license-terms.md:9-10 changes source tab indentation to spaces; wording is unchanged."
+      ],
+      "sourceSnapshotSha256After": "262a341768a692a30ea0fed5b0f10497e3249507fcc87cc7b90dccf2dadccf0a",
+      "sourceSnapshotSha256Before": "262a341768a692a30ea0fed5b0f10497e3249507fcc87cc7b90dccf2dadccf0a",
+      "sourceUnchanged": true,
+      "specs": [
+        {
+          "capabilityCount": 5,
+          "id": "n8n.platform",
+          "intent": {
+            "summary": "Enable teams to build and deploy integrations-driven workflows and multi-step AI agents, and let users use Instance AI inside an n8n instance to inspect resources or build workflows."
+          },
+          "path": "specs/main.spec.yaml",
+          "scope": {
+            "boundedContext": "n8n_runtime_and_instance_ai",
+            "excludes": [
+              "A complete enumeration or independent verification of every n8n integration, node, cloud feature, or enterprise-only feature.",
+              "A complete HTTP request/response schema for the Instance AI service; the inspected documentation identifies the module location and tool contracts but not all route definitions.",
+              "A guarantee that the documented license permits every redistribution or commercial deployment scenario."
+            ],
+            "includes": [
+              "The n8n product boundary described by the repository overview, including visual workflow construction, custom JavaScript/Python code, integrations, self-hosted deployment, and cloud use.",
+              "The Instance AI backend module's orchestrator, domain tools, workflow builder, observational memory, and sandbox workspace behavior.",
+              "Configuration of model providers, MCP servers, search providers, and workflow-building sandbox providers through documented environment variables or Instance AI settings."
+            ]
+          },
+          "status": "draft"
+        }
+      ],
+      "stage": "original",
+      "startedAt": "2026-09-06 07:33:34 UTC",
+      "timeboxEnforcement": "operator_observed_not_runtime_hardcap",
+      "unexpectedAccessAudit": "not independently audited",
+      "usage": null,
+      "usageStatus": "not_exposed_by_subagent_tool",
+      "validatedAt": "2026-09-06T07:38:18.359538+00:00",
+      "validationStatus": "warning_only",
+      "warningCount": 2
+    }
+  ],
+  "status": "completed_with_review_findings",
+  "utilityVerdict": null
+}
