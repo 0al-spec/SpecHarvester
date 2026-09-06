@@ -3146,6 +3146,9 @@ Tasks:
   Record supported/partial/missing/incorrect answers, additional lookups,
   material mistakes, useful information, edits and review/edit time. Preserve
   original outputs and distinguish AI assistance from human disposition.
+  In progress: bounded AI reading notes and the digest-bound pending human
+  worksheet are in `SPECS/EVIDENCE/P56-T6/`. Maintainer findings and actual
+  review/edit time are still required; no completion or acceptance is inferred.
 - [ ] `P56-T7` Summarize Pilot Failures and Observed Effort. Account for all five
   outcomes, source-backed errors, missing guidance, observed generation/review
   effort and available usage. Do not treat missing usage as zero or mismatched
