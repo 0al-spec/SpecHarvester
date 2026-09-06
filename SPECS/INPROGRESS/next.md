@@ -1,22 +1,25 @@
-# Next Task: P56-T3A Simplify Exploratory Pilot Protocol
+# Next Task: P56-T4 Generate Five Exploratory Candidate Packages
 
 **Priority:** P0
 **Phase:** Phase 56. Agent-First Spec Authoring and Practical Utility Evaluation
-**Dependencies:** `P56-T2` Complete Spec Authoring Contract and Repository Skill; `P56-T1` Practical Utility Benchmark
-**Status:** In Progress
+**Dependencies:** `P56-T3A` Exploratory Pilot Protocol; `P56-T2` Complete Spec Authoring Skill; `P56-T1` source pins
+**Status:** Ready
 
 ## Objective
 
-Version a simpler five-repository practical authoring pilot before further
-runtime investment. Preserve the original benchmark and its answer key.
+Generate one complete candidate for each of the five pinned targets using
+Luna medium under p56-exploratory-authoring/v2, with all outcomes retained.
 
 ## Required Scope
 
-Keep the same five pinned repositories. Fix Luna medium, one candidate per
-repository, side-by-side human review against README and retained packages,
-explicit limitations and no claim of proven isolation or mass-corpus readiness.
-Defer P56-T3 and draft PR #372; do not merge its I/O checkpoint. Update the
-remaining Phase 56 tasks. No provider or repository generation in this task.
+Follow docs/P56_T3A_Exploratory_Pilot_Protocol.md. Before authoring, record skill
+identity and actual model/settings, prepare unchanged pinned sources and
+select/hash retained baselines. Use gpt-5.6-luna with medium reasoning, one
+initial attempt and at most one validation-error repair under the observed
+timebox. Keep originals, diagnostics, source identity and available usage;
+missing usage is not zero. Do not rerun the old pipeline, replace targets,
+silently switch models or claim proven isolation. P56-T3 and draft PR #372 are
+deferred, unmerged and not prerequisites. No automatic acceptance/publication.
 
 P55-T10G7 through P55-T10G10, P55-T10H, and P55-T11 are paused pending the
 P56-T8 architecture decision. Phase 56 may proceed from the existing PARTIAL
@@ -24,6 +27,11 @@ evidence without passing the historical Phase 55 gates. Their historical
 results remain unchanged, and no publication authority is granted.
 
 ## Recently Archived
+
+- `P56-T3A` Exploratory Pilot Protocol: PASS for preparation. V2 retains the five
+  original pins, uses Luna medium and practical human side-by-side review.
+  V1 benchmark is unchanged; T3/#372 are deferred. No live generation or
+  empirical quality result is implied.
 
 - `P56-T2` Complete Spec Authoring Skill: PASS. Self-contained investigative
   skill, supported-field guide, valid starter and fictional worked example.
