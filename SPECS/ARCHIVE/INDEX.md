@@ -6,6 +6,7 @@
 
 | Task ID | Folder | Archived | Verdict |
 |---------|--------|----------|---------|
+| P56-T5 | [P56-T5_Side_by_Side_Package_Review/](P56-T5_Side_by_Side_Package_Review/) | 2026-09-06 | PASS (preparation only) |
 | P56-T4 | [P56-T4_Five_Exploratory_Candidate_Packages/](P56-T4_Five_Exploratory_Candidate_Packages/) | 2026-09-06 | PASS (collection only) |
 | P56-T3A | [P56-T3A_Exploratory_Pilot_Protocol/](P56-T3A_Exploratory_Pilot_Protocol/) | 2026-09-06 | PASS |
 | P56-T2 | [P56-T2_Complete_Spec_Authoring_Skill/](P56-T2_Complete_Spec_Authoring_Skill/) | 2026-09-06 | PASS |
@@ -1023,3 +1024,4 @@
 | 2026-09-06 | P56-T3A | Archived REVIEW_p56_t3a_exploratory_pilot_protocol report; no follow-up defects |
 | 2026-09-06 | P56-T4 | Archived five original candidate outcomes; human utility review pending |
 | 2026-09-06 | P56-T4 | Archived REVIEW_p56_t4_five_exploratory_candidates; integrity tests strengthened, T5-T8 retain quality follow-up |
+| 2026-09-06 | P56-T5 | Archived offline side-by-side preparation; T6 human review pending |
