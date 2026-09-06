@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 from pathlib import Path, PurePosixPath
 
 import pytest
+import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 EVIDENCE = ROOT / "SPECS/EVIDENCE/P56-T4"
@@ -16,6 +17,18 @@ PREPARATION = json.loads((EVIDENCE / "preparation.json").read_text())
 
 def sha(data):
     return hashlib.sha256(data).hexdigest()
+
+
+def test_ci_replays_with_recorded_validator_without_pinning_current_integration():
+    workflow = yaml.safe_load((ROOT / ".github/workflows/ci.yml").read_text())
+    steps = workflow["jobs"]["specpm-integration"]["steps"]
+    historical = next(s for s in steps if s.get("with", {}).get("path") == "SpecPMHistorical")
+    assert historical["with"]["ref"] == PREPARATION["validator"]["revision"]
+    current = next(s for s in steps if s.get("with", {}).get("path") == "SpecPM")
+    assert "ref" not in current["with"]
+    replay = next(s for s in steps if "test_p56_exploratory_candidates.py" in s.get("run", ""))
+    assert replay["env"]["PYTHONPATH"] == "../SpecPMHistorical/src"
+    assert "specpm.core.__file__" in replay["run"]
 
 
 def test_five_original_outcomes_preserve_protocol_and_limits():

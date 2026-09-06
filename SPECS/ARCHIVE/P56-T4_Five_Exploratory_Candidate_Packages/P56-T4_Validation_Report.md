@@ -40,6 +40,17 @@ used desktop subagents; available CLI version is not falsely labeled transport.
 
 ## Limits and Handoff
 
+## PR Review Correction
+
+PR #374 thread `PRRT_kwDOSUP2JM6fqvzD`: separate exact historical diagnostic
+replay from current SpecPM integration. CI checks out the recorded validator
+revision into SpecPMHistorical and asserts its actual import path before replay;
+other integration steps still use current SpecPM. Original evidence unchanged.
+Focused authoring/exploratory tests with recorded SpecPM: 14 passed. Scoped ruff
+check and format check passed. New CI execution validates the workflow change.
+
+## Authority Limits
+
 No human review, runtime test, proven isolation, exact token accounting,
 mass-corpus claim, registry mutation or publication. Warnings and source-fidelity
 defects remain visible, not repaired outside budget. T5 must show these originals
