@@ -1,0 +1,193 @@
+{
+  "authorClientVersion": null,
+  "authorTransport": "Codex desktop multi_agent_v1 fresh agent",
+  "baselineLockSha256": "63cb35570f2e96e567fc599d8c38ab3b431c072992f0faff3794aeef7b5c3f5f",
+  "baselinesFrozen": true,
+  "generationStarted": true,
+  "generationStartedAt": "2026-09-06T07:30:32Z",
+  "kind": "preparation_record",
+  "model": "gpt-5.6-luna",
+  "permissions": {
+    "accessRestrictions": "instructions_only",
+    "filesystemSandbox": "unrestricted_host",
+    "forkContext": false,
+    "networkAvailable": true,
+    "personalResourcesDeliberatelyMounted": false,
+    "runtimeIsolationProven": false,
+    "sourceFileMode": "0444",
+    "sourceReadOnlyEnforced": false
+  },
+  "preparationStartedAt": "2026-09-06T07:23:49.766343+00:00",
+  "preparedAt": "2026-09-06T07:23:56.233120+00:00",
+  "protocol": "p56-exploratory-authoring/v2",
+  "protocolSha256": "c207c10569ab8abff3c967bf1d160c672fc560d39a98677cb65579db12119ce6",
+  "reasoningEffort": "medium",
+  "repositories": [
+    {
+      "excludedEntries": [
+        {
+          "path": "codex-rs/vendor/bubblewrap/LICENSE",
+          "reason": "nonregular_git_entry"
+        }
+      ],
+      "frozenSourceHashesVerified": true,
+      "readmeSha256": "ba4e1f69ff48386e72a9c5e1edaf76aad64a475c2d51af79ccba6d1128261ba7",
+      "repository": "openai/codex",
+      "revision": "16d7daad7c5dc73da8558102a65bb7d7709807e1",
+      "scope": "Local coding agent and its application integration surface",
+      "snapshotSha256": "3ff847888fb93b43f11b661760a8db09f1fd64c7b365f96b2e22a1dc67a4f442",
+      "sourceFileCount": 5756,
+      "status": "prepared"
+    },
+    {
+      "excludedEntries": [],
+      "frozenSourceHashesVerified": true,
+      "readmeSha256": "45916e6961540c536e8b17b3a4d3305393afce5b407d1ea3da82c246cba8aa5d",
+      "repository": "bitcoin/bitcoin",
+      "revision": "a2aab6df97d9f3e1186e8c3fc57ad909cc8aef9b",
+      "scope": "Bitcoin Core full node with optional wallet and GUI",
+      "snapshotSha256": "c2b85e32c309aa6ca9251db1f5045e184bcaf1b4c10a8ad98999789b1a6d02c1",
+      "sourceFileCount": 3030,
+      "status": "prepared"
+    },
+    {
+      "excludedEntries": [],
+      "frozenSourceHashesVerified": true,
+      "readmeSha256": "9eedab13449e48321140887bad972786f1faa25ac5b4120f0259f4086dd601e9",
+      "repository": "rtk-ai/rtk",
+      "revision": "7da2674073394194754a228d346189a74869e6ba",
+      "scope": "Shell-output compression proxy for reducing agent context consumption",
+      "snapshotSha256": "8400e81e948232202dd54e65cd1c56d2c3cf48c5fbca03cbe9319e3e5d535aaf",
+      "sourceFileCount": 410,
+      "status": "prepared"
+    },
+    {
+      "excludedEntries": [],
+      "frozenSourceHashesVerified": true,
+      "readmeSha256": "4db033f8e5c39cc3427078df94ebe079a37a7c6e557180e6f616638af5e3358f",
+      "repository": "axios/axios",
+      "revision": "509719387e4993392ca40da03a49678269cdfb90",
+      "scope": "HTTP client library for browsers and Node.js",
+      "snapshotSha256": "dda3e9887cc0010a83761d316ed858cf4d9943d5f612d96778c870c3f6c34496",
+      "sourceFileCount": 456,
+      "status": "prepared"
+    },
+    {
+      "excludedEntries": [
+        {
+          "path": ".claude/plugins/n8n/skills/community-pr-readiness-check",
+          "reason": "nonregular_git_entry"
+        },
+        {
+          "path": ".claude/plugins/n8n/skills/content-design",
+          "reason": "nonregular_git_entry"
+        },
+        {
+          "path": ".claude/plugins/n8n/skills/conventions",
+          "reason": "nonregular_git_entry"
+        },
+        {
+          "path": ".claude/plugins/n8n/skills/create-community-node-lint-rule",
+          "reason": "nonregular_git_entry"
+        },
+        {
+          "path": ".claude/plugins/n8n/skills/create-instance-ai-eval",
+          "reason": "nonregular_git_entry"
+        },
+        {
+          "path": ".claude/plugins/n8n/skills/create-issue",
+          "reason": "nonregular_git_entry"
+        },
+        {
+          "path": ".claude/plugins/n8n/skills/create-pr",
+          "reason": "nonregular_git_entry"
+        },
+        {
+          "path": ".claude/plugins/n8n/skills/create-skill",
+          "reason": "nonregular_git_entry"
+        },
+        {
+          "path": ".claude/plugins/n8n/skills/db-migrations",
+          "reason": "nonregular_git_entry"
+        },
+        {
+          "path": ".claude/plugins/n8n/skills/design-system",
+          "reason": "nonregular_git_entry"
+        },
+        {
+          "path": ".claude/plugins/n8n/skills/experiments",
+          "reason": "nonregular_git_entry"
+        },
+        {
+          "path": ".claude/plugins/n8n/skills/human-like-code-review",
+          "reason": "nonregular_git_entry"
+        },
+        {
+          "path": ".claude/plugins/n8n/skills/linear-issue",
+          "reason": "nonregular_git_entry"
+        },
+        {
+          "path": ".claude/plugins/n8n/skills/loom-transcript",
+          "reason": "nonregular_git_entry"
+        },
+        {
+          "path": ".claude/plugins/n8n/skills/nathan",
+          "reason": "nonregular_git_entry"
+        },
+        {
+          "path": ".claude/plugins/n8n/skills/node-add-oauth",
+          "reason": "nonregular_git_entry"
+        },
+        {
+          "path": ".claude/plugins/n8n/skills/protect-endpoints",
+          "reason": "nonregular_git_entry"
+        },
+        {
+          "path": ".claude/plugins/n8n/skills/public-api",
+          "reason": "nonregular_git_entry"
+        },
+        {
+          "path": ".claude/plugins/n8n/skills/reproduce-bug",
+          "reason": "nonregular_git_entry"
+        },
+        {
+          "path": ".claude/plugins/n8n/skills/spec-driven-development",
+          "reason": "nonregular_git_entry"
+        },
+        {
+          "path": ".claude/plugins/n8n/skills/telemetry",
+          "reason": "nonregular_git_entry"
+        }
+      ],
+      "frozenSourceHashesVerified": true,
+      "readmeSha256": "9af8818267836df37f8d58cbb1db8c02c83cbd110118361811f4910d4de59eca",
+      "repository": "n8n-io/n8n",
+      "revision": "082b5d9190f4bc81d93c6a94d6d4692bed4660ca",
+      "scope": "Workflow automation and AI-agent platform",
+      "snapshotSha256": "262a341768a692a30ea0fed5b0f10497e3249507fcc87cc7b90dccf2dadccf0a",
+      "sourceFileCount": 25703,
+      "status": "prepared"
+    }
+  ],
+  "skillCommit": "9e5fc115e11d9711aa64b6465cc4cd48de8b3945",
+  "skillFiles": {
+    "LICENSE.txt": "2b602ea6f13c59fd39db8770906e852f1e22da5aea9da320063b7fc25223ec36",
+    "SKILL.md": "7ba296b57f1996602fe0f45725249887dc856279eb03e95e8d531b4a5ea2aec3",
+    "assets/example/LICENSE.txt": "2b602ea6f13c59fd39db8770906e852f1e22da5aea9da320063b7fc25223ec36",
+    "assets/example/evidence/command.md": "3812e8ef3582a5c12ad779842da5a098b72511c14d192c0950b5f38c73205b4d",
+    "assets/example/evidence/source-notes.md": "481dafb474b297669202d59fe216aa227fcf26bcc19521b0ca5c50c9c826b2ed",
+    "assets/example/specpm.yaml": "ba2018879ad862002688b55009f006f3ee0586b676aced792e42d83811cca427",
+    "assets/example/specs/main.spec.yaml": "4d6d75b55bb36abe9fb58b03a7e00bac8f0222d59b27d00935d5da3e526984e0",
+    "assets/template/evidence/contract.md": "e134b8273b5abfe4e9c7e555e380e83318ccc32e070316d368cb52b4db4cae47",
+    "assets/template/specpm.yaml": "eeb6adbbdf65d0d5136ba53113934e2b373406bda3ca09bccb95b9236470dc8e",
+    "assets/template/specs/main.spec.yaml": "7aeeb1c96259b7212ab328696a1413478c93c13e6794b21d8051f454ec3797de",
+    "references/authoring-contract.md": "d5f2e5795c5e34d60c55646d217298ca006e4cc7caa98535d9745a6b79874278"
+  },
+  "skillSha256": "4673bc5c7c79c28cb3f6744207e433948dfedaae7860573561aaa6ce1328c014",
+  "validator": {
+    "entrypoint": "specpm.core.validate_package",
+    "repository": "0al-spec/SpecPM",
+    "revision": "8a5ce3dece3d18bf8f601a5a599520bd520c7839",
+    "workingTreeClean": true
+  }
+}
