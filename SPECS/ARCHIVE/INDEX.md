@@ -1022,3 +1022,4 @@
 | 2026-09-06 | P56-T3A | Archived Exploratory Pilot Protocol (PASS for preparation) |
 | 2026-09-06 | P56-T3A | Archived REVIEW_p56_t3a_exploratory_pilot_protocol report; no follow-up defects |
 | 2026-09-06 | P56-T4 | Archived five original candidate outcomes; human utility review pending |
+| 2026-09-06 | P56-T4 | Archived REVIEW_p56_t4_five_exploratory_candidates; integrity tests strengthened, T5-T8 retain quality follow-up |

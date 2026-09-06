@@ -21,9 +21,11 @@ does not establish faithful evidence, author quality, acceptance or publication.
 ## Commands Run
 
 - `.venv/bin/python -m pytest -q --tb=short --cov=spec_harvester --cov-report=term --cov-fail-under=90`:
-  1451 passed, 7 skipped, coverage 90.03% (initial complete run).
+  1452 passed, 7 skipped, coverage 90.03% (final run after archive and review).
 - `PYTHONPATH=/Users/egor/Development/GitHub/0AL/SpecPM/src:src .venv/bin/python -m pytest tests/test_p56_exploratory_candidates.py tests/test_authoring_skill_assets.py -q`:
-  13 passed, including the subsequently added historical-baseline digest test.
+  13 passed, including historical-baseline digests and exact validator diagnostics.
+- `.venv/bin/python -m pytest tests/test_docs_contracts.py tests/test_p56_exploratory_candidates.py -q`:
+  207 passed, 1 skipped (optional SpecPM import, covered by the explicit run above).
 - `.venv/bin/ruff check src tests`: passed.
 - `.venv/bin/ruff format --check src tests`: passed.
 - `swift package dump-package`: passed.
