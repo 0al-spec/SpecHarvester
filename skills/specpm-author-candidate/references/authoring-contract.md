@@ -57,6 +57,42 @@ log_write, event_emit, message_publish and state_mutation.
 the same BoundarySpec; structural targets such as `scope` do not need an ID.
 Do not append `.intentIds` to a support target.
 
+## Data-Flow Review
+
+For each source-supported external interaction, identify the outgoing data,
+destination, returned data, and enabling conditions (provider, flags, deployment
+or configuration). Record material flows in `effects.sideEffects` and connect
+them to evidence with `supports`; do not add a new schema field or execute code
+to establish the flow.
+
+- Sending application data to another service is `network_write`, even if the
+  purpose is to obtain an answer and no remote persistent mutation is established.
+  A response can be described in the same summary or a separate `network_read`
+  effect; it must not replace the outgoing effect.
+- A CLI/SDK using a remote AI provider sends prompts and may send supplied images
+  or repository context. Describe only the data categories supported by evidence,
+  the configured destination and relevant conditions. A local executable does
+  not establish local-only processing; do not claim every deployment is remote.
+- HTTP method names, "read-only API" labels and absence of local file writes do
+  not prove absence of disclosure. Inspect request payloads, parameters and
+  authentication handling when supported by the allowed sources. Never copy
+  actual credentials or user data into evidence.
+- Do not infer network traffic merely from an SDK name, or invent exact endpoints,
+  uploaded files or retention policies. If these are not established, state the
+  unknowns while preserving any established outbound flow. Local-only processing
+  should not acquire a speculative network effect.
+
+For example, a documented CLI sends a prompt and an optional image to a configured
+remote inference API and returns generated text. `network_read: fetch an answer`
+is incomplete. Use `network_write` describing the prompt/optional image transfer
+and configured service, with response receipt in the summary or a separate effect.
+This is a synthetic teaching example, not evidence about the target repository.
+
+Before handoff, compare each effect's kind and summary with its supporting source.
+Validation accepts both network kinds; source-file hashes prove integrity, not
+the correctness of this classification. Repeat the check across the package's
+interfaces instead of fixing only the first similar case found.
+
 ## Completeness without Invention
 
 A useful package answers what a consumer can accomplish, the entry point they
