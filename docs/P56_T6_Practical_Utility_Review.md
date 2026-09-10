@@ -5,6 +5,7 @@
 
 ## Evidence
 
+- [Russian plain-language review drafts](../SPECS/EVIDENCE/P56-T6/review-drafts.ru.md)
 - [Pending human worksheet](../SPECS/EVIDENCE/P56-T6/human-review.json)
 - [Candidate-only reading](../SPECS/EVIDENCE/P56-T6/candidate-assistance.md)
 - [README and retained-reference reading](../SPECS/EVIDENCE/P56-T6/reference-assistance.md)
@@ -34,6 +35,20 @@ Schema validity does not resolve evidence fidelity. The
 RTK excerpts, Bitcoin range/evidence gaps and Codex's omitted install-document
 trail, remain unchanged and must accompany review.
 Candidate digest bindings identify files; they do not certify their claims.
+
+## Assisted Reading Drafts
+
+The Russian drafts reduce the five candidate reviews to proposed plain-language
+findings, with a discovery/shortlist lens and the original five T6 questions.
+They distinguish original T4 outputs from later SpecPM curation, including the
+Codex and Axios outbound-data effect corrections. Original specs and archived
+validation receipts were reread; bounded reference and forensic notes are
+explicitly attributed, not presented as a new exhaustive source audit.
+
+The drafts do not fill `human-review.json`, infer review time or complete T6.
+Any maintainer response must be recorded as assisted review of the actual
+surface read, not independent review of all original and retained artifacts.
+Unreviewed questions and surfaces remain pending under the existing protocol.
 
 ## Reading Correction
 

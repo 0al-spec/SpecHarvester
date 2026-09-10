@@ -75,3 +75,14 @@ def test_assistance_is_labeled_bounded_and_portable():
     assert "not retained YAML, acceptance, or verified behavior" in reference
     for path in (EVIDENCE / "P56-T6").iterdir():
         assert "/Users/" not in path.read_text()
+
+
+def test_readable_drafts_cover_all_candidates_and_keep_review_pending():
+    drafts = (EVIDENCE / "P56-T6/review-drafts.ru.md").read_text()
+    comparison = _read(EVIDENCE / "P56-T5/comparison.json")
+    for row in comparison["repositories"]:
+        assert f"## {row['repository']}\n" in drafts
+    assert "AI assistance only; maintainer confirmation pending." in drafts
+    assert "humanReview: pending" in drafts
+    assert "T6 remains In Progress; no acceptance or publication authority." in drafts
+    assert "[Human worksheet](human-review.json)" in drafts
