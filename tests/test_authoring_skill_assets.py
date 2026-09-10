@@ -66,6 +66,39 @@ def test_assets_pass_independent_specpm_validation(asset: str) -> None:
     assert [item["code"] for item in report["warnings"]] == ["preview_only_package"]
 
 
+@pytest.mark.parametrize("asset", ["template", "example"])
+def test_package_collection_keeps_source_and_review_notes(asset: str) -> None:
+    core = pytest.importorskip("specpm.core", reason="Run in the SpecPM integration job")
+    package = SKILL / "assets" / asset
+    manifest, _ = package_documents(package)
+    errors: list[dict] = []
+    collected = set(core.collect_package_files(package, manifest, errors))
+    assert errors == []
+    assert collected == {
+        path.relative_to(package).as_posix() for path in package.rglob("*") if path.is_file()
+    }
+
+
+def test_example_review_notes_do_not_replace_behavior_evidence() -> None:
+    _, specs = package_documents(SKILL / "assets/example")
+    spec = specs[0]
+    by_path = {item["path"]: item for item in spec["evidence"]}
+    notes = by_path["evidence/source-notes.md"]
+    assert notes["kind"] == "documentation"
+    assert notes["supports"] == ["provenance.sourceConfidence"]
+    source_supports = set(by_path["evidence/command.md"]["supports"])
+    assert "intent.summary" in source_supports
+    assert "scope" in source_supports
+    for group, items in (
+        ("provides.capabilities", spec["provides"]["capabilities"]),
+        ("interfaces.inbound", spec["interfaces"]["inbound"]),
+        ("interfaces.outbound", spec["interfaces"]["outbound"]),
+        ("constraints", spec["constraints"]),
+        ("effects.sideEffects", spec["effects"]["sideEffects"]),
+    ):
+        assert {f"{group}.{item['id']}" for item in items} <= source_supports
+
+
 @pytest.mark.parametrize("damage", ["missing_source", "unbound_capability", "unknown_target"])
 def test_independent_validation_detects_broken_asset_bindings(tmp_path: Path, damage: str) -> None:
     core = pytest.importorskip("specpm.core", reason="Run in the SpecPM integration job")
