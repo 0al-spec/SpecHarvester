@@ -100,6 +100,13 @@ would use, input/output shape, prerequisites and significant failure/side-effect
 boundaries. It need not enumerate every private function or dependency.
 Missing facts remain visible as unknowns instead of plausible guesses.
 
+Use the [discovery coverage guide](discovery-coverage.md) to connect a bounded
+source inventory to these fields. Inventory and coverage notes are author-written
+review aids, not independent behavioral evidence or a new required schema.
+If retained inside the package, put them in the existing evidence note and bind
+that note as documentation to `provenance.sourceConfidence`; use the actual
+source excerpts to support behavior. Do not add unknown manifest/spec fields.
+
 The starter is intentionally an abstract, synthetic contract. The worked
 example describes a fictional documented interface and illustrates richer
 content; it is not an executed implementation or a quality calibration result.
