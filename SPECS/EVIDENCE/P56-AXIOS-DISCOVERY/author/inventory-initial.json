@@ -1,0 +1,298 @@
+{
+  "schemaVersion": 1,
+  "experiment": "p56-axios-discovery-depth/v1",
+  "repository": "https://github.com/axios/axios",
+  "revision": "509719387e4993392ca40da03a49678269cdfb90",
+  "inventoryMethod": "Bounded source-first review of the upstream package manifest, public feature and API documentation, TypeScript declarations, and focused HTTP/XHR/fetch dispatch implementation. The review covered 28 upstream paths, did not execute target code or tests, and treated examples as documented patterns rather than runtime proof.",
+  "items": [
+    {
+      "id": "make_http_requests",
+      "userNeed": "Call HTTP APIs from JavaScript in browser and server applications and receive a Promise-based response.",
+      "summary": "Axios exposes a callable client and method aliases for GET, DELETE, HEAD, OPTIONS, POST, PUT, PATCH and form variants; requests resolve to an Axios response or reject with an Axios error.",
+      "qualifiers": [
+        "The reviewed package version is 1.19.0.",
+        "Actual protocol behavior depends on the selected adapter and runtime.",
+        "No target code or endpoint was executed in this experiment."
+      ],
+      "sources": [
+        {
+          "path": "package.json",
+          "startLine": 1,
+          "endLine": 8,
+          "sha256": "c9afce8c65c9fadaebaac41ca90db26779efdc5e95aeca49b4e9477b61bcc4b2"
+        },
+        {
+          "path": "index.d.ts",
+          "startLine": 642,
+          "endLine": 715,
+          "sha256": "3768eb0975f030352ec96190aaa485af41910029d9a62d9c70557c976b30a6f7"
+        }
+      ]
+    },
+    {
+      "id": "configure_clients_and_requests",
+      "userNeed": "Reuse service-specific base URLs, headers, timeouts and other defaults while retaining per-request overrides.",
+      "summary": "axios.create() creates isolated preconfigured instances using the full request config; request-time values override instance defaults, and instance defaults remain mutable.",
+      "qualifiers": [
+        "baseURL is URL-construction convenience, not a path or origin security boundary.",
+        "The only generally required request config field is url; method defaults to GET."
+      ],
+      "sources": [
+        {
+          "path": "docs/pages/advanced/create-an-instance.md",
+          "startLine": 1,
+          "endLine": 86,
+          "sha256": "88a27f925f9f76cdc8960397e4930636090472ae0e99932778df609c7ffb68d0"
+        },
+        {
+          "path": "docs/pages/advanced/request-config.md",
+          "startLine": 1,
+          "endLine": 34,
+          "sha256": "b5fbc2456922795b283093e01d1f4541f690fb834520210d222a9f94828c9d87"
+        }
+      ]
+    },
+    {
+      "id": "serialize_and_transform_data",
+      "userNeed": "Send query parameters and common request body formats, then transform request and response data.",
+      "summary": "Axios supports custom query serialization, request/response transforms, JSON, URL-encoded and multipart/FormData payloads, including automatic object-to-FormData serialization.",
+      "qualifiers": [
+        "Accepted body types vary across browser, React Native and Node.js environments.",
+        "Browser, web worker and React Native FormData must leave multipart Content-Type boundary generation to the runtime.",
+        "Node.js FormData getHeaders() defaults to legacy all-header copying; content-only is the stricter opt-in policy.",
+        "The default form serializer nesting limit is documented as 100."
+      ],
+      "sources": [
+        {
+          "path": "docs/pages/getting-started/features.md",
+          "startLine": 25,
+          "endLine": 42,
+          "sha256": "ed94641e5b866a5a6f1e88ca46a7f70441f4e04a60a29e9591a2840ac9393f1c"
+        },
+        {
+          "path": "docs/pages/advanced/request-config.md",
+          "startLine": 36,
+          "endLine": 50,
+          "sha256": "b5fbc2456922795b283093e01d1f4541f690fb834520210d222a9f94828c9d87"
+        },
+        {
+          "path": "docs/pages/advanced/request-config.md",
+          "startLine": 87,
+          "endLine": 133,
+          "sha256": "b5fbc2456922795b283093e01d1f4541f690fb834520210d222a9f94828c9d87"
+        },
+        {
+          "path": "docs/pages/advanced/multipart-form-data-format.md",
+          "startLine": 27,
+          "endLine": 114,
+          "sha256": "c03c5d9552c7400faed110617f1916730f9b253b615ff5f58bd937b8d243cffc"
+        }
+      ]
+    },
+    {
+      "id": "attach_credentials_and_xsrf_tokens",
+      "userNeed": "Authenticate API calls and control browser credential and XSRF-token transmission.",
+      "summary": "Axios can send explicit headers, HTTP Basic credentials, URL-derived Basic credentials in Node HTTP/fetch adapters, cross-site credentials, and browser XSRF headers under configurable same-origin or cross-origin conditions.",
+      "qualifiers": [
+        "The auth option is HTTP Basic only and overwrites a custom Authorization header; Bearer tokens and API keys use custom headers or query parameters.",
+        "withCredentials and withXSRFToken control different browser behaviors.",
+        "Credentials and tokens are outbound request data disclosed to the configured destination; no retention behavior is established."
+      ],
+      "sources": [
+        {
+          "path": "docs/pages/advanced/authentication.md",
+          "startLine": 3,
+          "endLine": 57,
+          "sha256": "2e55b8f20472e05e70ac394cfc6fe6ab2566fd019584e8140fdcfb937141c240"
+        },
+        {
+          "path": "docs/pages/advanced/request-config.md",
+          "startLine": 139,
+          "endLine": 155,
+          "sha256": "b5fbc2456922795b283093e01d1f4541f690fb834520210d222a9f94828c9d87"
+        },
+        {
+          "path": "docs/pages/advanced/request-config.md",
+          "startLine": 202,
+          "endLine": 230,
+          "sha256": "b5fbc2456922795b283093e01d1f4541f690fb834520210d222a9f94828c9d87"
+        }
+      ]
+    },
+    {
+      "id": "intercept_request_response_lifecycle",
+      "userNeed": "Apply shared request and response policy such as header injection, logging, refresh or response shaping.",
+      "summary": "Request and response interceptors can modify or reject config and responses, can be isolated per instance, conditionally run, ejected or cleared, and have documented LIFO request versus FIFO response ordering.",
+      "qualifiers": [
+        "Request interceptors are asynchronous by default unless marked synchronous.",
+        "Retry and token-refresh examples are application-authored interceptor policies, not an Axios built-in retry or credential lifecycle engine."
+      ],
+      "sources": [
+        {
+          "path": "docs/pages/advanced/interceptors.md",
+          "startLine": 1,
+          "endLine": 105,
+          "sha256": "142c8d31e03ca09191e3e976aa654e6538527142589d3ee5a4aa1268c3022044"
+        },
+        {
+          "path": "docs/pages/advanced/create-an-instance.md",
+          "startLine": 57,
+          "endLine": 68,
+          "sha256": "88a27f925f9f76cdc8960397e4930636090472ae0e99932778df609c7ffb68d0"
+        }
+      ]
+    },
+    {
+      "id": "cancel_and_bound_requests",
+      "userNeed": "Stop obsolete or stalled requests and bound request or response resource use.",
+      "summary": "Axios accepts AbortSignal cancellation and timeout configuration; legacy CancelToken remains available but deprecated. Node HTTP/fetch adapters expose request/response size caps, while decompression-bomb protection is opt-in because default limits are unlimited.",
+      "qualifiers": [
+        "CancelToken is deprecated in favor of AbortController.",
+        "Timeout error code defaults to ECONNABORTED unless clarifyTimeoutError is enabled.",
+        "maxContentLength and maxBodyLength enforcement is adapter-dependent and defaults to -1."
+      ],
+      "sources": [
+        {
+          "path": "docs/pages/advanced/cancellation.md",
+          "startLine": 1,
+          "endLine": 21,
+          "sha256": "96dbcfdae94b4658f88b96e69ff9c824a280ecbab85c0adcec7594bd1c0a4479"
+        },
+        {
+          "path": "docs/pages/advanced/error-handling.md",
+          "startLine": 86,
+          "endLine": 120,
+          "sha256": "faae18261b0aeeb9134a04fd86708807452f99f47b4b7cd34f4995d0476ec3e3"
+        },
+        {
+          "path": "docs/pages/advanced/request-config.md",
+          "startLine": 5,
+          "endLine": 15,
+          "sha256": "b5fbc2456922795b283093e01d1f4541f690fb834520210d222a9f94828c9d87"
+        },
+        {
+          "path": "docs/pages/advanced/request-config.md",
+          "startLine": 240,
+          "endLine": 249,
+          "sha256": "b5fbc2456922795b283093e01d1f4541f690fb834520210d222a9f94828c9d87"
+        }
+      ]
+    },
+    {
+      "id": "inspect_responses_and_errors",
+      "userNeed": "Consume response data, status and headers and distinguish HTTP, network, timeout, cancellation and setup failures.",
+      "summary": "The response contains data, status, statusText, normalized headers, config and the underlying request. AxiosError exposes config, code, status and optional response/request context; validateStatus changes resolve/reject policy and redact masks selected fields only during error serialization.",
+      "qualifiers": [
+        "The default success policy resolves 2xx and rejects other statuses.",
+        "Browser security policies may prevent Axios from distinguishing CORS or mixed-content failures from generic network errors.",
+        "redact does not alter transmitted request data or the original config."
+      ],
+      "sources": [
+        {
+          "path": "docs/pages/advanced/response-schema.md",
+          "startLine": 1,
+          "endLine": 29,
+          "sha256": "5a5c59127d830c2d06e30091963c3a8f71b186386435637496d3bfc45b639abd"
+        },
+        {
+          "path": "docs/pages/advanced/error-handling.md",
+          "startLine": 3,
+          "endLine": 30,
+          "sha256": "faae18261b0aeeb9134a04fd86708807452f99f47b4b7cd34f4995d0476ec3e3"
+        },
+        {
+          "path": "docs/pages/advanced/error-handling.md",
+          "startLine": 32,
+          "endLine": 88,
+          "sha256": "faae18261b0aeeb9134a04fd86708807452f99f47b4b7cd34f4995d0476ec3e3"
+        }
+      ]
+    },
+    {
+      "id": "observe_and_limit_transfer",
+      "userNeed": "Report upload/download progress and limit bandwidth for large transfers.",
+      "summary": "Axios emits throttled upload and download progress with byte, rate and estimate information in browser and Node contexts; the Node HTTP adapter can cap upload and download bytes per second.",
+      "qualifiers": [
+        "Progress events are limited to three per second.",
+        "Node.js FormData upload progress is not currently supported.",
+        "Node.js streaming uploads should disable redirects to avoid documented whole-stream buffering.",
+        "maxRate has no effect in browser environments and is limited to the Node.js HTTP adapter."
+      ],
+      "sources": [
+        {
+          "path": "docs/pages/advanced/progress-capturing.md",
+          "startLine": 1,
+          "endLine": 55,
+          "sha256": "865243587b2fbcfbef8cd071a261ef64da4bad3e252dce852ac7848e1c0f794e"
+        },
+        {
+          "path": "docs/pages/advanced/rate-limiting.md",
+          "startLine": 1,
+          "endLine": 19,
+          "sha256": "2fe810be14f82c345ecd28104ab0710dde1e1de72bababbb35d93b7150c1d03d"
+        }
+      ]
+    },
+    {
+      "id": "select_transport_and_runtime",
+      "userNeed": "Use one client API across browser, Node.js and fetch-based runtimes or substitute a custom transport.",
+      "summary": "Axios selects among xhr, http and fetch adapters by environment, accepts explicit priority or a custom adapter, and offers experimental HTTP/2 through the Node.js HTTP adapter.",
+      "qualifiers": [
+        "Adapter feature support is not uniform across runtimes.",
+        "HTTP/2 is Node.js-only, experimental, and does not automatically follow redirects.",
+        "A custom adapter owns request execution and must return an Axios-shaped response."
+      ],
+      "sources": [
+        {
+          "path": "docs/pages/advanced/adapters.md",
+          "startLine": 1,
+          "endLine": 32,
+          "sha256": "3e0bf7a1aa2ff9eb380e555eb35931d6534693ee594c72c1a4b6c1e58b448e9c"
+        },
+        {
+          "path": "docs/pages/advanced/http2.md",
+          "startLine": 1,
+          "endLine": 38,
+          "sha256": "4e1b180e1313b5d293aa53855aedd62166e665e359371809e64136bbc7bf7540"
+        },
+        {
+          "path": "package.json",
+          "startLine": 12,
+          "endLine": 63,
+          "sha256": "c9afce8c65c9fadaebaac41ca90db26779efdc5e95aeca49b4e9477b61bcc4b2"
+        }
+      ]
+    },
+    {
+      "id": "define_resilience_policy",
+      "userNeed": "Understand whether retries, backoff and caching are built in or must be supplied by the application.",
+      "summary": "The reviewed retry guide implements retry, backoff, 429 handling and opt-out flags in application response interceptors; it does not present these as an automatic Axios retry engine.",
+      "qualifiers": [
+        "Retrying non-idempotent mutations can duplicate remote effects and must be an application policy decision.",
+        "No built-in cache policy was established from the bounded public docs, declarations and focused implementation reviewed; cache behavior remains unknown rather than asserted absent."
+      ],
+      "sources": [
+        {
+          "path": "docs/pages/advanced/retry.md",
+          "startLine": 1,
+          "endLine": 39,
+          "sha256": "b62147860e0140bf914203a5d5ad57adfd26bf86c1284bb5b852bb2135313383"
+        },
+        {
+          "path": "docs/pages/advanced/retry.md",
+          "startLine": 101,
+          "endLine": 115,
+          "sha256": "b62147860e0140bf914203a5d5ad57adfd26bf86c1284bb5b852bb2135313383"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "This is a bounded discovery inventory, not an exhaustive API catalog, gold standard, runtime conformance result or security audit.",
+    "No target source, tests, builds, examples, endpoints or external links were executed.",
+    "Public docs were treated as claims and cross-checked against declarations or focused implementation for request dispatch, adapter configuration and data-flow details where practical.",
+    "Proxy, redirect, Unix socket, decompression codec, detailed header API and every exported helper were not independently inventoried as separate consumer outcomes.",
+    "Server-side storage, logging, retention and downstream use of transmitted request data are outside Axios and were not established.",
+    "Caching behavior was not established within the bounded source review."
+  ]
+}

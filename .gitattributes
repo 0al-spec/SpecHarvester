@@ -1,0 +1,3 @@
+# Exact upstream excerpts: preserve whitespace verified by source-range hashes.
+SPECS/EVIDENCE/P56-AXIOS-DISCOVERY/author/candidate/evidence/progress.md -whitespace
+SPECS/EVIDENCE/P56-AXIOS-DISCOVERY/author/candidate/evidence/request-data-auth.md -whitespace

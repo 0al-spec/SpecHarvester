@@ -1,0 +1,35 @@
+apiVersion: specpm.dev/v0.1
+kind: SpecPackage
+preview_only: true
+metadata:
+  id: axios.http_client
+  name: Axios HTTP Client
+  version: 1.19.0
+  summary: Promise-based HTTP client boundary for making and configuring HTTP requests in browser and Node.js applications.
+  license: MIT
+  authors:
+    - name: SpecPM candidate author
+specs:
+  - path: specs/main.spec.yaml
+index:
+  provides:
+    capabilities:
+      - axios.http_client.request
+      - axios.http_client.configure
+      - axios.http_client.control
+  requires:
+    capabilities: []
+compatibility:
+  platforms:
+    - browser
+    - Node.js
+  languages:
+    - JavaScript
+    - TypeScript
+keywords:
+  - http
+  - client
+  - browser
+  - node
+  - promises
+foreignArtifacts: []
