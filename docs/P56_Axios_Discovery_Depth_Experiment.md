@@ -4,7 +4,7 @@ Experiment: `p56-axios-discovery-depth/v1`.
 Authority: user-authorized, one-repository preview; human review pending.
 
 Start with the [Russian before/after review](../SPECS/EVIDENCE/P56-AXIOS-DISCOVERY/author/review.ru.md).
-The [alternate package](../SPECS/EVIDENCE/P56-AXIOS-DISCOVERY/author/candidate/specpm.yaml)
+The [main-reviewed alternate package](../SPECS/EVIDENCE/P56-AXIOS-DISCOVERY/author/candidate/specpm.yaml)
 and [coverage map](../SPECS/EVIDENCE/P56-AXIOS-DISCOVERY/author/capability-map.json)
 are separate from the unchanged original.
 
@@ -95,9 +95,10 @@ confirm Node-only support and the stated HTTP/2 automatic-redirect limitation.
 This identifies a representation gap; it does not reveal the original author's
 hidden reasoning or prove that source discovery was otherwise complete.
 
-Main verification found twenty referenced upstream files and twenty-five
-packaged excerpts/license entries. Every excerpt matched its recorded source
-range byte-for-byte; all full-source and excerpt hashes matched. All twenty-eight
+After the review corrections below, main verification found twenty-one referenced
+upstream files and twenty-six packaged excerpts/license entries. Every excerpt
+matched its recorded source range byte-for-byte; all full-source and excerpt
+hashes matched. All twenty-nine
 candidate files survive SpecPM package collection. Independent local validation
 returned zero errors and only `preview_only_package`. The seven copied original
 files still match the P56-T4 digests.
@@ -120,10 +121,34 @@ a style check.
 Local checks completed:
 
 - `PYTHONPATH=src python -m pytest --cov=spec_harvester --cov-report=term --cov-fail-under=90 -q --tb=short`:
-  1491 passed, eight skipped, 90.12% coverage. Optional SpecPM tests run separately.
+  before review corrections: 1491 passed, eight skipped, 90.12% coverage.
+  Optional SpecPM tests run separately.
 - `PYTHONPATH=<trusted-specpm-src>:src python -m pytest tests/test_p56_axios_discovery_depth.py -q`:
-  five passed, including current SpecPM validation and complete package collection.
+  eleven passed after review corrections, including current SpecPM validation
+  and complete package collection.
 - `ruff check src tests` and `ruff format --check src tests`: passed.
 
 The Python path placeholders describe portable equivalents of the actual local
 commands; they do not claim an installed global validator. No target commands ran.
+
+## Independent Review Corrections
+
+A fresh read-only Sol high reviewer found three P2 semantic issues in the worker
+output: response/request size limits were conflated, the original Promise/polyfill
+prerequisite was dropped, and the adapter excerpt ended before the strongest
+interface claim's supporting lines. Main confirmed and corrected each finding.
+The exact adapter range now reaches line 47; an exact pinned README excerpt
+supports the restored Promise requirement.
+
+The reviewer also found weak coverage-reference tests. CI now pins the descriptive
+per-item labels and checks file existence, declared YAML targets, bounded line
+selectors and cited text tokens. Negative cases reject missing files/IDs and
+out-of-range lines. These checks do not make author labels semantic truth.
+
+The entire pre-review worker output is retained in
+[author-before-review.tar.gz](../SPECS/EVIDENCE/P56-AXIOS-DISCOVERY/author-before-review.tar.gz)
+and bound by [review-corrections.json](../SPECS/EVIDENCE/P56-AXIOS-DISCOVERY/review-corrections.json).
+The current `author/candidate` and Russian review include explicitly labeled
+main-agent corrections; the author's work log and original inventory remain
+unchanged descriptions of the pre-review run. The verification receipt identifies
+this stage as `main_reviewed_integration`. This is not an unassisted model output.

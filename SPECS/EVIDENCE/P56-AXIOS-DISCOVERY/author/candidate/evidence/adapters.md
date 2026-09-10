@@ -30,3 +30,18 @@ For more details on the `fetch` adapter, see the [Fetch adapter](/pages/advanced
 ## Creating a custom adapter
 
 To create a custom adapter, write a function that accepts a `config` object and returns a Promise that resolves to a valid axios response object.
+
+```js
+import axios from "axios";
+import { settle } from "axios/unsafe/core/settle.js";
+
+function myAdapter(config) {
+  /**
+   * At this point:
+   * - config has been merged with defaults
+   * - request transformers have run
+   * - request interceptors have run
+   *
+   * The adapter is now responsible for making the request
+   * and returning a valid response object.
+   */
