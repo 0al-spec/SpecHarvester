@@ -1,0 +1,321 @@
+apiVersion: specpm.dev/v0.1
+kind: BoundarySpec
+metadata:
+  id: axios.http_client
+  title: Axios HTTP Client Library
+  version: 1.19.0
+  status: draft
+intent:
+  summary: Let JavaScript and TypeScript application developers call HTTP APIs from browser or Node.js code with reusable service configuration, common payload encoding, request/response policy hooks, bounded transfer controls, and structured response or failure inspection.
+scope:
+  boundedContext: public_axios_http_client_api
+  includes:
+    - The default callable Axios export, HTTP method aliases, and Axios instances created with axios.create.
+    - Request URL, method, query, headers, credentials, body, transformation, response-type, timeout, cancellation, status-validation, progress, size-limit and adapter configuration.
+    - JSON, URL-encoded and multipart/FormData request preparation, with environment-specific body and header qualifiers.
+    - Request and response interceptors, typed response/error surfaces, built-in XHR, Node.js HTTP and fetch adapters, custom adapter selection, Node.js bandwidth limits, and experimental Node.js HTTP/2 configuration.
+    - Source-described behavior at the pinned Axios 1.19.0 revision; no request was executed.
+  excludes:
+    - A standalone command-line client, HTTP server, service discovery layer, API schema client generator, or remote service implementation.
+    - A built-in retry, backoff, token-refresh or cache policy. Reviewed retry and refresh guidance composes application interceptors; cache behavior was not established in the bounded review.
+    - Guarantees about remote mutation success, remote storage, logging, retention, availability, performance, security, or acceptance by an endpoint.
+    - Exhaustive proxy, redirect, Unix-socket, decompression-codec, header-helper, browser-version and every exported-helper behavior.
+    - Runtime conformance, package publication, canonical intent assignment, or acceptance of this preview.
+provides:
+  capabilities:
+    - id: axios.http_client.request
+      role: primary
+      summary: Issue Promise-based HTTP requests through a config object or GET, DELETE, HEAD, OPTIONS, POST, PUT, PATCH and form aliases, with the URL, method, query, headers and optional body supplied by the caller.
+    - id: axios.http_client.configure
+      role: supporting
+      summary: Create isolated clients with reusable baseURL, headers, authentication, timeout and other defaults, then override merged configuration per request.
+    - id: axios.http_client.serialize_transform
+      role: supporting
+      summary: Serialize query parameters and JSON, URL-encoded or multipart/FormData bodies, and run request/response transforms; supported body types and multipart header handling vary by runtime.
+    - id: axios.http_client.authenticate_protect
+      role: supporting
+      summary: Attach custom authorization or API-key headers, HTTP Basic credentials, browser cross-site credentials and configurable XSRF headers while keeping each disclosure conditional on request and runtime configuration.
+    - id: axios.http_client.intercept
+      role: supporting
+      summary: Register, conditionally run, eject or clear request and response interceptors for shared application policy; request order is LIFO and response order is FIFO.
+    - id: axios.http_client.control
+      role: supporting
+      summary: Cancel with AbortSignal, enforce timeouts, customize accepted HTTP statuses, cap request/response sizes where supported, observe transfer progress, and limit Node.js HTTP-adapter bandwidth.
+    - id: axios.http_client.inspect_outcome
+      role: supporting
+      summary: Inspect response data, status, normalized headers, request config and transport object, or distinguish Axios HTTP, network, timeout, cancellation, setup and unsupported-feature failures.
+    - id: axios.http_client.adapt_transport
+      role: supporting
+      summary: Select XHR, Node.js HTTP or fetch transport by name or environment priority, supply a custom adapter, and opt into experimental Node.js HTTP/2 with its redirect limitation.
+requires:
+  capabilities: []
+interfaces:
+  inbound:
+    - id: request_api
+      kind: library
+      summary: Call axios(config), axios(url, config), an HTTP method alias, or the equivalent AxiosInstance method. Input can include URL/method, query params and serializer, headers/auth, body, transforms, timeout/signal, responseType, validateStatus, progress callbacks, limits and adapter selection; the exact valid options are adapter- and runtime-qualified.
+    - id: instance_factory
+      kind: library
+      summary: Call axios.create(config) to obtain a callable AxiosInstance with service defaults and isolated interceptors; request configuration overrides instance defaults, which override library defaults.
+    - id: interceptor_api
+      kind: library
+      summary: Register fulfilled/rejected request or response handlers through instance.interceptors, optionally mark request handlers synchronous or guard them with runWhen, and remove one handler with eject or all handlers with clear.
+    - id: adapter_api
+      kind: plugin
+      summary: Select xhr, http or fetch adapters, an ordered fallback list, or a custom function that accepts merged/transformed config and returns a Promise for an Axios-shaped response. A custom adapter controls the actual transport and can change the effects declared for built-in adapters.
+  outbound:
+    - id: response_promise
+      kind: library
+      summary: Resolve with response data, status, statusText, normalized response headers, effective config and the underlying request; response transforms run before consumers receive the result.
+    - id: error_rejection
+      kind: library
+      summary: Reject with AxiosError or CanceledError carrying a code and available config/request/response context. By default non-2xx statuses reject; validateStatus changes that policy, and redact masks selected config fields only when serializing an error.
+    - id: progress_callbacks
+      kind: event
+      summary: Invoke configured upload/download callbacks with loaded bytes and, when known, total, progress, delta bytes, estimated time and rate; documented callback frequency is capped at three per second.
+constraints:
+  - id: runtime_qualified_transport
+    level: MUST
+    statement: Consumers must select only an adapter and option set supported by their runtime; XHR, Node.js HTTP and fetch behavior is not identical, and a custom adapter defines its own transport behavior.
+  - id: base_url_not_security_boundary
+    level: MUST
+    statement: Consumers must validate untrusted request URLs; baseURL and allowAbsoluteUrls construct URLs but do not constrain relative path traversal or establish an origin security boundary.
+  - id: credential_disclosure
+    level: MUST
+    statement: Consumers must treat configured headers, Basic auth, URL credentials, cookies, API keys and XSRF tokens as outbound data to the request destination and enable them only under intended origin and credential conditions.
+  - id: xsrf_credentials_independent
+    level: MUST
+    statement: Browser withCredentials and withXSRFToken control separate behaviors; cross-origin requests need withXSRFToken true to force the XSRF header and withCredentials true only when cookies or other browser credentials are also required.
+  - id: body_and_decompression_limits
+    level: SHOULD
+    statement: Consumers calling untrusted servers should set explicit maxContentLength and maxBodyLength values because documented defaults are unlimited and decompression can expand a small response enough to exhaust a Node.js process; enforcement varies by adapter and determinable length.
+  - id: formdata_header_policy
+    level: SHOULD
+    statement: Browser-like runtimes should let the runtime add multipart boundaries, while Node.js consumers of untrusted FormData#getHeaders() should prefer formDataHeaderPolicy content-only over the legacy all-header copy default.
+  - id: timeout_required_by_application
+    level: SHOULD
+    statement: Applications should choose an explicit timeout for production requests; Axios does not establish one universal service deadline, and clarifyTimeoutError changes the timeout error code.
+  - id: abortcontroller_preferred
+    level: SHOULD
+    statement: New code should use AbortController signals; CancelToken remains a deprecated compatibility API.
+  - id: retry_cache_external
+    level: MUST
+    statement: Applications requiring retry, backoff, token refresh or caching must define and review those policies separately; retrying mutation-capable requests can duplicate remote effects, and no built-in cache behavior was established here.
+  - id: progress_and_rate_limits
+    level: MUST
+    statement: Consumers must account for Node.js FormData upload progress being unsupported, Node.js redirected stream uploads potentially buffering the full stream, and maxRate applying only to the Node.js HTTP adapter.
+  - id: http2_experimental
+    level: MUST
+    statement: Consumers enabling httpVersion 2 must treat HTTP/2 support as experimental and Node.js-only and must handle 3xx responses themselves because the HTTP/2 adapter does not follow redirects.
+  - id: preview_not_runtime_proof
+    level: MUST
+    statement: This preview describes source-backed public behavior but makes no runtime, endpoint acceptance, publication, conformance or security guarantee.
+effects:
+  sideEffects:
+    - id: outbound_request_data
+      kind: network_write
+      summary: With a built-in network adapter, Axios sends the configured method and destination plus query parameters, request headers, and any body to that destination; configured Authorization, Basic credentials, cookies, API keys and XSRF tokens are included when their request/runtime conditions enable them. A custom adapter may use a different destination or no network and requires separate effect review.
+    - id: remote_mutation_request
+      kind: network_write
+      summary: POST, PUT, PATCH, DELETE or a caller-selected method can ask the configured remote service to mutate state while transmitting headers and body. Axios does not establish whether the server applies, stores or later retains the requested change, and this preview did not invoke an endpoint.
+    - id: inbound_response_data
+      kind: network_read
+      summary: With a built-in network adapter, Axios receives remote status, headers and response data from the configured destination, subject to response type, transforms, limits, cancellation and transport errors.
+    - id: progress_notifications
+      kind: event_emit
+      summary: When upload or download progress callbacks are configured and supported by the adapter, Axios emits transfer observations to caller code at a documented maximum frequency of three times per second.
+    - id: client_configuration_state
+      kind: state_mutation
+      summary: Creating or changing instance defaults and registering, ejecting or clearing interceptors mutates local in-memory client configuration; it does not by itself prove a network call or remote mutation.
+evidence:
+  - id: source_manifest
+    kind: documentation
+    path: evidence/sources.json
+    supports:
+      - provenance.sourceConfidence
+  - id: package_metadata
+    kind: package_manifest
+    path: evidence/package-metadata.txt
+    supports:
+      - intent.summary
+      - scope
+      - provenance.sourceConfidence
+  - id: feature_overview
+    kind: documentation
+    path: evidence/features.md
+    supports:
+      - intent.summary
+      - scope.includes
+      - provides.capabilities.axios.http_client.serialize_transform
+      - provides.capabilities.axios.http_client.control
+  - id: public_config_types
+    kind: source
+    path: evidence/public-config-types.ts
+    supports:
+      - scope.includes
+      - provides.capabilities.axios.http_client.configure
+      - provides.capabilities.axios.http_client.authenticate_protect
+      - provides.capabilities.axios.http_client.control
+      - provides.capabilities.axios.http_client.adapt_transport
+      - interfaces.inbound.request_api
+      - constraints.runtime_qualified_transport
+  - id: public_request_api
+    kind: source
+    path: evidence/public-request-api.ts
+    supports:
+      - provides.capabilities.axios.http_client.request
+      - provides.capabilities.axios.http_client.configure
+      - interfaces.inbound.request_api
+      - interfaces.inbound.instance_factory
+  - id: request_config_core
+    kind: documentation
+    path: evidence/request-config-core.md
+    supports:
+      - provides.capabilities.axios.http_client.configure
+      - provides.capabilities.axios.http_client.serialize_transform
+      - interfaces.inbound.request_api
+      - constraints.base_url_not_security_boundary
+      - constraints.body_and_decompression_limits
+  - id: request_data_auth
+    kind: documentation
+    path: evidence/request-data-auth.md
+    supports:
+      - provides.capabilities.axios.http_client.serialize_transform
+      - provides.capabilities.axios.http_client.authenticate_protect
+      - interfaces.inbound.request_api
+      - constraints.credential_disclosure
+      - constraints.formdata_header_policy
+      - effects.sideEffects.outbound_request_data
+      - effects.sideEffects.remote_mutation_request
+  - id: request_security_limits
+    kind: documentation
+    path: evidence/request-security-limits.md
+    supports:
+      - provides.capabilities.axios.http_client.authenticate_protect
+      - provides.capabilities.axios.http_client.control
+      - constraints.xsrf_credentials_independent
+      - constraints.body_and_decompression_limits
+      - effects.sideEffects.outbound_request_data
+  - id: configured_instances
+    kind: documentation
+    path: evidence/instances.md
+    supports:
+      - provides.capabilities.axios.http_client.configure
+      - interfaces.inbound.instance_factory
+      - effects.sideEffects.client_configuration_state
+  - id: multipart_serialization
+    kind: documentation
+    path: evidence/multipart.md
+    supports:
+      - provides.capabilities.axios.http_client.serialize_transform
+      - constraints.formdata_header_policy
+      - constraints.body_and_decompression_limits
+  - id: authentication_patterns
+    kind: documentation
+    path: evidence/authentication.md
+    supports:
+      - provides.capabilities.axios.http_client.authenticate_protect
+      - constraints.credential_disclosure
+      - effects.sideEffects.outbound_request_data
+  - id: interceptor_behavior
+    kind: documentation
+    path: evidence/interceptors.md
+    supports:
+      - provides.capabilities.axios.http_client.intercept
+      - interfaces.inbound.interceptor_api
+      - effects.sideEffects.client_configuration_state
+  - id: cancellation_behavior
+    kind: documentation
+    path: evidence/cancellation.md
+    supports:
+      - provides.capabilities.axios.http_client.control
+      - constraints.abortcontroller_preferred
+  - id: error_behavior
+    kind: documentation
+    path: evidence/error-handling.md
+    supports:
+      - provides.capabilities.axios.http_client.inspect_outcome
+      - interfaces.outbound.error_rejection
+      - constraints.timeout_required_by_application
+  - id: response_shape
+    kind: documentation
+    path: evidence/response-schema.md
+    supports:
+      - provides.capabilities.axios.http_client.inspect_outcome
+      - interfaces.outbound.response_promise
+      - effects.sideEffects.inbound_response_data
+  - id: progress_behavior
+    kind: documentation
+    path: evidence/progress.md
+    supports:
+      - provides.capabilities.axios.http_client.control
+      - interfaces.outbound.progress_callbacks
+      - constraints.progress_and_rate_limits
+      - effects.sideEffects.progress_notifications
+  - id: rate_limit_behavior
+    kind: documentation
+    path: evidence/rate-limiting.md
+    supports:
+      - provides.capabilities.axios.http_client.control
+      - constraints.progress_and_rate_limits
+  - id: adapter_behavior
+    kind: documentation
+    path: evidence/adapters.md
+    supports:
+      - provides.capabilities.axios.http_client.adapt_transport
+      - interfaces.inbound.adapter_api
+      - constraints.runtime_qualified_transport
+  - id: http2_behavior
+    kind: documentation
+    path: evidence/http2.md
+    supports:
+      - provides.capabilities.axios.http_client.adapt_transport
+      - constraints.http2_experimental
+  - id: retry_pattern
+    kind: documentation
+    path: evidence/retry-policy.md
+    supports:
+      - scope.excludes
+      - provides.capabilities.axios.http_client.intercept
+      - constraints.retry_cache_external
+  - id: retry_mutation_warning
+    kind: documentation
+    path: evidence/retry-optout.md
+    supports:
+      - constraints.retry_cache_external
+      - effects.sideEffects.remote_mutation_request
+  - id: fetch_dispatch
+    kind: source
+    path: evidence/fetch-dispatch.js
+    supports:
+      - interfaces.inbound.adapter_api
+      - effects.sideEffects.outbound_request_data
+      - effects.sideEffects.inbound_response_data
+  - id: http_dispatch
+    kind: source
+    path: evidence/http-dispatch.js
+    supports:
+      - constraints.credential_disclosure
+      - effects.sideEffects.outbound_request_data
+  - id: xhr_configuration
+    kind: source
+    path: evidence/xhr-config.js
+    supports:
+      - constraints.credential_disclosure
+      - effects.sideEffects.outbound_request_data
+  - id: xhr_send
+    kind: source
+    path: evidence/xhr-send.js
+    supports:
+      - effects.sideEffects.outbound_request_data
+  - id: license_notice
+    kind: source
+    path: evidence/LICENSE
+    supports:
+      - provenance.sourceConfidence
+provenance:
+  sourceConfidence:
+    intent: high
+    boundary: high
+    behavior: medium
+implementationBindings: []

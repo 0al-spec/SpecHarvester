@@ -1,0 +1,49 @@
+{
+  "name": "axios",
+  "version": "1.19.0",
+  "description": "Promise based HTTP client for the browser and node.js",
+  "main": "./dist/node/axios.cjs",
+  "module": "./index.js",
+  "type": "module",
+  "types": "index.d.ts",
+  "jsdelivr": "dist/axios.min.js",
+  "unpkg": "dist/axios.min.js",
+  "typings": "./index.d.ts",
+  "exports": {
+    ".": {
+      "types": {
+        "require": "./index.d.cts",
+        "default": "./index.d.ts"
+      },
+      "bun": {
+        "require": "./dist/node/axios.cjs",
+        "default": "./index.js"
+      },
+      "react-native": {
+        "require": "./dist/browser/axios.cjs",
+        "default": "./dist/esm/axios.js"
+      },
+      "browser": {
+        "require": "./dist/browser/axios.cjs",
+        "default": "./index.js"
+      },
+      "default": {
+        "require": "./dist/node/axios.cjs",
+        "default": "./index.js"
+      }
+    },
+    "./lib/adapters/http.js": "./lib/adapters/http.js",
+    "./lib/adapters/xhr.js": "./lib/adapters/xhr.js",
+    "./unsafe/*": "./lib/*",
+    "./unsafe/core/settle.js": "./lib/core/settle.js",
+    "./unsafe/core/buildFullPath.js": "./lib/core/buildFullPath.js",
+    "./unsafe/helpers/isAbsoluteURL.js": "./lib/helpers/isAbsoluteURL.js",
+    "./unsafe/helpers/buildURL.js": "./lib/helpers/buildURL.js",
+    "./unsafe/helpers/combineURLs.js": "./lib/helpers/combineURLs.js",
+    "./unsafe/adapters/http.js": "./lib/adapters/http.js",
+    "./unsafe/adapters/xhr.js": "./lib/adapters/xhr.js",
+    "./unsafe/utils.js": "./lib/utils.js",
+    "./package.json": "./package.json",
+    "./dist/browser/axios.cjs": "./dist/browser/axios.cjs",
+    "./dist/node/axios.cjs": "./dist/node/axios.cjs"
+  },

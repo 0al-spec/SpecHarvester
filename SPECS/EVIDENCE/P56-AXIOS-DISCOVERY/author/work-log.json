@@ -1,0 +1,187 @@
+{
+  "schemaVersion": 1,
+  "experiment": "p56-axios-discovery-depth/v1",
+  "modelContext": {
+    "model": "GPT 5.6 Sol",
+    "reasoningEffort": "high",
+    "purpose": "one bounded Axios authoring experiment",
+    "notAClaimOf": [
+      "model contest",
+      "controlled benchmark",
+      "runtime test",
+      "publication",
+      "P56-T6 completion"
+    ]
+  },
+  "phaseSequence": [
+    {
+      "phase": "source_first_inventory_started",
+      "observedAtUtc": "2026-09-10T22:02:48Z"
+    },
+    {
+      "phase": "inventory_initial_written_before_baseline",
+      "observedAtUtc": "2026-09-10T22:05:52Z",
+      "artifact": "inventory-initial.json",
+      "sha256": "374b8babaa7e898799bf39e076591bd5e0ab9b134cf00d6cfc3ee843ef463b27"
+    },
+    {
+      "phase": "original_candidate_opened",
+      "observedAtUtc": "2026-09-10T22:06:49Z"
+    },
+    {
+      "phase": "alternate_candidate_authored",
+      "observedAtUtc": "2026-09-10T22:10:03Z"
+    },
+    {
+      "phase": "coverage_comparison_written",
+      "observedAtUtc": "2026-09-10T22:12:46Z"
+    },
+    {
+      "phase": "russian_review_written",
+      "observedAtUtc": "2026-09-10T22:14:21Z"
+    },
+    {
+      "phase": "trusted_validator_completed",
+      "observedAtUtc": "2026-09-10T22:14:46Z"
+    },
+    {
+      "phase": "authoring_completed",
+      "observedAtUtc": "2026-09-10T22:14:53Z"
+    }
+  ],
+  "upstream": {
+    "repository": "https://github.com/axios/axios",
+    "revision": "509719387e4993392ca40da03a49678269cdfb90",
+    "pathsRead": [
+      "README.md",
+      "package.json",
+      "LICENSE",
+      "index.d.ts",
+      "index.js",
+      "lib/axios.js",
+      "lib/core/dispatchRequest.js",
+      "lib/adapters/http.js",
+      "lib/adapters/xhr.js",
+      "lib/adapters/fetch.js",
+      "docs/pages/getting-started/features.md",
+      "docs/pages/advanced/api-reference.md",
+      "docs/pages/advanced/request-config.md",
+      "docs/pages/advanced/create-an-instance.md",
+      "docs/pages/advanced/config-defaults.md",
+      "docs/pages/advanced/interceptors.md",
+      "docs/pages/advanced/error-handling.md",
+      "docs/pages/advanced/response-schema.md",
+      "docs/pages/advanced/cancellation.md",
+      "docs/pages/advanced/progress-capturing.md",
+      "docs/pages/advanced/rate-limiting.md",
+      "docs/pages/advanced/adapters.md",
+      "docs/pages/advanced/fetch-adapter.md",
+      "docs/pages/advanced/http2.md",
+      "docs/pages/advanced/retry.md",
+      "docs/pages/advanced/multipart-form-data-format.md",
+      "docs/pages/advanced/x-www-form-urlencoded-format.md",
+      "docs/pages/advanced/authentication.md"
+    ],
+    "pathCount": 28,
+    "targetCodeExecuted": false,
+    "testsOrBuildsExecuted": false,
+    "examplesOrSourceCommandsExecuted": false,
+    "externalLinksFollowed": false,
+    "networkUsed": false
+  },
+  "authoringGuidanceRead": [
+    "skills/specpm-author-candidate/SKILL.md",
+    "skills/specpm-author-candidate/references/authoring-contract.md",
+    "skills/specpm-author-candidate/assets/template/specpm.yaml",
+    "skills/specpm-author-candidate/assets/template/specs/main.spec.yaml"
+  ],
+  "baseline": {
+    "source": "SPECS/EVIDENCE/P56-T4/P56-T4_Original_Candidates.tar.gz",
+    "allowedMemberPrefix": "records/axios-axios/original/candidate/",
+    "expectedCandidateSha256FromOperatorContext": "c86a431d46f06dda1886a618e5c1d5393803deffb293974f23aaa6fcee1e1ee4",
+    "preservedAt": "original/",
+    "preservationMethod": "Exact allowlisted archive members were extracted mechanically and were not edited.",
+    "members": [
+      {
+        "path": "original/evidence/LICENSE",
+        "sha256": "82761059eaedacb3356803aea8a170d8298609f91b14fc32ee1bfb40d690183c"
+      },
+      {
+        "path": "original/evidence/README-excerpt.md",
+        "sha256": "f704476b1ee8d5508766b87511344da515f80ccc89dd3c00dbc94d5c81f46e93"
+      },
+      {
+        "path": "original/evidence/index-types-excerpt.md",
+        "sha256": "45a28972350170bfe5abf7a8088bd66e33103f36241b4811f4eeb1411faf6edf"
+      },
+      {
+        "path": "original/evidence/package-metadata.md",
+        "sha256": "0ee091dfd759f2de83e12731ba682cca13e4d011e0954019057f32b30aae2a3e"
+      },
+      {
+        "path": "original/evidence/source-notes.md",
+        "sha256": "b025211fc4badd6e81cb9494f92caa47ef5802d2172929ee8f0c397a77915454"
+      },
+      {
+        "path": "original/specpm.yaml",
+        "sha256": "980cbe90a41f5ad9d0457d2b38c265467ac5fd07c8bb0f66b7d24f3d73bf182b"
+      },
+      {
+        "path": "original/specs/main.spec.yaml",
+        "sha256": "2f9e85dac985461e95bb286ab606278abe65aced4804d1e82b647cf1749bc1c1"
+      }
+    ]
+  },
+  "inventory": {
+    "establishedBeforeBaselineRead": true,
+    "immutableArtifact": "inventory-initial.json",
+    "lateAdditionsOrCorrections": [],
+    "note": "The sequence is a self-reported audit aid, not proof of process isolation."
+  },
+  "portableEvidence": {
+    "manifest": "candidate/evidence/sources.json",
+    "entryCount": 25,
+    "generation": "Exact source line bytes and SHA-256 digests were derived mechanically; authored claims are not used as source excerpts."
+  },
+  "validator": {
+    "portableCommand": "PYTHONPATH=<trusted-specpm-src> <trusted-python> -m specpm.cli validate candidate --json",
+    "runs": [
+      {
+        "sequence": 1,
+        "exitCode": 0,
+        "status": "warning_only",
+        "errorCount": 0,
+        "warningCount": 1,
+        "warningCodes": [
+          "preview_only_package"
+        ],
+        "checkedFiles": [
+          "specpm.yaml",
+          "specs/main.spec.yaml"
+        ],
+        "capabilityCount": 8
+      }
+    ],
+    "repairAttempts": 0
+  },
+  "bounds": {
+    "sourcePathAim": 30,
+    "sourcePathsRead": 28,
+    "sourceTextByteAim": 524288,
+    "sourceTextBytesObserved": null,
+    "authoringTimeAimMinutes": 20,
+    "packageOutputByteAimExcludingLicense": 256000,
+    "packageOutputBytesObservedExcludingLicense": 77832,
+    "licenseBytesObserved": 1084,
+    "elapsedSecondsObserved": 725,
+    "exhausted": false,
+    "note": "Source text byte consumption was not instrumented, so no fabricated byte total is reported."
+  },
+  "unknowns": [
+    "No built-in cache semantics were established in the bounded review.",
+    "A custom adapter can replace network transport and requires its own destination and effect analysis.",
+    "Remote services determine mutation success, storage, logging, retention and downstream use of request data.",
+    "Exhaustive proxy, redirect, Unix-socket, codec, browser-version and non-Node fetch-runtime behavior was not investigated.",
+    "No runtime or acceptance behavior was tested."
+  ]
+}

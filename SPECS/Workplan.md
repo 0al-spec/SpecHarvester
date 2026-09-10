@@ -3157,6 +3157,14 @@ Tasks:
   from this sample. Explicitly disposition all paused Phase 55 tasks and the
   deferred T3/#372 work. No automatic acceptance or publication authority.
 
+Authorized bounded follow-up (2026-09-10 UTC):
+[Axios discovery depth experiment](../docs/P56_Axios_Discovery_Depth_Experiment.md)
+uses a fresh `gpt-5.6-sol` high worker, source-first capability inventory and
+explicit before/after coverage mapping on the original Axios revision. This is
+a separately labeled preview, not a rerun of v2 or completion of T6/T7/T8.
+Original candidates, human-review requirements and publication boundaries remain
+unchanged; no mass execution or model-superiority claim follows.
+
 Acceptance:
 
 - P56-T1 and P56-T2 remain completed preparation. P56-T3A precedes v2 T4;

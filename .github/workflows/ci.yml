@@ -103,6 +103,12 @@ jobs:
           python -c "import specpm.core"
           python -m pytest tests/test_authoring_skill_assets.py -q
 
+      - name: Validate bounded Axios discovery preview with current SpecPM
+        working-directory: SpecHarvester
+        run: |
+          python -c "import specpm.core"
+          python -m pytest tests/test_p56_axios_discovery_depth.py -q
+
       - name: Replay exploratory originals with recorded SpecPM
         working-directory: SpecHarvester
         env:

@@ -1,0 +1,44 @@
+apiVersion: specpm.dev/v0.1
+kind: SpecPackage
+preview_only: true
+metadata:
+  id: axios.http_client
+  name: Axios HTTP Client
+  version: 1.19.0
+  summary: Configurable Promise-based JavaScript HTTP client for browser and Node.js applications that need typed responses, payload serialization, interceptors, cancellation, progress reporting, and selectable transports.
+  license: MIT
+  authors:
+    - name: SpecPM experimental candidate author
+specs:
+  - path: specs/main.spec.yaml
+index:
+  provides:
+    capabilities:
+      - axios.http_client.request
+      - axios.http_client.configure
+      - axios.http_client.serialize_transform
+      - axios.http_client.authenticate_protect
+      - axios.http_client.intercept
+      - axios.http_client.control
+      - axios.http_client.inspect_outcome
+      - axios.http_client.adapt_transport
+  requires:
+    capabilities: []
+compatibility:
+  platforms:
+    - browser
+    - Node.js
+  languages:
+    - JavaScript
+    - TypeScript
+keywords:
+  - http-client
+  - promises
+  - browser
+  - node
+  - fetch
+  - xhr
+  - interceptors
+  - cancellation
+  - multipart
+foreignArtifacts: []

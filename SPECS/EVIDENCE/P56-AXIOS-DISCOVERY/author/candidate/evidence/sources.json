@@ -1,0 +1,208 @@
+{
+  "schemaVersion": 1,
+  "repository": "https://github.com/axios/axios",
+  "revision": "509719387e4993392ca40da03a49678269cdfb90",
+  "method": "Byte-exact line excerpts copied mechanically from the pinned source snapshot; sourceSha256 covers the complete upstream file and excerptSha256 covers the packaged bytes.",
+  "entries": [
+    {
+      "path": "evidence/package-metadata.txt",
+      "sourcePath": "package.json",
+      "startLine": 1,
+      "endLine": 49,
+      "sourceSha256": "c9afce8c65c9fadaebaac41ca90db26779efdc5e95aeca49b4e9477b61bcc4b2",
+      "excerptSha256": "074278e85409cf23b2d284b23e6dadd04d9dbe31fb13bb9a9c60551de8846ec7"
+    },
+    {
+      "path": "evidence/features.md",
+      "sourcePath": "docs/pages/getting-started/features.md",
+      "startLine": 25,
+      "endLine": 42,
+      "sourceSha256": "ed94641e5b866a5a6f1e88ca46a7f70441f4e04a60a29e9591a2840ac9393f1c",
+      "excerptSha256": "c416397726af77a21c23787616175365713e9095c27e90f37b415dee3d329a6b"
+    },
+    {
+      "path": "evidence/public-config-types.ts",
+      "sourcePath": "index.d.ts",
+      "startLine": 359,
+      "endLine": 476,
+      "sourceSha256": "3768eb0975f030352ec96190aaa485af41910029d9a62d9c70557c976b30a6f7",
+      "excerptSha256": "cad335460549db0edfa20359eeb2c637c2e159482821d49cd5697e66cdfb113c"
+    },
+    {
+      "path": "evidence/public-request-api.ts",
+      "sourcePath": "index.d.ts",
+      "startLine": 642,
+      "endLine": 715,
+      "sourceSha256": "3768eb0975f030352ec96190aaa485af41910029d9a62d9c70557c976b30a6f7",
+      "excerptSha256": "b99eaa22d202b8533a94e7eb32d45e475759fa8fa44de7692d2aec7004184e7f"
+    },
+    {
+      "path": "evidence/request-config-core.md",
+      "sourcePath": "docs/pages/advanced/request-config.md",
+      "startLine": 1,
+      "endLine": 38,
+      "sourceSha256": "b5fbc2456922795b283093e01d1f4541f690fb834520210d222a9f94828c9d87",
+      "excerptSha256": "dfe45973dfd3cec9b5d0c0302c9c01f914a3b8531887a0069e9e24a776162f21"
+    },
+    {
+      "path": "evidence/request-data-auth.md",
+      "sourcePath": "docs/pages/advanced/request-config.md",
+      "startLine": 87,
+      "endLine": 168,
+      "sourceSha256": "b5fbc2456922795b283093e01d1f4541f690fb834520210d222a9f94828c9d87",
+      "excerptSha256": "0a2c4c845e90424fdd99dd7c4d48ecc949c754a4914552f8bc8c4036f93a4706"
+    },
+    {
+      "path": "evidence/request-security-limits.md",
+      "sourcePath": "docs/pages/advanced/request-config.md",
+      "startLine": 202,
+      "endLine": 255,
+      "sourceSha256": "b5fbc2456922795b283093e01d1f4541f690fb834520210d222a9f94828c9d87",
+      "excerptSha256": "abe5582a6ded21e70c037028fd37ec871eb894a37eaea16f65f9438f48ce397c"
+    },
+    {
+      "path": "evidence/instances.md",
+      "sourcePath": "docs/pages/advanced/create-an-instance.md",
+      "startLine": 1,
+      "endLine": 86,
+      "sourceSha256": "88a27f925f9f76cdc8960397e4930636090472ae0e99932778df609c7ffb68d0",
+      "excerptSha256": "b4cfacd0c60c4c24853eb3bcaed1f4d0a963d2f63a262991ed7932acef189a17"
+    },
+    {
+      "path": "evidence/multipart.md",
+      "sourcePath": "docs/pages/advanced/multipart-form-data-format.md",
+      "startLine": 27,
+      "endLine": 114,
+      "sourceSha256": "c03c5d9552c7400faed110617f1916730f9b253b615ff5f58bd937b8d243cffc",
+      "excerptSha256": "0b350316318d98ae476a14514fc94cf54fa8775640aff183ae14a643a0afcb30"
+    },
+    {
+      "path": "evidence/authentication.md",
+      "sourcePath": "docs/pages/advanced/authentication.md",
+      "startLine": 3,
+      "endLine": 57,
+      "sourceSha256": "2e55b8f20472e05e70ac394cfc6fe6ab2566fd019584e8140fdcfb937141c240",
+      "excerptSha256": "ef850033272141a96247bcd75fae82b69c66dae7bc687ea4db4a15ace671659d"
+    },
+    {
+      "path": "evidence/interceptors.md",
+      "sourcePath": "docs/pages/advanced/interceptors.md",
+      "startLine": 1,
+      "endLine": 105,
+      "sourceSha256": "142c8d31e03ca09191e3e976aa654e6538527142589d3ee5a4aa1268c3022044",
+      "excerptSha256": "031a23dc20c49378b35b119a5b808433fcdaaed1a4d6d90d50b7352324e3562c"
+    },
+    {
+      "path": "evidence/cancellation.md",
+      "sourcePath": "docs/pages/advanced/cancellation.md",
+      "startLine": 1,
+      "endLine": 21,
+      "sourceSha256": "96dbcfdae94b4658f88b96e69ff9c824a280ecbab85c0adcec7594bd1c0a4479",
+      "excerptSha256": "f9ea03c167d78642f62045abf377ff4eec51eed4ce56112ae781230d312cc8f3"
+    },
+    {
+      "path": "evidence/error-handling.md",
+      "sourcePath": "docs/pages/advanced/error-handling.md",
+      "startLine": 3,
+      "endLine": 88,
+      "sourceSha256": "faae18261b0aeeb9134a04fd86708807452f99f47b4b7cd34f4995d0476ec3e3",
+      "excerptSha256": "66acd8a50c5bb04f5c6fe3888722e0ba994fb21ef6f6005e56529981aade4126"
+    },
+    {
+      "path": "evidence/response-schema.md",
+      "sourcePath": "docs/pages/advanced/response-schema.md",
+      "startLine": 1,
+      "endLine": 29,
+      "sourceSha256": "5a5c59127d830c2d06e30091963c3a8f71b186386435637496d3bfc45b639abd",
+      "excerptSha256": "e9e91c3bf92dfcff9a0474ea4002b9cfc187059f942ba8954529611bfcedd5ca"
+    },
+    {
+      "path": "evidence/progress.md",
+      "sourcePath": "docs/pages/advanced/progress-capturing.md",
+      "startLine": 1,
+      "endLine": 55,
+      "sourceSha256": "865243587b2fbcfbef8cd071a261ef64da4bad3e252dce852ac7848e1c0f794e",
+      "excerptSha256": "865243587b2fbcfbef8cd071a261ef64da4bad3e252dce852ac7848e1c0f794e"
+    },
+    {
+      "path": "evidence/rate-limiting.md",
+      "sourcePath": "docs/pages/advanced/rate-limiting.md",
+      "startLine": 1,
+      "endLine": 19,
+      "sourceSha256": "2fe810be14f82c345ecd28104ab0710dde1e1de72bababbb35d93b7150c1d03d",
+      "excerptSha256": "dce2a60cba3499143fe231799b1d590efc432faafee7446545925cef1d871876"
+    },
+    {
+      "path": "evidence/adapters.md",
+      "sourcePath": "docs/pages/advanced/adapters.md",
+      "startLine": 1,
+      "endLine": 32,
+      "sourceSha256": "3e0bf7a1aa2ff9eb380e555eb35931d6534693ee594c72c1a4b6c1e58b448e9c",
+      "excerptSha256": "8280a988c3bdf6c8d27846e510b05959c995cbcb3040e68b6946a7aa01597fc2"
+    },
+    {
+      "path": "evidence/http2.md",
+      "sourcePath": "docs/pages/advanced/http2.md",
+      "startLine": 1,
+      "endLine": 38,
+      "sourceSha256": "4e1b180e1313b5d293aa53855aedd62166e665e359371809e64136bbc7bf7540",
+      "excerptSha256": "662295c43e1cba452e559f9ba25adea5d567b02f17bbb5262fc4097365ddea9c"
+    },
+    {
+      "path": "evidence/retry-policy.md",
+      "sourcePath": "docs/pages/advanced/retry.md",
+      "startLine": 1,
+      "endLine": 39,
+      "sourceSha256": "b62147860e0140bf914203a5d5ad57adfd26bf86c1284bb5b852bb2135313383",
+      "excerptSha256": "3d9ceb025747a911efed6a403622419e96ff6da0b72caa1d847d063220a86885"
+    },
+    {
+      "path": "evidence/retry-optout.md",
+      "sourcePath": "docs/pages/advanced/retry.md",
+      "startLine": 101,
+      "endLine": 115,
+      "sourceSha256": "b62147860e0140bf914203a5d5ad57adfd26bf86c1284bb5b852bb2135313383",
+      "excerptSha256": "321ac109dea887863fe4951d96b4659c4184648a59e8defb1e80562efc3bdea8"
+    },
+    {
+      "path": "evidence/fetch-dispatch.js",
+      "sourcePath": "lib/adapters/fetch.js",
+      "startLine": 423,
+      "endLine": 437,
+      "sourceSha256": "96720d695365bf137888d44735f1832ddc8e64cc172c17a5393a69ffa45b05cd",
+      "excerptSha256": "fb063f9cc13813c34481dc24d9b8845d42900bda79542a4e4fcc2a824392dfca"
+    },
+    {
+      "path": "evidence/http-dispatch.js",
+      "sourcePath": "lib/adapters/http.js",
+      "startLine": 840,
+      "endLine": 894,
+      "sourceSha256": "467f9e5ceac1c08639294bb88d179eb2ebca6da276258be4419d3d199dbe1ef7",
+      "excerptSha256": "b3d6af72c8c843da2b24b5b941114e6f75c0d01ec9a91693c3f478fb583032df"
+    },
+    {
+      "path": "evidence/xhr-config.js",
+      "sourcePath": "lib/adapters/xhr.js",
+      "startLine": 155,
+      "endLine": 168,
+      "sourceSha256": "a8560efd4102d00326990603ae477afcc13c7ec9faa971121e2528ca9f373f98",
+      "excerptSha256": "40e981a38b848d61a10f6d05dd9655cf03c439fb54c6143f822484b5c63d1898"
+    },
+    {
+      "path": "evidence/xhr-send.js",
+      "sourcePath": "lib/adapters/xhr.js",
+      "startLine": 225,
+      "endLine": 226,
+      "sourceSha256": "a8560efd4102d00326990603ae477afcc13c7ec9faa971121e2528ca9f373f98",
+      "excerptSha256": "283780437b4b7a42bde53a79ba3da0ea9ea2caab8d60ab1363e06750f9eeaeb7"
+    },
+    {
+      "path": "evidence/LICENSE",
+      "sourcePath": "LICENSE",
+      "startLine": 1,
+      "endLine": 7,
+      "sourceSha256": "82761059eaedacb3356803aea8a170d8298609f91b14fc32ee1bfb40d690183c",
+      "excerptSha256": "82761059eaedacb3356803aea8a170d8298609f91b14fc32ee1bfb40d690183c"
+    }
+  ]
+}
