@@ -2,6 +2,7 @@
 
 import hashlib
 import json
+import re
 import tarfile
 from pathlib import Path, PurePosixPath
 
@@ -20,6 +21,35 @@ def _read(path):
 
 def _sha(data):
     return hashlib.sha256(data).hexdigest()
+
+
+def _yaml_targets(value, prefix=""):
+    targets = {prefix} if prefix else set()
+    if isinstance(value, dict):
+        for key, child in value.items():
+            targets.update(_yaml_targets(child, f"{prefix}.{key}".strip(".")))
+    elif isinstance(value, list):
+        for child in value:
+            if isinstance(child, dict) and "id" in child:
+                targets.update(_yaml_targets(child, f"{prefix}.{child['id']}"))
+    return targets
+
+
+def _assert_reference(reference):
+    name, _, selector = reference.partition(":")
+    path = (AUTHOR / name).resolve()
+    assert path.is_relative_to(AUTHOR.resolve()) and path.is_file()
+    if not selector:
+        return
+    text = path.read_text()
+    if name.endswith(".spec.yaml"):
+        assert selector in _yaml_targets(yaml.safe_load(text))
+    elif lines := re.fullmatch(r"lines? (\d+)(?:-(\d+))?", selector):
+        start, end = int(lines[1]), int(lines[2] or lines[1])
+        assert 1 <= start <= end <= len(text.splitlines())
+    else:
+        for token in re.split(r"[./]", selector):
+            assert re.search(rf"\b{re.escape(token)}\b", text)
 
 
 def test_discovery_follow_up_is_bound_and_does_not_replace_originals():
@@ -137,3 +167,83 @@ def test_preview_passes_current_specpm_without_omitting_evidence():
     assert errors == []
     actual = {str(path.relative_to(candidate)) for path in candidate.rglob("*") if path.is_file()}
     assert collected == actual
+
+
+def test_original_worker_snapshot_is_preserved_before_main_corrections():
+    corrections = _read(EVIDENCE / "review-corrections.json")
+    receipt = _read(EVIDENCE / "verification.json")
+    archive = EVIDENCE / corrections["originalAuthorArchive"]
+    assert _sha(archive.read_bytes()) == corrections["originalAuthorArchiveSha256"]
+    assert receipt["authorArtifactsStage"] == "main_reviewed_integration"
+    assert receipt["postAuthorReview"]["sha256"] == _sha(
+        (EVIDENCE / "review-corrections.json").read_bytes()
+    )
+    with tarfile.open(archive) as tar:
+        actual = {}
+        for member in tar.getmembers():
+            assert member.isfile() and member.name not in actual
+            path = PurePosixPath(member.name)
+            assert not path.is_absolute() and ".." not in path.parts
+            actual[member.name] = _sha(tar.extractfile(member).read())
+    assert actual == corrections["originalAuthorArtifacts"]
+    assert corrections["humanReview"] == "pending"
+
+
+def test_coverage_labels_and_references_are_recorded_not_quality_scores():
+    coverage = _read(AUTHOR / "capability-map.json")
+    expected = {
+        "make_http_requests": ("covered", "covered"),
+        "configure_clients_and_requests": ("covered", "covered"),
+        "serialize_and_transform_data": ("partial", "covered"),
+        "attach_credentials_and_xsrf_tokens": ("partial", "covered"),
+        "intercept_request_response_lifecycle": ("partial", "covered"),
+        "cancel_and_bound_requests": ("covered", "covered"),
+        "inspect_responses_and_errors": ("covered", "covered"),
+        "observe_and_limit_transfer": ("partial", "covered"),
+        "select_transport_and_runtime": ("partial", "covered"),
+        "define_resilience_policy": ("excluded", "excluded"),
+    }
+    assert {
+        item["id"]: (item["before"]["status"], item["after"]["status"])
+        for item in coverage["items"]
+    } == expected
+    for item in coverage["items"]:
+        for stage in ("before", "after"):
+            assert item[stage]["fields"]
+            for reference in item[stage]["fields"]:
+                _assert_reference(reference)
+    log = _read(AUTHOR / "work-log.json")
+    frozen = next(
+        entry
+        for entry in log["phaseSequence"]
+        if entry["phase"] == "inventory_initial_written_before_baseline"
+    )
+    assert frozen["sha256"] == _sha((AUTHOR / "inventory-initial.json").read_bytes())
+
+
+@pytest.mark.parametrize(
+    "reference",
+    [
+        "candidate/specs/main.spec.yaml:constraints.nonexistent_constraint",
+        "candidate/evidence/not-present.md",
+        "original/evidence/README-excerpt.md:lines 900000-900001",
+    ],
+)
+def test_bad_coverage_references_are_rejected(reference):
+    with pytest.raises(AssertionError):
+        _assert_reference(reference)
+
+
+def test_reviewed_preview_retains_prerequisite_and_separate_limit_meanings():
+    spec = yaml.safe_load((AUTHOR / "candidate/specs/main.spec.yaml").read_text())
+    constraints = {item["id"]: item["statement"] for item in spec["constraints"]}
+    assert "ES6 Promise" in constraints["promise_runtime"]
+    assert "polyfill" in constraints["promise_runtime"]
+    assert "maxContentLength to bound response size" in constraints["body_and_decompression_limits"]
+    assert (
+        "maxBodyLength bounds the outgoing request body"
+        in constraints["body_and_decompression_limits"]
+    )
+    adapters = (AUTHOR / "candidate/evidence/adapters.md").read_text()
+    assert "config has been merged with defaults" in adapters
+    assert "request transformers have run" in adapters

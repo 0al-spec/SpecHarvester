@@ -1,0 +1,82 @@
+{
+  "correctionOwner": "main_agent",
+  "experiment": "p56-axios-discovery-depth/v1",
+  "findings": [
+    {
+      "change": "Separate maxContentLength response/decompression protection from maxBodyLength request-body bounds.",
+      "disposition": "corrected",
+      "id": "response_request_limits",
+      "severity": "P2"
+    },
+    {
+      "change": "Restore the original ES6 Promise/polyfill prerequisite with pinned README evidence.",
+      "disposition": "corrected",
+      "id": "promise_compatibility_regression",
+      "severity": "P2"
+    },
+    {
+      "change": "Extend the exact adapter excerpt from upstream line 32 through line 47.",
+      "disposition": "corrected",
+      "id": "custom_adapter_excerpt_gap",
+      "severity": "P2"
+    },
+    {
+      "change": "Pin descriptive per-item states and verify referenced files, declared YAML IDs and bounded text selectors. These are integrity checks, not semantic quality scores.",
+      "disposition": "corrected",
+      "id": "coverage_reference_tests",
+      "severity": "P3"
+    }
+  ],
+  "humanReview": "pending",
+  "limitations": [
+    "The reviewer did not execute Axios or independently rerun main's full test suite.",
+    "The author work log describes the preserved pre-review output, not subsequent main-agent corrections."
+  ],
+  "originalAuthorArchive": "author-before-review.tar.gz",
+  "originalAuthorArchiveSha256": "ce73dfa83f816f4f9491726d26a09b118bbce6b1e7c46b859d9441225c6f7edc",
+  "originalAuthorArtifacts": {
+    "candidate/evidence/LICENSE": "82761059eaedacb3356803aea8a170d8298609f91b14fc32ee1bfb40d690183c",
+    "candidate/evidence/adapters.md": "8280a988c3bdf6c8d27846e510b05959c995cbcb3040e68b6946a7aa01597fc2",
+    "candidate/evidence/authentication.md": "ef850033272141a96247bcd75fae82b69c66dae7bc687ea4db4a15ace671659d",
+    "candidate/evidence/cancellation.md": "f9ea03c167d78642f62045abf377ff4eec51eed4ce56112ae781230d312cc8f3",
+    "candidate/evidence/error-handling.md": "66acd8a50c5bb04f5c6fe3888722e0ba994fb21ef6f6005e56529981aade4126",
+    "candidate/evidence/features.md": "c416397726af77a21c23787616175365713e9095c27e90f37b415dee3d329a6b",
+    "candidate/evidence/fetch-dispatch.js": "fb063f9cc13813c34481dc24d9b8845d42900bda79542a4e4fcc2a824392dfca",
+    "candidate/evidence/http-dispatch.js": "b3d6af72c8c843da2b24b5b941114e6f75c0d01ec9a91693c3f478fb583032df",
+    "candidate/evidence/http2.md": "662295c43e1cba452e559f9ba25adea5d567b02f17bbb5262fc4097365ddea9c",
+    "candidate/evidence/instances.md": "b4cfacd0c60c4c24853eb3bcaed1f4d0a963d2f63a262991ed7932acef189a17",
+    "candidate/evidence/interceptors.md": "031a23dc20c49378b35b119a5b808433fcdaaed1a4d6d90d50b7352324e3562c",
+    "candidate/evidence/multipart.md": "0b350316318d98ae476a14514fc94cf54fa8775640aff183ae14a643a0afcb30",
+    "candidate/evidence/package-metadata.txt": "074278e85409cf23b2d284b23e6dadd04d9dbe31fb13bb9a9c60551de8846ec7",
+    "candidate/evidence/progress.md": "865243587b2fbcfbef8cd071a261ef64da4bad3e252dce852ac7848e1c0f794e",
+    "candidate/evidence/public-config-types.ts": "cad335460549db0edfa20359eeb2c637c2e159482821d49cd5697e66cdfb113c",
+    "candidate/evidence/public-request-api.ts": "b99eaa22d202b8533a94e7eb32d45e475759fa8fa44de7692d2aec7004184e7f",
+    "candidate/evidence/rate-limiting.md": "dce2a60cba3499143fe231799b1d590efc432faafee7446545925cef1d871876",
+    "candidate/evidence/request-config-core.md": "dfe45973dfd3cec9b5d0c0302c9c01f914a3b8531887a0069e9e24a776162f21",
+    "candidate/evidence/request-data-auth.md": "0a2c4c845e90424fdd99dd7c4d48ecc949c754a4914552f8bc8c4036f93a4706",
+    "candidate/evidence/request-security-limits.md": "abe5582a6ded21e70c037028fd37ec871eb894a37eaea16f65f9438f48ce397c",
+    "candidate/evidence/response-schema.md": "e9e91c3bf92dfcff9a0474ea4002b9cfc187059f942ba8954529611bfcedd5ca",
+    "candidate/evidence/retry-optout.md": "321ac109dea887863fe4951d96b4659c4184648a59e8defb1e80562efc3bdea8",
+    "candidate/evidence/retry-policy.md": "3d9ceb025747a911efed6a403622419e96ff6da0b72caa1d847d063220a86885",
+    "candidate/evidence/sources.json": "2a3f2d6eeab0244d4fc2f3cbdfe99ecec2f41749deca1d4177b2729219206fb1",
+    "candidate/evidence/xhr-config.js": "40e981a38b848d61a10f6d05dd9655cf03c439fb54c6143f822484b5c63d1898",
+    "candidate/evidence/xhr-send.js": "283780437b4b7a42bde53a79ba3da0ea9ea2caab8d60ab1363e06750f9eeaeb7",
+    "candidate/specpm.yaml": "493c6c9df55bab0d69d1bca26af629ca6ad19359bed5dbe15ec50f14af5cbb49",
+    "candidate/specs/main.spec.yaml": "5f8c7f53e55693dffe54fd65507195b62a9592562e3b2d1553b33d3076117f3b",
+    "capability-map.json": "603125484933c35d77b9c835166f81a6cb228554e236f6cbd7227e8ea8ab7586",
+    "inventory-initial.json": "374b8babaa7e898799bf39e076591bd5e0ab9b134cf00d6cfc3ee843ef463b27",
+    "original/evidence/LICENSE": "82761059eaedacb3356803aea8a170d8298609f91b14fc32ee1bfb40d690183c",
+    "original/evidence/README-excerpt.md": "f704476b1ee8d5508766b87511344da515f80ccc89dd3c00dbc94d5c81f46e93",
+    "original/evidence/index-types-excerpt.md": "45a28972350170bfe5abf7a8088bd66e33103f36241b4811f4eeb1411faf6edf",
+    "original/evidence/package-metadata.md": "0ee091dfd759f2de83e12731ba682cca13e4d011e0954019057f32b30aae2a3e",
+    "original/evidence/source-notes.md": "b025211fc4badd6e81cb9494f92caa47ef5802d2172929ee8f0c397a77915454",
+    "original/specpm.yaml": "980cbe90a41f5ad9d0457d2b38c265467ac5fd07c8bb0f66b7d24f3d73bf182b",
+    "original/specs/main.spec.yaml": "2f9e85dac985461e95bb286ab606278abe65aced4804d1e82b647cf1749bc1c1",
+    "review.ru.md": "ad3f8f160d36ffde91f3ee4f3a91c000104fd8e4ba03c7b8e41b59257470859b",
+    "work-log.json": "1fd5a7a2b7fe6f0e9291ca476b081041a6b523893fd73b9caba049e4b5310d69"
+  },
+  "reviewedCommit": "8372c7aaacd786aca82f25893b8f49622b3f6a96",
+  "reviewerModel": "gpt-5.6-sol",
+  "reviewerReasoningEffort": "high",
+  "schemaVersion": 1
+}

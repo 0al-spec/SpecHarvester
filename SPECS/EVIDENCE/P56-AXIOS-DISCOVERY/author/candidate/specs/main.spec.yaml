@@ -74,6 +74,9 @@ interfaces:
       kind: event
       summary: Invoke configured upload/download callbacks with loaded bytes and, when known, total, progress, delta bytes, estimated time and rate; documented callback frequency is capped at three per second.
 constraints:
+  - id: promise_runtime
+    level: MUST
+    statement: Consumers must provide native ES6 Promise support or a compatible polyfill, as required by the pinned Axios documentation.
   - id: runtime_qualified_transport
     level: MUST
     statement: Consumers must select only an adapter and option set supported by their runtime; XHR, Node.js HTTP and fetch behavior is not identical, and a custom adapter defines its own transport behavior.
@@ -88,7 +91,7 @@ constraints:
     statement: Browser withCredentials and withXSRFToken control separate behaviors; cross-origin requests need withXSRFToken true to force the XSRF header and withCredentials true only when cookies or other browser credentials are also required.
   - id: body_and_decompression_limits
     level: SHOULD
-    statement: Consumers calling untrusted servers should set explicit maxContentLength and maxBodyLength values because documented defaults are unlimited and decompression can expand a small response enough to exhaust a Node.js process; enforcement varies by adapter and determinable length.
+    statement: Consumers calling untrusted servers should set maxContentLength to bound response size, including the decompressed response that can otherwise exhaust a Node.js process. Separately, maxBodyLength bounds the outgoing request body. Their documented defaults are unlimited; enforcement varies by adapter and determinable length.
   - id: formdata_header_policy
     level: SHOULD
     statement: Browser-like runtimes should let the runtime add multipart boundaries, while Node.js consumers of untrusted FormData#getHeaders() should prefer formDataHeaderPolicy content-only over the legacy all-header copy default.
@@ -128,6 +131,11 @@ effects:
       kind: state_mutation
       summary: Creating or changing instance defaults and registering, ejecting or clearing interceptors mutates local in-memory client configuration; it does not by itself prove a network call or remote mutation.
 evidence:
+  - id: promise_runtime_documentation
+    kind: documentation
+    path: evidence/promise-runtime.md
+    supports:
+      - constraints.promise_runtime
   - id: source_manifest
     kind: documentation
     path: evidence/sources.json

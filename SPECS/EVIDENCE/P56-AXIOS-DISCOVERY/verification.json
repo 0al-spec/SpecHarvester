@@ -11,7 +11,7 @@
   },
   "authorArtifacts": {
     "candidate/evidence/LICENSE": "82761059eaedacb3356803aea8a170d8298609f91b14fc32ee1bfb40d690183c",
-    "candidate/evidence/adapters.md": "8280a988c3bdf6c8d27846e510b05959c995cbcb3040e68b6946a7aa01597fc2",
+    "candidate/evidence/adapters.md": "589a6fc7d9f4d269ef0e8449f5810b2f7fbaa0a9d64c367ca66ada5c82c66de0",
     "candidate/evidence/authentication.md": "ef850033272141a96247bcd75fae82b69c66dae7bc687ea4db4a15ace671659d",
     "candidate/evidence/cancellation.md": "f9ea03c167d78642f62045abf377ff4eec51eed4ce56112ae781230d312cc8f3",
     "candidate/evidence/error-handling.md": "66acd8a50c5bb04f5c6fe3888722e0ba994fb21ef6f6005e56529981aade4126",
@@ -24,6 +24,7 @@
     "candidate/evidence/multipart.md": "0b350316318d98ae476a14514fc94cf54fa8775640aff183ae14a643a0afcb30",
     "candidate/evidence/package-metadata.txt": "074278e85409cf23b2d284b23e6dadd04d9dbe31fb13bb9a9c60551de8846ec7",
     "candidate/evidence/progress.md": "865243587b2fbcfbef8cd071a261ef64da4bad3e252dce852ac7848e1c0f794e",
+    "candidate/evidence/promise-runtime.md": "7a0189099994be6b1cc6cf59724f4572ce192e04a57ea50e827161def7b4dd26",
     "candidate/evidence/public-config-types.ts": "cad335460549db0edfa20359eeb2c637c2e159482821d49cd5697e66cdfb113c",
     "candidate/evidence/public-request-api.ts": "b99eaa22d202b8533a94e7eb32d45e475759fa8fa44de7692d2aec7004184e7f",
     "candidate/evidence/rate-limiting.md": "dce2a60cba3499143fe231799b1d590efc432faafee7446545925cef1d871876",
@@ -33,11 +34,11 @@
     "candidate/evidence/response-schema.md": "e9e91c3bf92dfcff9a0474ea4002b9cfc187059f942ba8954529611bfcedd5ca",
     "candidate/evidence/retry-optout.md": "321ac109dea887863fe4951d96b4659c4184648a59e8defb1e80562efc3bdea8",
     "candidate/evidence/retry-policy.md": "3d9ceb025747a911efed6a403622419e96ff6da0b72caa1d847d063220a86885",
-    "candidate/evidence/sources.json": "2a3f2d6eeab0244d4fc2f3cbdfe99ecec2f41749deca1d4177b2729219206fb1",
+    "candidate/evidence/sources.json": "90d289b3567abcffd31811defa99230f769f9fc22e7be7a594ffa7cc8e31ea8e",
     "candidate/evidence/xhr-config.js": "40e981a38b848d61a10f6d05dd9655cf03c439fb54c6143f822484b5c63d1898",
     "candidate/evidence/xhr-send.js": "283780437b4b7a42bde53a79ba3da0ea9ea2caab8d60ab1363e06750f9eeaeb7",
     "candidate/specpm.yaml": "493c6c9df55bab0d69d1bca26af629ca6ad19359bed5dbe15ec50f14af5cbb49",
-    "candidate/specs/main.spec.yaml": "5f8c7f53e55693dffe54fd65507195b62a9592562e3b2d1553b33d3076117f3b",
+    "candidate/specs/main.spec.yaml": "dd4ca15b91dd4cc2dce0bbaf7737417e6bf2c9840dda02eb0b7afedf03cb3216",
     "capability-map.json": "603125484933c35d77b9c835166f81a6cb228554e236f6cbd7227e8ea8ab7586",
     "inventory-initial.json": "374b8babaa7e898799bf39e076591bd5e0ab9b134cf00d6cfc3ee843ef463b27",
     "original/evidence/LICENSE": "82761059eaedacb3356803aea8a170d8298609f91b14fc32ee1bfb40d690183c",
@@ -47,16 +48,17 @@
     "original/evidence/source-notes.md": "b025211fc4badd6e81cb9494f92caa47ef5802d2172929ee8f0c397a77915454",
     "original/specpm.yaml": "980cbe90a41f5ad9d0457d2b38c265467ac5fd07c8bb0f66b7d24f3d73bf182b",
     "original/specs/main.spec.yaml": "2f9e85dac985461e95bb286ab606278abe65aced4804d1e82b647cf1749bc1c1",
-    "review.ru.md": "ad3f8f160d36ffde91f3ee4f3a91c000104fd8e4ba03c7b8e41b59257470859b",
+    "review.ru.md": "39814fdaadc27c36f751c4568f4adf5b8a973b89b55b37e0daa7c82d3f9d1f9f",
     "work-log.json": "1fd5a7a2b7fe6f0e9291ca476b081041a6b523893fd73b9caba049e4b5310d69"
   },
+  "authorArtifactsStage": "main_reviewed_integration",
   "authority": {
     "humanReview": "pending",
     "publicationAuthorized": false,
     "runtimeExecuted": false,
     "t6Completed": false
   },
-  "evidenceExcerptCount": 25,
+  "evidenceExcerptCount": 26,
   "experiment": "p56-axios-discovery-depth/v1",
   "limitations": [
     "Source hashes, ranges and package validation do not prove semantic correctness or complete repository coverage.",
@@ -81,6 +83,7 @@
     "evidence/multipart.md",
     "evidence/package-metadata.txt",
     "evidence/progress.md",
+    "evidence/promise-runtime.md",
     "evidence/public-config-types.ts",
     "evidence/public-request-api.ts",
     "evidence/rate-limiting.md",
@@ -96,14 +99,21 @@
     "specpm.yaml",
     "specs/main.spec.yaml"
   ],
+  "postAuthorReview": {
+    "path": "review-corrections.json",
+    "rawAuthorArchive": "author-before-review.tar.gz",
+    "rawAuthorArchiveSha256": "ce73dfa83f816f4f9491726d26a09b118bbce6b1e7c46b859d9441225c6f7edc",
+    "sha256": "87ff3a4647469111b3a5a1bc8a9245732972b508b315a01af85a5c364d26530b"
+  },
   "runtimeIsolationProven": false,
   "schemaVersion": 1,
   "source": {
-    "archiveSha256": "d64d9ad03679f218955a4e32e1a1bd3de7ee53a7bf78719116efeada55dba735",
+    "archiveSha256": "74cc14b4f3ccbe30c97f1bd88c4c6b64475a8b45dd27974d43424ac8b5f8c8e1",
     "cleanAfterAuthoring": true,
     "cleanBeforeDispatch": true,
     "files": {
       "LICENSE": "82761059eaedacb3356803aea8a170d8298609f91b14fc32ee1bfb40d690183c",
+      "README.md": "4db033f8e5c39cc3427078df94ebe079a37a7c6e557180e6f616638af5e3358f",
       "docs/pages/advanced/adapters.md": "3e0bf7a1aa2ff9eb380e555eb35931d6534693ee594c72c1a4b6c1e58b448e9c",
       "docs/pages/advanced/authentication.md": "2e55b8f20472e05e70ac394cfc6fe6ab2566fd019584e8140fdcfb937141c240",
       "docs/pages/advanced/cancellation.md": "96dbcfdae94b4658f88b96e69ff9c824a280ecbab85c0adcec7594bd1c0a4479",

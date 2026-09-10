@@ -136,9 +136,9 @@
       "path": "evidence/adapters.md",
       "sourcePath": "docs/pages/advanced/adapters.md",
       "startLine": 1,
-      "endLine": 32,
+      "endLine": 47,
       "sourceSha256": "3e0bf7a1aa2ff9eb380e555eb35931d6534693ee594c72c1a4b6c1e58b448e9c",
-      "excerptSha256": "8280a988c3bdf6c8d27846e510b05959c995cbcb3040e68b6946a7aa01597fc2"
+      "excerptSha256": "589a6fc7d9f4d269ef0e8449f5810b2f7fbaa0a9d64c367ca66ada5c82c66de0"
     },
     {
       "path": "evidence/http2.md",
@@ -203,6 +203,14 @@
       "endLine": 7,
       "sourceSha256": "82761059eaedacb3356803aea8a170d8298609f91b14fc32ee1bfb40d690183c",
       "excerptSha256": "82761059eaedacb3356803aea8a170d8298609f91b14fc32ee1bfb40d690183c"
+    },
+    {
+      "path": "evidence/promise-runtime.md",
+      "sourcePath": "README.md",
+      "startLine": 2527,
+      "endLine": 2531,
+      "sourceSha256": "4db033f8e5c39cc3427078df94ebe079a37a7c6e557180e6f616638af5e3358f",
+      "excerptSha256": "7a0189099994be6b1cc6cf59724f4572ce192e04a57ea50e827161def7b4dd26"
     }
   ]
 }

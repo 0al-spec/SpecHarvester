@@ -1,5 +1,9 @@
 # Axios discovery depth: до и после
 
+AI-assisted review, не отзыв владельца. Версия ниже включает три исправления
+основного агента после независимой проверки Sol High. Исходный результат Sol
+сохранён отдельно в [author-before-review.tar.gz](../author-before-review.tar.gz).
+
 ## Краткий итог
 
 Original candidate уже правильно отвечал на базовый вопрос: Axios — Promise-based HTTP client для browser и Node.js с request aliases, configured instances, response/error model, timeout, AbortController и body limits. Проблема не в полной пустоте, а в низкой различимости: три крупные capability сворачивали несколько важных consumer outcomes, а outbound HTTP interaction был указан только как `network_read`.
@@ -37,3 +41,15 @@ Alternate preview сохраняет тот же package id `axios.http_client`,
 Наблюдаемая потеря информации подтверждается самим original evidence: transform/FormData/XSRF перечислены в README excerpt, а `maxRate`, adapter, `fetchOptions`, `httpVersion` и `http2Options` присутствуют в type excerpt, но не становятся самостоятельными сравнимыми outcomes. Original source notes также честно признают, что adapter selection и все config fields не были установлены. Это совместимо с недостаточно глубоким bounded investigation, но hidden reasoning автора недоступен, поэтому причина не приписывается модели.
 
 Эксперимент не запускал Axios, tests, builds, examples, endpoints или search engine. Он не устанавливает cache semantics, custom-adapter effects, remote retention, exhaustive proxy/redirect behavior или полный browser/runtime matrix.
+
+## Что исправлено после Sol
+
+- Разделены `maxContentLength` для ответа и защиты от разрастания распакованного
+  ответа и `maxBodyLength` для исходящего тела запроса.
+- Возвращено потерянное требование ES6 Promise/polyfill из исходной спеки.
+- Продлён дословный adapter excerpt до строк, подтверждающих обработку config.
+
+Эти недочёты показывают, что более подробный результат тоже требует проверки.
+Счётчики покрытия остаются авторскими оценками групп возможностей, а не
+доказательством полноты или улучшения ranking. Проверка ссылок в CI подтверждает
+их существование, но не заменяет смысловой review.
