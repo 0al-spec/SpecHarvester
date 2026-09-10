@@ -3,7 +3,7 @@
 **Priority:** P0
 **Phase:** Phase 56. Agent-First Spec Authoring and Practical Utility Evaluation
 **Dependencies:** `P56-T5` Side-by-Side Package Review; `P56-T4` originals; `P56-T3A` protocol
-**Status:** Ready
+**Status:** In Progress
 
 ## Objective
 
@@ -28,6 +28,14 @@ P55-T10G7 through P55-T10G10, P55-T10H, and P55-T11 are paused pending the
 P56-T8 architecture decision. Phase 56 may proceed from the existing PARTIAL
 evidence without passing the historical Phase 55 gates. Their historical
 results remain unchanged, and no publication authority is granted.
+
+## Progress
+
+P56-T6 preparation is recorded in `docs/P56_T6_Practical_Utility_Review.md`
+and `SPECS/EVIDENCE/P56-T6/`. AI assistance notes are not maintainer verdicts.
+The human worksheet remains pending. T6 cannot be archived, or T7/T8 finalized,
+until the maintainer supplies the required practical findings and observed time.
+No candidate was changed or rerun.
 
 ## Recently Archived
 
